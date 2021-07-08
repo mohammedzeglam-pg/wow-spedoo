@@ -33,6 +33,33 @@
     "api-interfaces": {
       "tags": []
     },
+    "auth": {
+      "tags": []
+    },
+    "delivery": {
+      "tags": []
+    },
+    "delivery-boy": {
+      "tags": []
+    },
+    "order": {
+      "tags": []
+    },
+    "partner": {
+      "tags": []
+    },
+    "pick": {
+      "tags": []
+    },
+    "pick-boy": {
+      "tags": []
+    },
+    "prisma": {
+      "tags": []
+    },
+    "user": {
+      "tags": []
+    },
     "wow": {
       "tags": []
     },

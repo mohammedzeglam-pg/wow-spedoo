@@ -8,12 +8,16 @@
       "architect": {
         "build": {
           "builder": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/api",
             "main": "apps/api/src/main.ts",
             "tsConfig": "apps/api/tsconfig.app.json",
-            "assets": ["apps/api/src/assets"]
+            "assets": [
+              "apps/api/src/assets"
+            ]
           },
           "configurations": {
             "production": {
@@ -38,12 +42,16 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/api/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/api/**/*.ts"
+            ]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/api"],
+          "outputs": [
+            "coverage/apps/api"
+          ],
           "options": {
             "jestConfig": "apps/api/jest.config.js",
             "passWithNoTests": true
@@ -59,7 +67,234 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["libs/api-interfaces/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/api-interfaces/**/*.ts"
+            ]
+          }
+        }
+      }
+    },
+    "auth": {
+      "root": "libs/auth",
+      "sourceRoot": "libs/auth/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/auth/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/auth"
+          ],
+          "options": {
+            "jestConfig": "libs/auth/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "delivery": {
+      "root": "libs/delivery",
+      "sourceRoot": "libs/delivery/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/delivery/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/delivery"
+          ],
+          "options": {
+            "jestConfig": "libs/delivery/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "delivery-boy": {
+      "root": "libs/delivery-boy",
+      "sourceRoot": "libs/delivery-boy/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/delivery-boy/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/delivery-boy"
+          ],
+          "options": {
+            "jestConfig": "libs/delivery-boy/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "order": {
+      "root": "libs/order",
+      "sourceRoot": "libs/order/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/order/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/order"
+          ],
+          "options": {
+            "jestConfig": "libs/order/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "partner": {
+      "root": "libs/partner",
+      "sourceRoot": "libs/partner/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/partner/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/partner"
+          ],
+          "options": {
+            "jestConfig": "libs/partner/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "pick": {
+      "root": "libs/pick",
+      "sourceRoot": "libs/pick/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/pick/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/pick"
+          ],
+          "options": {
+            "jestConfig": "libs/pick/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "pick-boy": {
+      "root": "libs/pick-boy",
+      "sourceRoot": "libs/pick-boy/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/pick-boy/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/pick-boy"
+          ],
+          "options": {
+            "jestConfig": "libs/pick-boy/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "prisma": {
+      "root": "libs/prisma",
+      "sourceRoot": "libs/prisma/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/prisma/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/prisma"
+          ],
+          "options": {
+            "jestConfig": "libs/prisma/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "user": {
+      "root": "libs/user",
+      "sourceRoot": "libs/user/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/user/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/libs/user"
+          ],
+          "options": {
+            "jestConfig": "libs/user/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
@@ -72,7 +307,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/wow",
             "index": "apps/wow/src/index.html",
@@ -80,8 +317,13 @@
             "polyfills": "apps/wow/src/polyfills.ts",
             "tsConfig": "apps/wow/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["apps/wow/src/favicon.ico", "apps/wow/src/assets"],
-            "styles": ["apps/wow/src/styles.scss"],
+            "assets": [
+              "apps/wow/src/favicon.ico",
+              "apps/wow/src/assets"
+            ],
+            "styles": [
+              "apps/wow/src/styles.scss"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -149,7 +391,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/wow"],
+          "outputs": [
+            "coverage/apps/wow"
+          ],
           "options": {
             "jestConfig": "apps/wow/jest.config.js",
             "passWithNoTests": true
@@ -178,7 +422,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/wow-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/wow-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
