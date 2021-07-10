@@ -1,42 +1,67 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
-import {PickStatus} from '@prisma/client';
-
+import {ProductStatus} from '@prisma/client';
 @Injectable()
 export class PickBoyService {
   constructor(private readonly prisma: PrismaService) {}
 
-  getUnCompletedTasks(take = 10, skip = 0) {
-    return this.getTasksFromStatus(take,skip,PickStatus.UNDER_PICKING);
+
+  //get id from token
+  async getUnfinshedTasks(take=10,skip=0){
+    return this.fetchProducts(ProductStatus.UNDER_PICKING,take,skip);
   }
 
-  // get it from token
-  getCompletedTasks(take, skip) {
-    return this.getTasksFromStatus(take,skip,PickStatus.COMPLETED);
+
+
+  async getFinshedTasks(take=10,skip=0){
+    return this.fetchProducts(ProductStatus.UNDER_DELIVERING,take,skip);
   }
 
-  getCanceledTasks(take:number,skip:number){
-    return this.getTasksFromStatus(take,skip,PickStatus.CANCELED);
-  }
+  //TODO: control status from controller
+  async updateTaskStatus(status:ProductStatus,productId:number){
+    try{
+      return this.prisma.product.update(
+        {
+          data:{
+            status:status,
+            times:{
+              create:{
 
-  //TODO: get it return the basic info about product
-  // get it from token
-  private getTasksFromStatus(take=10, skip=0,status:PickStatus){
-    try {
-      return this.prisma.pickBoy.findMany({
-        where: {
-          pick: {
-            every: {
-              status: status,
+              },
             },
           },
-        },
-        take: take,
-        skip: skip * take,
-      });
-    } catch (err) {
+          where:{
+            id:productId
+          }
+        }
+      );
+    }catch(err){
       Logger.log(err);
-      return { message: 'Unhandled problem' };
+    }
+  }
+
+
+
+  private async fetchProducts(status:ProductStatus,take=10,skip=0){
+    try{
+      return await this.prisma.pickBoy.findMany({
+        where:{
+          pick:{
+            every:{
+              products:{
+                every:{
+                  status:status
+                }
+              }
+            }
+          }
+        },
+        take:take,
+        skip:take*skip,
+      });
+    }
+    catch (err){
+      Logger.log(err);
     }
   }
 }

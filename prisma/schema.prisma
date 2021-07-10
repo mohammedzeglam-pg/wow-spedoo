@@ -4,15 +4,13 @@
 // TODO: babe you need to use migration after get to prod
 datasource db {
   provider = "postgresql"
-  // url      = env("DATABASE_URL") || "postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
-  url      = "postgresql://postgres:postgres@localhost:5432/test"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-//  User schema stuff
 
 enum Role {
   MANAGER
@@ -21,44 +19,16 @@ enum Role {
   PICKER
   DELIVERY
 }
-//TODO: i think we need more effecinet system to track this shit
-// any change in this three enum would be added to  TimeTracking
-// do that because important
-enum DeliveryStatus {
+enum ProductStatus{
+  UNDER_REVIEW
+  UNDER_PICKING
+  APPROVED
+  FILTERION
   UNDER_DELIVERING
   COMPLETED
   CANCELED
 }
 
-enum OrderStatus {
-  UNDER_REVIEW
-  PICKING
-  FILTERION
-  DELIVERING
-  COMPLETED
-  CANCELED
-}
-enum PickStatus {
-  UNDER_PICKING
-  COMPLETED
-  CANCELED
-}
-enum TimeTracking{
-  UNDER_REVIEW
-  UNDER_PICKING
-  PICKING_COMPLETED
-  PICKING_CANCELED
-  FILTERION
-  UNDER_DELIVERING
-  DELIVERING_COMPLETED
-  DELIVERING_CANCELED
-  COMPLETED
-  CANCELED
-}
-enum PaymentMethod {
-  SDAD
-  CASH_ON_DELIVERY
-}
 model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique
@@ -72,9 +42,10 @@ model User {
   partner   Partner?
   pick_boy  PickBoy?
   delivery_boy  DeliveryBoy?
+
+  @@map(name:"users")
 }
 
-// Partner
 model Partner {
   id       Int      @id @default(autoincrement())
   user     User     @relation(fields: [userId], references: [id])
@@ -82,9 +53,10 @@ model Partner {
   api_key  String?  @unique
   orders   Order[]
   suppliers Supplier[]
+
+  @@map(name:"partners")
 }
 
-// Order schema
 
 model Order {
   id               Int           @id @default(autoincrement())
@@ -93,15 +65,18 @@ model Order {
   partner          Partner       @relation(fields: [partnerId], references: [id])
   partnerId        Int
   total_pieces     Int
-//  recipient        String?
+  recipient        String
   total_price      Int
   delivery_price   Int?
-  payment_method   PaymentMethod
-  status           OrderStatus
+  payment   PaymentMethod   @relation(fields:[payment_method],references:[id])
+  payment_method  Int
   created_at DateTime @default(now())
   updated_at DateTime? @updatedAt
   latitude  String
   longitude String
+  note      String?
+
+  @@map(name:"orders")
 }
 
 model Product {
@@ -119,6 +94,9 @@ model Product {
   deliveryId   Int?
   pick     Pick?     @relation(fields: [pickId], references: [id])
   pickId   Int?
+  status  ProductStatus @default(UNDER_REVIEW)
+
+  @@map(name:"products")
 }
 
 model Supplier {
@@ -130,6 +108,7 @@ model Supplier {
   partner   Partner @relation(fields: [partnerId], references: [id])
   partnerId Int
   product   Product[]
+  @@map(name:"suppliers")
 }
 
 
@@ -137,27 +116,32 @@ model Pick {
   id             Int        @id @default(autoincrement())
   total_location Int
   total_pieces   Int
-  status         PickStatus
   pick_boy      PickBoy?  @relation(fields:[pick_boyId],references:[id])
   pick_boyId    Int?
   products Product[]
+
+  @@map(name:"pick")
 }
+
 model PickBoy{
   id             Int            @id @default(autoincrement())
   name          String
   pick          Pick[]
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
+
+  @@map(name:"pick_boy")
 }
 
 model Delivery {
   id             Int            @id @default(autoincrement())
   total_location Int
   total_pieces   Int
-  status         DeliveryStatus
   delivery_boy   DeliveryBoy   @relation(fields: [delivery_boyId], references: [id])
   delivery_boyId Int
   products Product[]
+
+  @@map(name:"delivery")
 }
 
 model DeliveryBoy{
@@ -166,26 +150,49 @@ model DeliveryBoy{
   delivery      Delivery[]
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
+
+  @@map(name:"delivery_boy")
 }
-// Zones
-model Zone {
+
+
+model City{
   id    Int    @id @default(autoincrement())
   name  String @unique
   regions Region[]
+  @@map(name:"cities")
 }
-
-// Region
-model Region {
+model Region{
   id     Int    @id @default(autoincrement())
   name   String
-  zone   Zone   @relation(fields: [zoneId], references: [id])
-  zoneId Int
+  city   City   @relation(fields: [cityId], references: [id])
+  cityId Int
+  streets Street[]
+  @@map(name:"regions")
+}
+model Street{
+  id     Int    @id @default(autoincrement())
+  name   String
+  latitude  String?
+  longitude String?
+  price   Int?
+  region   Region  @relation(fields: [regionId],references:[id])
+  regionId  Int
+  @@map(name:"streets")
 }
 
 model Time{
   id     Int    @id @default(autoincrement())
   time  DateTime  @default(now())
-  status  TimeTracking
   product Product @relation(fields:[productId],references:[id])
   productId Int
+
+  @@map(name:"times")
+}
+
+model PaymentMethod {
+  id     Int    @id @default(autoincrement())
+  name  String
+  orders Order[]
+
+  @@map(name:"payment_nethods")
 }
