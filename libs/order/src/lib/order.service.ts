@@ -1,19 +1,62 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {Order} from '@prisma/client';
 import { PrismaService } from '@wow-spedoo/prisma';
+import {  CreateOrderDto  } from '@wow-spedoo/dto';
 @Injectable()
 export class OrderService {
+  constructor(private prisma: PrismaService) {}
 
-  constructor(private prisma:PrismaService) {
+  async addOrder(order:CreateOrderDto,userId:number) {
+    const {
+      order_id,
+      total_pieces,
+      recipient,
+      total_price,
+      latitude,
+      longitude,
+      products,
+      payment_method,
+    } = order;
+    try{
+      return this.prisma.order.create({
+        select:{id:true},
+        data: {
+          order_id:order_id,
+          total_pieces:total_pieces,
+          recipient:recipient,
+          total_price:total_price,
+          latitude:latitude,
+          longitude:longitude,
+          partnerId:userId,
+          payment_method:payment_method,
+          products:{
+            createMany:{
+              data: products
+            },
+          },
+        },
+      });
+    }catch(err){
+      Logger.log(err);
+    }
   }
 
-  async addOrder(order:Order){
-    try {
-      this.prisma.order.create({
-        data:order
+//change alll that to use partnerId
+  async getOrderDetials(orderId:number,partnerId:number){
+    try{
+      return this.prisma.order.findFirst({
+        where: {
+          id:orderId,
+          AND:{
+            partnerId:partnerId,
+          }
+        },
       })
     }catch(err){
       Logger.log(err);
     }
   }
+
+  //TODO:add
+  // async getPrice()
+
 }

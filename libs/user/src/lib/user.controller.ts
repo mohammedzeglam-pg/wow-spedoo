@@ -1,28 +1,62 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateUserCredential } from './dto/create-user-credential.dto';
-import { LoginCredential } from './dto/login-credential.dto';
 import { UserService } from './user.service';
+import { Body, Controller, Get, Logger, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { CreateUserCredential, LoginCredential, UpdateUserCredential } from '@wow-spedoo/dto';
+import {UserSelect} from 'prisma';
+import { PaginationDto } from '@wow-spedoo/dto';
+import { Roles } from '@wow-spedoo/auth';
+import { Role } from '@wow-spedoo/auth';
+import { JwtAuthGuard } from '@wow-spedoo/auth';
+import { RolesGuard } from '@wow-spedoo/auth';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard,RolesGuard)
   @Post('create')
-  async signup(@Body() user: CreateUserCredential) {
-    try {
-      const result = await this.userService.signup(user);
-      return result;
-    } catch (e) {
-      return e;
+  async createNewUser(@Body() createUserCredential:CreateUserCredential):Promise<UserSelect|void>{
+    return await this.userService.createUser(createUserCredential);
+  }
+
+
+
+  @Post('login')
+   login(@Body() loginCredential:LoginCredential){
+    return  this.userService.login(loginCredential);
+  }
+
+  //create dto for chaeck id with limit
+  @Patch("update/:id")
+  async updateUser(@Param() param,@Body() updateUser:UpdateUserCredential){
+    try{
+      const id = parseInt(param.id);
+      if(!id){
+        throw new Error('Not a Number');
+      }else {
+        return await this.userService.updateUser(id, updateUser);
+      }
+    }catch(err){
+      Logger.log(err);
     }
   }
-  @Post('login')
-  async login(@Body() user: LoginCredential) {
-    const result = await this.userService.login(user);
-    return result;
+
+
+  @Get('partner')
+  async getPartners(@Query() query:PaginationDto){
+    const {take,skip} = query;
+    return await this.userService.getPartners(take,skip);
   }
-  @Get('/partner')
-  async allPartner(){
-    const partner = await this.userService.allPartner();
-    return partner;
+
+  @Get('pick-boy')
+  async getPickBoy(@Query() query:PaginationDto){
+    const {take,skip} = query;
+    return await this.userService.getPickBoy(take,skip);
   }
+
+  @Get('delivery-boy')
+  async getDeliveryBoy(@Query() query:PaginationDto){
+    const {take,skip} = query;
+    return await this.userService.getPickBoy(take,skip);
+  }
+
 }

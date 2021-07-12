@@ -16,12 +16,14 @@ import { AppModule } from './app/app.module';
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter({ logger: true })
+    new FastifyAdapter({ logger: true }),
   );
   const globalPrefix = 'api';
   app.register(compression, { encodings: ['gzip', 'deflate'] });
   await app.register(fastifyHelmet);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+  }));
   app.setGlobalPrefix(globalPrefix);
 
   const port = process.env.PORT || 3333;

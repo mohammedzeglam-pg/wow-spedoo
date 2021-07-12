@@ -1,47 +1,43 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
-import {ProductStatus} from '@prisma/client';
+import { ProductStatus } from '@prisma/client';
 @Injectable()
 export class PickService {
+  constructor(private prisma: PrismaService) {}
 
-  constructor(private prisma:PrismaService) {}
-
-
-  async getUnfinshedTasks(take=10,skip=0){
-    try{
+  async getUnfinshedTasks(take = 10, skip = 0) {
+    try {
       return await this.prisma.product.findMany({
-        where:{
-            status:ProductStatus.UNDER_REVIEW,
+        where: {
+          status: ProductStatus.UNDER_REVIEW,
         },
       });
-    }catch (err) {
+    } catch (err) {
       Logger.log(err);
     }
   }
 
-  async getFinishedTasks(take=10,skip=0){
-    try{
+  async getFinishedTasks(take = 10, skip = 0) {
+    try {
       return await this.prisma.product.findMany({
-        where:{
-            status: ProductStatus.APPROVED
+        where: {
+          status: ProductStatus.APPROVED,
         },
-        take:take,
-        skip:take*skip
+        take: take,
+        skip: take * skip,
       });
-    }catch(err){
+    } catch (err) {
       Logger.log(err);
     }
   }
 
-
-  async addNewTask(data){
-    try{
+  async addNewTask(data) {
+    try {
       return await this.prisma.pick.create({
-        data:data
-      })
-    }catch(err){
+        data: data,
+      });
+    } catch (err) {
       Logger.log(err);
     }
   }
-
 }

@@ -11,5 +11,7 @@ module.exports = {
     '<rootDir>/libs/pick-boy',
     '<rootDir>/libs/delivery-boy',
     '<rootDir>/libs/delivery',
+    '<rootDir>/libs/dto',
+    '<rootDir>/libs/guards',
   ],
 };

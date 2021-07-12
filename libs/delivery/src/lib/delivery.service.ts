@@ -1,79 +1,73 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
-import {ProductStatus} from '@prisma/client';
+import { ProductStatus } from '@prisma/client';
 
 @Injectable()
 export class DeliveryService {
+  constructor(private prisma: PrismaService) {}
 
-  constructor(private prisma:PrismaService) {}
-
-  async getUnfinishedTasks(take=10,skip=0){
-    try{
+  async getUnfinishedTasks(take = 10, skip = 0) {
+    try {
       return await this.prisma.order.findMany({
-        where:{
-          products:{
-            some:{
-              deliveryId:null,
-            }
-          }
+        where: {
+          products: {
+            some: {
+              deliveryId: null,
+            },
+          },
         },
-        include:{
-          products:true,
-          payment:true
+        include: {
+          products: true,
+          payment: true,
         },
-        take:take,
-        skip:take*skip
+        take: take,
+        skip: take * skip,
       });
-    }catch(err){
+    } catch (err) {
       Logger.log(err);
     }
   }
 
-  async addNewTask(data){
-    try{
+  async addNewTask(data) {
+    try {
       return await this.prisma.delivery.create({
-        data:data
+        data: data,
       });
-    }catch(err){
+    } catch (err) {
       Logger.log(err);
     }
   }
 
-
-  async getFinshedTasks(take=10,skip=0){
-    try{
-      return await this.prisma.order.findMany(
-        {
-          where:{
-            products:{
-              every:{
-                deliveryId: {
-                  not:null,
-                }
+  async getFinshedTasks(take = 10, skip = 0) {
+    try {
+      return await this.prisma.order.findMany({
+        where: {
+          products: {
+            every: {
+              deliveryId: {
+                not: null,
               },
             },
-            AND:{
-              products:{
-                every:{
-                  status:{
-                    equals:ProductStatus.COMPLETED
-                  },
+          },
+          AND: {
+            products: {
+              every: {
+                status: {
+                  equals: ProductStatus.COMPLETED,
                 },
               },
-            }
+            },
           },
-          include:{
-            products:true,
-            payment:true
-          },
-          take:take,
-          skip:take*skip
-        }
-      );
-    }catch(err){
+        },
+        include: {
+          products: true,
+          payment: true,
+        },
+        take: take,
+        skip: take * skip,
+      });
+    } catch (err) {
       Logger.log(err);
     }
   }
-
-
 }

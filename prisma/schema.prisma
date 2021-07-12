@@ -33,7 +33,7 @@ model User {
   id        Int      @id @default(autoincrement())
   username  String   @unique
   firstname String
-  phone     Int      @unique
+  phone     String      @unique
   lastname  String
   email     String   @unique
   password  String
@@ -42,7 +42,7 @@ model User {
   partner   Partner?
   pick_boy  PickBoy?
   delivery_boy  DeliveryBoy?
-
+  isAllowed Boolean @default(true)
   @@map(name:"users")
 }
 
@@ -75,7 +75,6 @@ model Order {
   latitude  String
   longitude String
   note      String?
-
   @@map(name:"orders")
 }
 
@@ -83,8 +82,8 @@ model Product {
   id        Int    @id @default(autoincrement())
   name      String
   total_pieces     Int @default(1)
-  dimensions String
-  weight    String
+  dimensions String?
+  weight    String?
   supplier  Supplier     @relation(fields: [supplierId], references: [id])
   supplierId   Int
   order    Order?  @relation(fields: [orderId], references: [id])
@@ -95,19 +94,20 @@ model Product {
   pick     Pick?     @relation(fields: [pickId], references: [id])
   pickId   Int?
   status  ProductStatus @default(UNDER_REVIEW)
-
   @@map(name:"products")
 }
 
 model Supplier {
   id        Int     @id @default(autoincrement())
   name      String
-  phone     Int
-  latitude  String
-  longitude String
+  phone     String @unique
+  latitude  String?
+  longitude String?
   partner   Partner @relation(fields: [partnerId], references: [id])
   partnerId Int
   product   Product[]
+  street  Street?  @relation(fields:[streetId], references:[id])
+  streetId  Int?
   @@map(name:"suppliers")
 }
 
@@ -125,7 +125,6 @@ model Pick {
 
 model PickBoy{
   id             Int            @id @default(autoincrement())
-  name          String
   pick          Pick[]
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
@@ -146,7 +145,6 @@ model Delivery {
 
 model DeliveryBoy{
   id             Int            @id @default(autoincrement())
-  name          String
   delivery      Delivery[]
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
@@ -177,6 +175,7 @@ model Street{
   price   Int?
   region   Region  @relation(fields: [regionId],references:[id])
   regionId  Int
+  suppliers   Supplier[]
   @@map(name:"streets")
 }
 
@@ -184,15 +183,14 @@ model Time{
   id     Int    @id @default(autoincrement())
   time  DateTime  @default(now())
   product Product @relation(fields:[productId],references:[id])
+  status   ProductStatus @default(UNDER_REVIEW)
   productId Int
-
   @@map(name:"times")
 }
 
 model PaymentMethod {
   id     Int    @id @default(autoincrement())
-  name  String
+  name  String  @unique
   orders Order[]
-
   @@map(name:"payment_nethods")
 }

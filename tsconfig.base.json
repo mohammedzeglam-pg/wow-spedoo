@@ -19,12 +19,15 @@
       "@wow-spedoo/auth": ["libs/auth/src/index.ts"],
       "@wow-spedoo/delivery": ["libs/delivery/src/index.ts"],
       "@wow-spedoo/delivery-boy": ["libs/delivery-boy/src/index.ts"],
+      "@wow-spedoo/dto": ["libs/dto/src/index.ts"],
+      "@wow-spedoo/guards": ["libs/guards/src/index.ts"],
       "@wow-spedoo/order": ["libs/order/src/index.ts"],
       "@wow-spedoo/partner": ["libs/partner/src/index.ts"],
       "@wow-spedoo/pick": ["libs/pick/src/index.ts"],
       "@wow-spedoo/pick-boy": ["libs/pick-boy/src/index.ts"],
       "@wow-spedoo/prisma": ["libs/prisma/src/index.ts"],
-      "@wow-spedoo/user": ["libs/user/src/index.ts"]
+      "@wow-spedoo/user": ["libs/user/src/index.ts"],
+      "@wow-spedoo/validation-message": ["libs/validation-message/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

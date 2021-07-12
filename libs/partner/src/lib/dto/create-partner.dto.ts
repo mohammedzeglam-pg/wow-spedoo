@@ -1,5 +1,5 @@
 import { IsInt } from 'class-validator';
-export class CreatePartnerDto{
+export class CreatePartnerDto {
   @IsInt()
-  userId:number;
+  userId: number;
 }
