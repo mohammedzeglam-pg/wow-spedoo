@@ -13,5 +13,9 @@ module.exports = {
     '<rootDir>/libs/delivery',
     '<rootDir>/libs/dto',
     '<rootDir>/libs/guards',
+    '<rootDir>/libs/payment',
+    '<rootDir>/libs/supplier',
+    '<rootDir>/libs/zone',
+    '<rootDir>/libs/config',
   ],
 };

@@ -5,7 +5,7 @@ import {  CreateOrderDto  } from '@wow-spedoo/dto';
 export class OrderService {
   constructor(private prisma: PrismaService) {}
 
-  async addOrder(order:CreateOrderDto,userId:number) {
+  async addOrder(order:CreateOrderDto,partner:number) {
     const {
       order_id,
       total_pieces,
@@ -26,7 +26,7 @@ export class OrderService {
           total_price:total_price,
           latitude:latitude,
           longitude:longitude,
-          partnerId:userId,
+          partnerId:partner,
           payment_method:payment_method,
           products:{
             createMany:{

@@ -5,3 +5,4 @@ export * from './lib/create-order.dto';
 export * from './lib/create-supplier.dto';
 export * from './lib/create-many-product.dto';
 export * from './lib/pagination-dto';
+export * from './lib/id-transformer.dto';

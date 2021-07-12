@@ -12,6 +12,7 @@ import {
 import compression from 'fastify-compress';
 import { fastifyHelmet } from 'fastify-helmet';
 import { AppModule } from './app/app.module';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -19,14 +20,14 @@ async function bootstrap() {
     new FastifyAdapter({ logger: true }),
   );
   const globalPrefix = 'api';
-  app.register(compression, { encodings: ['gzip', 'deflate'] });
+  await app.register(compression, { encodings: ['gzip', 'deflate'] });
   await app.register(fastifyHelmet);
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
   }));
   app.setGlobalPrefix(globalPrefix);
-
-  const port = process.env.PORT || 3333;
+  const config = app.get(ConfigService);
+  const port = config.get('PORT') || 3333;
   await app.listen(port, () => {
     Logger.log('Listening at http://localhost:' + port + '/' + globalPrefix);
   });

@@ -36,6 +36,9 @@
     "auth": {
       "tags": []
     },
+    "config": {
+      "tags": []
+    },
     "delivery": {
       "tags": []
     },
@@ -54,6 +57,9 @@
     "partner": {
       "tags": []
     },
+    "payment": {
+      "tags": []
+    },
     "pick": {
       "tags": []
     },
@@ -61,6 +67,9 @@
       "tags": []
     },
     "prisma": {
+      "tags": []
+    },
+    "supplier": {
       "tags": []
     },
     "user": {
@@ -72,6 +81,9 @@
     "wow-e2e": {
       "tags": [],
       "implicitDependencies": ["wow"]
+    },
+    "zone": {
+      "tags": []
     }
   }
 }

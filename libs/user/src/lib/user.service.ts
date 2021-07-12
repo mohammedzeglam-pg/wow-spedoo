@@ -32,7 +32,6 @@ export class UserService {
       if(user.role === Role.DELIVERY){
         user.delivery_boy = {
           create:{
-
           }
         }
       } else if(user.role === Role.PICKER){
@@ -67,7 +66,7 @@ export class UserService {
         select: this.UserObject,
         data: data,
         where: {
-          id: +userId,
+          id: userId,
         },
       });
     } catch (err) {
@@ -114,6 +113,23 @@ export class UserService {
         skip: take * skip,
       });
     } catch (err) {
+      Logger.log(err);
+    }
+  }
+
+  async deleteUser(id: number) {
+    try {
+      return this.prisma.user.delete({
+        select: {
+          phone: true,
+          username: true,
+          email: true,
+        },
+        where: {
+          id: id
+        }
+      });
+    }catch(err){
       Logger.log(err);
     }
   }

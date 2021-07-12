@@ -50,10 +50,8 @@ model Partner {
   id       Int      @id @default(autoincrement())
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
-  api_key  String?  @unique
   orders   Order[]
   suppliers Supplier[]
-
   @@map(name:"partners")
 }
 
@@ -151,7 +149,6 @@ model DeliveryBoy{
 
   @@map(name:"delivery_boy")
 }
-
 
 model City{
   id    Int    @id @default(autoincrement())

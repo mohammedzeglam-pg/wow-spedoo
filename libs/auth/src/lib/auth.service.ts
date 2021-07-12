@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '@wow-spedoo/prisma';
 import * as bcrypt from 'bcrypt';
@@ -10,7 +10,6 @@ export class AuthService {
     private jwtService: JwtService, private prisma: PrismaService) {}
   async login(userCredentials) {
     try {
-      Logger.log(userCredentials);
       const { phone, password: pass } = userCredentials;
       const user = await this.prisma.user.findUnique({
         where: { phone },
@@ -22,12 +21,29 @@ export class AuthService {
           salt:true,
           username:true,
           phone:true,
+          partner:{
+            select:{
+              id:true,
+            }
+          },
+          pick_boy:{
+            select: {
+              id:true
+            }
+          },
+          delivery_boy:{
+            select:{
+              id:true
+            }
+          },
+
         },
       });
 
+      console.log('user:'+user);
       const checkPass: boolean = await this.validatePassword(user, pass);
       if (user && checkPass) {
-        const payload = { id: user.id, role: user.role,email:user.email,phone:user.phone };
+        const payload = { id: user.id, role: user.role,email:user.email,phone:user.phone,partner:user.partner,pick:user.pick_boy,delivery:user.delivery_boy };
         user['access_token'] = this.jwtService.sign(payload);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {password,role,id,salt,...rs} = user;
@@ -36,12 +52,18 @@ export class AuthService {
       return null;
     } catch (err) {
       Logger.log(err);
+      throw new Error(err);
     }
   }
 
   // Validate User password because user hash
   async validatePassword(user, password: string): Promise<boolean> {
-    const hash = await bcrypt.hash(password, user.salt);
-    return hash === user.password;
+    try {
+      const hash = await bcrypt.hash(password, user.salt);
+      return hash === user.password;
+    }catch(err){
+      Logger.warn(err);
+      return false;
+    }
   }
 }

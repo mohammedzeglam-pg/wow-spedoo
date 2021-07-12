@@ -1,6 +1,6 @@
 import { UserService } from './user.service';
-import { Body, Controller, Get, Logger, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
-import { CreateUserCredential, LoginCredential, UpdateUserCredential } from '@wow-spedoo/dto';
+import { Body, Controller, Get,  Param, Patch, Post, Query, UseGuards, Delete } from '@nestjs/common';
+import { CreateUserCredential, IdTransformerDto, LoginCredential, UpdateUserCredential } from '@wow-spedoo/dto';
 import {UserSelect} from 'prisma';
 import { PaginationDto } from '@wow-spedoo/dto';
 import { Roles } from '@wow-spedoo/auth';
@@ -21,38 +21,47 @@ export class UserController {
 
 
   @Post('login')
-   login(@Body() loginCredential:LoginCredential){
+  login(@Body() loginCredential:LoginCredential){
     return  this.userService.login(loginCredential);
   }
 
-  //create dto for chaeck id with limit
+
+  @Roles(Role.ADMIN,Role.MANAGER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
   @Patch("update/:id")
-  async updateUser(@Param() param,@Body() updateUser:UpdateUserCredential){
-    try{
-      const id = parseInt(param.id);
-      if(!id){
-        throw new Error('Not a Number');
-      }else {
-        return await this.userService.updateUser(id, updateUser);
-      }
-    }catch(err){
-      Logger.log(err);
-    }
+  async updateUser(@Param() param:IdTransformerDto,@Body() updateUser:UpdateUserCredential){
+    const {id} = param;
+    return await this.userService.updateUser(id, updateUser);
   }
 
 
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Delete('delete/:id')
+  async deleteUser(@Param() param:IdTransformerDto){
+    const {id} = param;
+    return await this.userService.deleteUser(id);
+  }
+
+
+  @Roles(Role.ADMIN,Role.MANAGER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
   @Get('partner')
   async getPartners(@Query() query:PaginationDto){
     const {take,skip} = query;
     return await this.userService.getPartners(take,skip);
   }
 
+  @Roles(Role.ADMIN,Role.MANAGER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
   @Get('pick-boy')
   async getPickBoy(@Query() query:PaginationDto){
     const {take,skip} = query;
     return await this.userService.getPickBoy(take,skip);
   }
 
+  @Roles(Role.ADMIN,Role.MANAGER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
   @Get('delivery-boy')
   async getDeliveryBoy(@Query() query:PaginationDto){
     const {take,skip} = query;
