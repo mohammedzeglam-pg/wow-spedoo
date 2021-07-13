@@ -1,18 +1,19 @@
 import { UserService } from './user.service';
-import { Body, Controller, Get,  Param, Patch, Post, Query, UseGuards, Delete } from '@nestjs/common';
+import { Body, Request,Controller, Get,  Param, Patch, Post, Query, UseGuards, Delete } from '@nestjs/common';
 import { CreateUserCredential, IdTransformerDto, LoginCredential, UpdateUserCredential } from '@wow-spedoo/dto';
 import {UserSelect} from 'prisma';
 import { PaginationDto } from '@wow-spedoo/dto';
-import { Roles } from '@wow-spedoo/auth';
+import { ApiKeyAuthGuard, Roles } from '@wow-spedoo/auth';
 import { Role } from '@wow-spedoo/auth';
 import { JwtAuthGuard } from '@wow-spedoo/auth';
 import { RolesGuard } from '@wow-spedoo/auth';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Roles(Role.ADMIN)
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ADMIN)
+  // @UseGuards(JwtAuthGuard,RolesGuard)
   @Post('create')
   async createNewUser(@Body() createUserCredential:CreateUserCredential):Promise<UserSelect|void>{
     return await this.userService.createUser(createUserCredential);
@@ -67,5 +68,6 @@ export class UserController {
     const {take,skip} = query;
     return await this.userService.getPickBoy(take,skip);
   }
+
 
 }

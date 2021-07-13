@@ -51,6 +51,7 @@ model Partner {
   id       Int      @id @default(autoincrement())
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
+  api_key String  @default(uuid()) @unique
   orders   Order[]
   suppliers Supplier[]
   @@map(name:"partners")

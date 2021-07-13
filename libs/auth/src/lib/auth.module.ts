@@ -7,6 +7,7 @@ import { PrismaService } from '@wow-spedoo/prisma';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { RolesGuard } from './role.guard';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ApiKeyAuthGuard } from './api-key-auth.guard';
 @Module({
   imports: [
     PassportModule,
@@ -22,10 +23,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
   ],
   controllers: [],
-  providers: [AuthService, JwtStrategy, PrismaService,
-       RolesGuard,
-       JwtAuthGuard,
-    ],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    PrismaService,
+    RolesGuard,
+    JwtAuthGuard,
+    ApiKeyAuthGuard
+  ],
   exports: [AuthService,],
 })
 export class AuthModule {}

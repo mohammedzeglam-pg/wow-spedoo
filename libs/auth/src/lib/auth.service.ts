@@ -40,7 +40,6 @@ export class AuthService {
         },
       });
 
-      console.log('user:'+user);
       const checkPass: boolean = await this.validatePassword(user, pass);
       if (user && checkPass) {
         const payload = { id: user.id, role: user.role,email:user.email,phone:user.phone,partner:user.partner,pick:user.pick_boy,delivery:user.delivery_boy };
