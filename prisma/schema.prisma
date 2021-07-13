@@ -22,6 +22,7 @@ enum Role {
 enum ProductStatus{
   UNDER_REVIEW
   UNDER_PICKING
+  PICKED
   APPROVED
   FILTERION
   UNDER_DELIVERING
@@ -66,12 +67,12 @@ model Order {
   recipient        String
   total_price      Int
   delivery_price   Int?
-  payment   PaymentMethod   @relation(fields:[payment_method],references:[id])
-  payment_method  Int
-  created_at DateTime @default(now())
-  updated_at DateTime? @updatedAt
-  latitude  String
-  longitude String
+  payment   PaymentMethod   @relation(fields:[payment_method],references:[name])
+  payment_method  String
+  created_at DateTime @default(value:now())
+//  updated_at DateTime? @updatedAt
+  lat  String
+  lon String
   note      String?
   @@map(name:"orders")
 }
@@ -86,7 +87,7 @@ model Product {
   supplierId   Int
   order    Order?  @relation(fields: [orderId], references: [id])
   orderId  Int?
-  times Time[]
+  times DateTime[]
   delivery     Delivery?     @relation(fields: [deliveryId], references: [id])
   deliveryId   Int?
   pick     Pick?     @relation(fields: [pickId], references: [id])
@@ -167,8 +168,8 @@ model Region{
 model Street{
   id     Int    @id @default(autoincrement())
   name   String
-  latitude  String?
-  longitude String?
+  lat  String?
+  lon String?
   price   Int?
   region   Region  @relation(fields: [regionId],references:[id])
   regionId  Int
@@ -176,14 +177,14 @@ model Street{
   @@map(name:"streets")
 }
 
-model Time{
-  id     Int    @id @default(autoincrement())
-  time  DateTime  @default(now())
-  product Product @relation(fields:[productId],references:[id])
-  status   ProductStatus @default(UNDER_REVIEW)
-  productId Int
-  @@map(name:"times")
-}
+//model Time{
+//  id     Int    @id @default(autoincrement())
+//  time  DateTime  @default(now())
+//  product Product @relation(fields:[productId],references:[id])
+//  status   ProductStatus @default(UNDER_REVIEW)
+//  productId Int
+//  @@map(name:"times")
+//}
 
 model PaymentMethod {
   id     Int    @id @default(autoincrement())

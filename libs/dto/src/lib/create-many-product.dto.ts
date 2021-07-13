@@ -10,6 +10,5 @@ export class CreateManyProductDto   {
   weight?: string | null
   @Type(()=>Number)
   supplierId: number ;
-
   status:ProductStatus;
 }

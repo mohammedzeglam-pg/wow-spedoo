@@ -11,8 +11,8 @@ export class OrderService {
       total_pieces,
       recipient,
       total_price,
-      latitude,
-      longitude,
+      lat,
+      lon,
       products,
       payment_method,
     } = order;
@@ -24,13 +24,22 @@ export class OrderService {
           total_pieces:total_pieces,
           recipient:recipient,
           total_price:total_price,
-          latitude:latitude,
-          longitude:longitude,
-          partnerId:partner,
-          payment_method:payment_method,
+          lat:lat,
+          lon:lon,
+          partner:{connect:{
+           id:partner,
+            },},
+          payment:{
+            connect:{
+              ...payment_method
+            },
+          },
           products:{
             createMany:{
-              data: products
+              data: {...products,times:{
+                  set:new Date()
+                },
+              },
             },
           },
         },
@@ -40,8 +49,8 @@ export class OrderService {
     }
   }
 
-//change alll that to use partnerId
-  async getOrderDetials(orderId:number,partnerId:number){
+//change all that to use partnerId
+  async getOrderDetails(orderId:number, partnerId:number){
     try{
       return this.prisma.order.findFirst({
         where: {
@@ -50,13 +59,12 @@ export class OrderService {
             partnerId:partnerId,
           }
         },
-      })
+      });
     }catch(err){
       Logger.log(err);
     }
   }
 
-  //TODO:add
-  // async getPrice()
+
 
 }

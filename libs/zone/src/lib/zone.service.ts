@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
+import { AddCityDto, AddRegionDto, AddStreetDto, IdTransformerDto } from '@wow-spedoo/dto';
 
 @Injectable()
 export class ZoneService {
@@ -33,13 +34,11 @@ export class ZoneService {
   }
 
 
-  async addRegion(regionInfo){
+  async addRegion(regionInfo:AddRegionDto){
     try {
-      const {cityId,name} = regionInfo;
       return this.prisma.region.create({
         data:{
-          name:name,
-          cityId:cityId
+          ...regionInfo
         }
       });
     }catch(err){
@@ -48,19 +47,14 @@ export class ZoneService {
   }
 
 
-  async addStreet(streetInfo){
+  async addStreet(streetInfo:AddStreetDto){
     try{
-      const {name,regionId,latitude,longitude,price} = streetInfo;
       return this.prisma.street.create({
         select:{
           ...this.street
         },
         data:{
-          name:name,
-          latitude:latitude,
-          longitude:longitude,
-          price:price,
-          regionId:regionId
+          ...streetInfo
         }
       });
     }catch(err){
@@ -109,9 +103,35 @@ export class ZoneService {
     }
   }
 
-  async getPrice(){
-    
+
+  async updateCity(id: IdTransformerDto, updateName: AddCityDto) {
+    try{
+      return this.prisma.city.update({
+        where:{
+          ...id,
+        },
+        data:{
+          ...updateName
+        }
+      });
+    }catch(err){
+      Logger.warn(err)
+    }
   }
 
+  async updateRegion(id: IdTransformerDto, regionInfo: AddRegionDto) {
+    try{
+      return this.prisma.region.update({ where:{ ...id }, data:{ ...regionInfo }, });
+    }catch (err){
+      Logger.warn(err);
+    }
+  }
 
+  async updateStreet(id: IdTransformerDto, streetInfo: AddStreetDto) {
+    try{
+      return this.prisma.street.update({where:{...id},data:{...streetInfo}});
+    }catch(err){
+      Logger.log(err);
+    }
+  }
 }

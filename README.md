@@ -96,3 +96,17 @@ Nx Cloud pairs with Nx in order to enable you to build and test code more rapidl
 Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
 
 Visit [Nx Cloud](https://nx.app/) to learn more.
+
+
+
+
+
+# You Need to know
+* Destructuring assignment
+  Visit [Mdn](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment?retiredLocale=ar)
+* DTO [StackOverFlow](https://stackoverflow.com/questions/59397687/what-is-the-purpose-of-a-data-transfer-object-in-nestjs)
+* Why  Classes over InterFaces? [github](https://github.com/nestjs/nest/issues/1228)
+* Why use DTO with prisma?
+  * Why postgresql that because free licence open source and not having commercial licence like mysql and mongodb
+  * All licence in this project can be use with 
+
