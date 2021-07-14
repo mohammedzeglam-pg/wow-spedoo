@@ -10,6 +10,7 @@ export class ZoneController {
 
 
 
+
   //city
   @Roles(Role.ADMIN,Role.MANAGER)
   @UseGuards(JwtAuthGuard,RolesGuard)
@@ -22,8 +23,8 @@ export class ZoneController {
   @Roles(Role.ADMIN,Role.MANAGER,Role.PARTNER)
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Get('city')
-  async getCities(){
-    return await this.zoneService.getCities();
+  async getAllCity(){
+    return await this.zoneService.getAllCity();
   }
 
   @Roles(Role.ADMIN,Role.MANAGER)
@@ -47,7 +48,7 @@ export class ZoneController {
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Get('region')
   async getRegions(){
-    return await this.zoneService.getCities();
+    return await this.zoneService.getAllCity();
   }
 
   @Roles(Role.ADMIN,Role.MANAGER)

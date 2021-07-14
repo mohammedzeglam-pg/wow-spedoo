@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
-
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private jwtService: JwtService, private prisma: PrismaService) {}
   async login(userCredentials) {
@@ -42,7 +42,9 @@ export class AuthService {
 
       const checkPass: boolean = await this.validatePassword(user, pass);
       if (user && checkPass) {
+
         const payload = { id: user.id, role: user.role,email:user.email,phone:user.phone,partner:user.partner,pick:user.pick_boy,delivery:user.delivery_boy };
+        // const payload = { id: user.id, role: user.role,email:user.email,phone:user.phone,pick:user.pick_boy,delivery:user.delivery_boy };
         user['access_token'] = this.jwtService.sign(payload);
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {password,role,id,salt,...rs} = user;
@@ -50,7 +52,7 @@ export class AuthService {
       }
       return null;
     } catch (err) {
-      Logger.log(err);
+      this.logger.error(err);
       throw new Error(err);
     }
   }

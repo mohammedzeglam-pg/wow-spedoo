@@ -73,7 +73,7 @@ export class UserService {
       Logger.log(err);
     }
   }
-  async getPartners(take = 10, skip = 0) {
+  async getManyPartner(take = 10, skip = 0) {
     const search: UserWhereInput = {
       partner: {
         isNot: null,
@@ -82,7 +82,7 @@ export class UserService {
     return this.fetchUserData(search, take, skip);
   }
 
-  async getPickBoy(take = 10, skip = 0) {
+  async getManyPickBoy(take = 10, skip = 0) {
     const search: UserWhereInput = {
       pick_boy: {
         isNot: null,
@@ -91,7 +91,7 @@ export class UserService {
     return this.fetchUserData(search, take, skip);
   }
 
-  async getDeliveriesBoy(take = 10, skip = 0) {
+  async getManyDeliveriesBoy(take = 10, skip = 0) {
     const search: UserWhereInput = {
       delivery_boy: {
         isNot: null,

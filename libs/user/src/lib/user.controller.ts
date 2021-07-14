@@ -1,19 +1,17 @@
 import { UserService } from './user.service';
-import { Body, Request,Controller, Get,  Param, Patch, Post, Query, UseGuards, Delete } from '@nestjs/common';
+import { Body, Controller, Get,  Param, Patch, Post, Query, UseGuards, Delete } from '@nestjs/common';
 import { CreateUserCredential, IdTransformerDto, LoginCredential, UpdateUserCredential } from '@wow-spedoo/dto';
 import {UserSelect} from 'prisma';
 import { PaginationDto } from '@wow-spedoo/dto';
-import { ApiKeyAuthGuard, Roles } from '@wow-spedoo/auth';
-import { Role } from '@wow-spedoo/auth';
+import { Role, Roles } from '@wow-spedoo/auth';
 import { JwtAuthGuard } from '@wow-spedoo/auth';
 import { RolesGuard } from '@wow-spedoo/auth';
-import { AuthGuard } from '@nestjs/passport';
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
-  // @Roles(Role.ADMIN)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard,RolesGuard)
   @Post('create')
   async createNewUser(@Body() createUserCredential:CreateUserCredential):Promise<UserSelect|void>{
     return await this.userService.createUser(createUserCredential);
@@ -48,25 +46,25 @@ export class UserController {
   @Roles(Role.ADMIN,Role.MANAGER)
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Get('partner')
-  async getPartners(@Query() query:PaginationDto){
+  async getManyPartner(@Query() query:PaginationDto){
     const {take,skip} = query;
-    return await this.userService.getPartners(take,skip);
+    return await this.userService.getManyPartner(take,skip);
   }
 
   @Roles(Role.ADMIN,Role.MANAGER)
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Get('pick-boy')
-  async getPickBoy(@Query() query:PaginationDto){
+  async getManyPickBoy(@Query() query:PaginationDto){
     const {take,skip} = query;
-    return await this.userService.getPickBoy(take,skip);
+    return await this.userService.getManyPickBoy(take,skip);
   }
 
   @Roles(Role.ADMIN,Role.MANAGER)
   @UseGuards(JwtAuthGuard,RolesGuard)
   @Get('delivery-boy')
-  async getDeliveryBoy(@Query() query:PaginationDto){
+  async getManyDeliveryBoy(@Query() query:PaginationDto){
     const {take,skip} = query;
-    return await this.userService.getPickBoy(take,skip);
+    return await this.userService.getManyDeliveriesBoy(take,skip);
   }
 
 

@@ -10,13 +10,14 @@ import { PaymentController, PaymentService } from '@wow-spedoo/payment';
 import { ConfigModule } from '@nestjs/config';
 import { configuration } from '@wow-spedoo/config';
 import { validationSchema } from '@wow-spedoo/config';
+import { ZoneController, ZoneService } from '@wow-spedoo/zone';
 @Module({
   imports: [AuthModule, PrismaModule,ConfigModule.forRoot({
     isGlobal:true,
     load:[configuration],
     validationSchema,
   })],
-  controllers: [AppController, UserController,OrderController,PaymentController ],
-  providers: [AppService, UserService,OrderService,PaymentService ],
+  controllers: [AppController, UserController,OrderController,PaymentController,ZoneController ],
+  providers: [AppService, UserService,OrderService,PaymentService,ZoneService ],
 })
 export class AppModule {}

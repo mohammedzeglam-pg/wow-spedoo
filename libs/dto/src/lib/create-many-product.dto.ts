@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
-import { IsString } from 'class-validator';
-import {ProductStatus} from 'prisma';
+import { IsNumber, IsString } from 'class-validator';
+
 export class CreateManyProductDto   {
   @IsString()
   name: string
@@ -8,7 +8,8 @@ export class CreateManyProductDto   {
   total_pieces?: number
   dimensions?: string | null
   weight?: string | null
+  @IsNumber()
   @Type(()=>Number)
   supplierId: number ;
-  status:ProductStatus;
+  readonly times:Date=new Date();
 }

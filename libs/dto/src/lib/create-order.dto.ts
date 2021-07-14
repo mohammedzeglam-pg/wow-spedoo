@@ -1,7 +1,9 @@
-import { IsArray, IsNumber, IsObject, ValidateNested } from 'class-validator';
+import { IsArray, IsDefined, IsNotEmptyObject, IsNumber, IsObject, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { CreateManyProductDto } from './create-many-product.dto';
 import { PaymentMethodDto } from './payment-method.dto';
+
+
 export class CreateOrderDto{
 
   @IsNumber()
@@ -19,6 +21,8 @@ export class CreateOrderDto{
   @Type(()=>Number)
   total_price:number;
   @IsObject()
+  @IsDefined()
+  @IsNotEmptyObject()
   @ValidateNested({ each: true })
   @Type(() => PaymentMethodDto)
   payment_method:PaymentMethodDto;

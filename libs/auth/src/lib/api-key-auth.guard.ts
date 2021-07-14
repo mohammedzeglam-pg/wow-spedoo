@@ -8,8 +8,8 @@ export class ApiKeyAuthGuard implements CanActivate{
   constructor(
     private readonly reflector: Reflector,
     private readonly prisma:PrismaService
-  ) {
-  }
+  ) { }
+  private readonly logger = new Logger(ApiKeyAuthGuard.name);
   async canActivate(context: ExecutionContext):Promise<boolean>   {
     const header =context.switchToHttp().getRequest().headers;
     const {token} = header;
@@ -25,12 +25,12 @@ export class ApiKeyAuthGuard implements CanActivate{
           id:true
         },
         where: {
-          api_key: token,
+          token: token,
         },
-        rejectOnNotFound:false,
+        rejectOnNotFound:true,
       });
     }catch(err){
-      Logger.warn(err);
+      this.logger.error(err);
       throw new UnauthorizedException();
     }
   }

@@ -1,6 +1,6 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
-import { PaginationDto } from '@wow-spedoo/dto';
+import { AddSupplierDto, PaginationDto } from '@wow-spedoo/dto';
 
 @Injectable()
 export class SupplierService {
@@ -19,57 +19,52 @@ export class SupplierService {
     },
   }
 
-  async addSupplier(orderData,partnerId:number){
-    const {name,phone,latitude,longitude,streetId} = orderData;
-    try{
-      return this.prisma.supplier.create({
-        select:{...this.supplierInfo},
-        data:{
-          name:name,
-          phone:phone,
-          latitude:latitude,
-          longitude:longitude,
-          streetId:streetId,
-          partnerId:partnerId
-        }
-      });
-    }catch(err){
-      Logger.warn(err);
-    }
+  async addSupplier(orderData:AddSupplierDto,token:string){
+    // const {name,phone,lat,lon,streetId} = orderData;
+    const {streetId, ...data} = orderData;
+    return this.prisma.supplier.create({
+      select:{...this.supplierInfo},
+      data:{
+        ...data,
+        street:{connect:{id:streetId},},
+        partner:{ connect:{ token:token, },
+        },
+      }
+    });
   }
 
-  async getSupplier(partnerId:number,id:number){
-    try{
-      return this.prisma.supplier.findFirst({
-        where:{
-          id:id,
-          AND:{
-            partnerId:partnerId
+  async getSupplier(id:number,token:string){
+    return this.prisma.supplier.findFirst({
+      where:{
+        id:id,
+        AND:{
+          partner:{
+            is:{
+              token:token,
+            },
           }
-        },
-        select:{
-          ...this.supplierInfo
-        },
-      });
-    }catch(err){
-      Logger.warn(err);
-    }
+        }
+      },
+      select:{
+        ...this.supplierInfo
+      },
+    });
   }
 
-  async getSuppliers(partnerId:number,pagination:PaginationDto){
-    const {take,skip} = pagination;
-    try{
-      return this.prisma.supplier.findMany({
-        where:{
-          partnerId:partnerId,
-        },
-        select:{
-          ...this.supplierInfo
+  async getManySupplier(pagination:PaginationDto,token:string){
+    return this.prisma.supplier.findMany({
+      where:{
+        partner:{
+          is:{
+            token:token,
+          }
         }
-      });
-    }catch(err){
-      Logger.warn(err);
-    }
+      },
+      select:{
+        ...this.supplierInfo
+      },
+        ...pagination
+    });
   }
 
 }

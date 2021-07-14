@@ -1,11 +1,12 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
 import {  CreateOrderDto  } from '@wow-spedoo/dto';
 @Injectable()
 export class OrderService {
+
   constructor(private prisma: PrismaService) {}
 
-  async addOrder(order:CreateOrderDto,partner:number) {
+  async addOrder(order:CreateOrderDto,token:string) {
     const {
       order_id,
       total_pieces,
@@ -16,54 +17,57 @@ export class OrderService {
       products,
       payment_method,
     } = order;
-    try{
-      return this.prisma.order.create({
-        select:{id:true},
-        data: {
-          order_id:order_id,
-          total_pieces:total_pieces,
-          recipient:recipient,
-          total_price:total_price,
-          lat:lat,
-          lon:lon,
-          partner:{connect:{
-           id:partner,
-            },},
-          payment:{
-            connect:{
-              ...payment_method
-            },
-          },
-          products:{
-            createMany:{
-              data: {...products,times:{
-                  set:new Date()
-                },
-              },
-            },
+    return this.prisma.order.create({
+      select:{id:true},
+      data: {
+        order_id:order_id,
+        total_pieces:total_pieces,
+        recipient:recipient,
+        total_price:total_price,
+        lat:lat,
+        lon:lon,
+        partner:{connect:{
+            token:token,
+          },},
+        payment:{
+          connect:{
+            ...payment_method
           },
         },
-      });
-    }catch(err){
-      Logger.log(err);
-    }
+        products:{
+          createMany:{
+            data:[...products]
+          },
+        },
+      },
+    });
   }
 
-//change all that to use partnerId
-  async getOrderDetails(orderId:number, partnerId:number){
-    try{
-      return this.prisma.order.findFirst({
-        where: {
-          id:orderId,
-          AND:{
-            partnerId:partnerId,
+  async getOrderDetails(orderId:number, token:string){
+    return this.prisma.order.findFirst({
+      select:{
+        order_id: true,
+        products: {
+          select:{
+            name:true,
+            status:true,
           }
-        },
-      });
-    }catch(err){
-      Logger.log(err);
-    }
+        }
+      },
+      where: {
+        id:orderId,
+        AND:{
+          partner:{
+            is: {
+              token:token
+            },
+          },
+        }
+      },
+    });
   }
+
+
 
 
 
