@@ -38,9 +38,9 @@ export class OrderController {
 
   @UseGuards(ApiKeyAuthGuard)
   @Get(':id')
-  async getOrderDetails(@Param() orderIdintifer:IdTransformerDto,@Request() req){
+  async getOrderDetails(@Param() orderIdentifier:IdTransformerDto,@Request() req){
     try{
-      const {id} = orderIdintifer;
+      const {id} = orderIdentifier;
       const {token} = req.headers;
       return await this.orderService.getOrderDetails(id,token);
     }catch(err){
