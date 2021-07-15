@@ -8,11 +8,17 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name);
   constructor(
     private jwtService: JwtService, private prisma: PrismaService) {}
+
+
+
+
+  //TODO: massive refactor
   async login(userCredentials) {
     try {
       const { phone, password: pass } = userCredentials;
       const user = await this.prisma.user.findUnique({
         where: { phone },
+        // do not play with this please
         select: {
           id: true,
           email: true,
@@ -39,15 +45,13 @@ export class AuthService {
 
         },
       });
-
       const checkPass: boolean = await this.validatePassword(user, pass);
       if (user && checkPass) {
-
         const payload = { id: user.id, role: user.role,email:user.email,phone:user.phone,partner:user.partner,pick:user.pick_boy,delivery:user.delivery_boy };
-        // const payload = { id: user.id, role: user.role,email:user.email,phone:user.phone,pick:user.pick_boy,delivery:user.delivery_boy };
         user['access_token'] = this.jwtService.sign(payload);
+        // destruct any unused data in response
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {password,role,id,salt,...rs} = user;
+        const {password,id,salt,...rs} = user;
         return rs;
       }
       return null;
@@ -64,7 +68,7 @@ export class AuthService {
       return hash === user.password;
     }catch(err){
       Logger.warn(err);
-      return false;
+      this.logger.error(err);
     }
   }
 }

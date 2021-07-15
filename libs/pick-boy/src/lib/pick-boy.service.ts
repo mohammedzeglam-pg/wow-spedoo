@@ -20,9 +20,9 @@ export class PickBoyService {
       return this.prisma.product.update({
         data: {
           status: status,
-          times: {
-            create: {},
-          },
+          times:{
+            push:new Date(),
+          }
         },
         where: {
           id: productId,

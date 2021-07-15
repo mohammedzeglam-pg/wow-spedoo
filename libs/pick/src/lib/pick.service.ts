@@ -1,43 +1,47 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
 import { ProductStatus } from '@prisma/client';
+import { AddPickTaskDto, PaginationDto } from '@wow-spedoo/dto';
 @Injectable()
 export class PickService {
   constructor(private prisma: PrismaService) {}
 
-  async getUnfinshedTasks(take = 10, skip = 0) {
-    try {
-      return await this.prisma.product.findMany({
-        where: {
-          status: ProductStatus.UNDER_REVIEW,
+  async getUnfinishedTasks(paginationDto:PaginationDto) {
+    return this.fetchTasks(ProductStatus.UNDER_REVIEW,paginationDto);
+  }
+
+  async getFinishedTasks(paginationDto:PaginationDto) {
+      return this.fetchTasks(ProductStatus.APPROVED,paginationDto);
+  }
+
+  async addTask(addPickTaskDto:AddPickTaskDto) {
+    const {products,pick_boy} = addPickTaskDto;
+    for(const product in products) {
+      this.prisma.pick.create({
+        data: {
+          pick_boy:{
+            connect:{
+              id:pick_boy,
+            },
+          },
+          products: {
+            //TODO: fix problem
+            connect: {
+              id: +product
+            }
+          }
         },
       });
-    } catch (err) {
-      Logger.log(err);
     }
   }
 
-  async getFinishedTasks(take = 10, skip = 0) {
-    try {
-      return await this.prisma.product.findMany({
-        where: {
-          status: ProductStatus.APPROVED,
-        },
-        take: take,
-        skip: take * skip,
-      });
-    } catch (err) {
-      Logger.log(err);
-    }
-  }
 
-  async addNewTask(data) {
-    try {
-      return await this.prisma.pick.create({
-        data: data,
-      });
-    } catch (err) {
-      Logger.log(err);
-    }
+  private async fetchTasks(productStatus:ProductStatus,paginationDto:PaginationDto){
+    return  this.prisma.product.findMany({
+      where: {
+        status: productStatus,
+      },
+      ...paginationDto
+    });
   }
 }

@@ -9,3 +9,4 @@ export * from './lib/id-transformer.dto';
 export * from './lib/add-city.dto';
 export * from './lib/add-region.dto';
 export * from './lib/add-street.dto';
+export * from './lib/add-pick-task.dto';

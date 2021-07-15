@@ -26,6 +26,7 @@ enum ProductStatus{
   APPROVED
   FILTERION
   UNDER_DELIVERING
+  DELIVERED
   COMPLETED
   CANCELED
 }
@@ -43,7 +44,8 @@ model User {
   partner   Partner?
   pick_boy  PickBoy?
   delivery_boy  DeliveryBoy?
-  isAllowed Boolean @default(true)
+  // TODO:
+  is_allowed Boolean @default(false)
   @@map(name:"users")
 }
 
@@ -54,6 +56,8 @@ model Partner {
   token String  @default(uuid()) @unique
   orders   Order[]
   suppliers Supplier[]
+  profit  Float
+  //TODO: need add have and need
   @@map(name:"partners")
 }
 
@@ -64,16 +68,16 @@ model Order {
   products         Product[]
   partner          Partner       @relation(fields: [partnerId], references: [id])
   partnerId        Int
-  total_pieces     Int
+  total_pieces     FLoat
   recipient        String
-  total_price      Int
-  delivery_price   Int?
+  total_price      Float
+  delivery_price   Float
   payment   PaymentMethod   @relation(fields:[payment_method],references:[name])
   payment_method  String
   created_at DateTime @default(value:now())
 //  updated_at DateTime? @updatedAt
-  lat  String
-  lon String
+  lat  Int
+  lon Int
   note      String?
   @@map(name:"orders")
 }
@@ -81,7 +85,7 @@ model Order {
 model Product {
   id        Int    @id @default(autoincrement())
   name      String
-  total_pieces     Int @default(1)
+  total_pieces     Float @default(1.0)
   dimensions String?
   weight    String?
   supplier  Supplier     @relation(fields: [supplierId], references: [id])
@@ -106,8 +110,6 @@ model Supplier {
   partner   Partner @relation(fields: [partnerId], references: [id])
   partnerId Int
   product   Product[]
-  street  Street?  @relation(fields:[streetId], references:[id])
-  streetId  Int?
   @@map(name:"suppliers")
 }
 
@@ -115,11 +117,10 @@ model Supplier {
 model Pick {
   id             Int        @id @default(autoincrement())
   total_location Int
-  total_pieces   Int
+ total_pieces   Float
   pick_boy      PickBoy?  @relation(fields:[pick_boyId],references:[id])
   pick_boyId    Int?
   products Product[]
-
   @@map(name:"pick")
 }
 
@@ -135,7 +136,7 @@ model PickBoy{
 model Delivery {
   id             Int            @id @default(autoincrement())
   total_location Int
-  total_pieces   Int
+  total_pieces   Float
   delivery_boy   DeliveryBoy   @relation(fields: [delivery_boyId], references: [id])
   delivery_boyId Int
   products Product[]
@@ -155,41 +156,31 @@ model DeliveryBoy{
 model City{
   id    Int    @id @default(autoincrement())
   name  String @unique
-  regions Region[]
+  zones Zone[]
   @@map(name:"cities")
 }
-model Region{
-  id     Int    @id @default(autoincrement())
-  name   String
-  city   City   @relation(fields: [cityId], references: [id])
-  cityId Int
-  streets Street[]
-  @@map(name:"regions")
-}
-model Street{
-  id     Int    @id @default(autoincrement())
-  name   String
-  lat  String?
-  lon String?
-  price   Int?
-  region   Region  @relation(fields: [regionId],references:[id])
-  regionId  Int
-  suppliers   Supplier[]
-  @@map(name:"streets")
-}
 
-//model Time{
-//  id     Int    @id @default(autoincrement())
-//  time  DateTime  @default(now())
-//  product Product @relation(fields:[productId],references:[id])
-//  status   ProductStatus @default(UNDER_REVIEW)
-//  productId Int
-//  @@map(name:"times")
-//}
+
+model Zone{
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  city  City  @relation(fields: [cityId],references:[id])
+  cityId  Int
+  price Float
+  locations  Location[]
+}
 
 model PaymentMethod {
   id     Int    @id @default(autoincrement())
   name  String  @unique
   orders Order[]
   @@map(name:"payment_nethods")
+}
+
+model Location{
+  id     Int    @id @default(autoincrement())
+  lat   Float
+  lon   Float
+  zone  Zone  @relation(fields:[zoneId],references:[id])
+  zoneId  Int
 }

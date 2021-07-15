@@ -6,7 +6,7 @@ import {
   HttpStatus,
   Logger,
   Param,
-  Post,
+  Post, Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -48,6 +48,12 @@ export class OrderController {
     }
   }
 
-
+  @Get('pricing')
+  async getPricing(@Query() location:{lat:number;lon:number}){
+    const price = await this.orderService.getPricing(location);
+    if(!price){
+      return  new HttpException('حاليا غير متوفر',HttpStatus.NOT_FOUND);
+    }
+  }
 
 }

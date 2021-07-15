@@ -26,6 +26,10 @@ export class CreateOrderDto{
   @ValidateNested({ each: true })
   @Type(() => PaymentMethodDto)
   payment_method:PaymentMethodDto;
-  lat:string;
-  lon:string;
+  @IsNumber()
+  @Type(()=>Number)
+  lat:number;
+  @IsNumber()
+  @Type(()=>Number)
+  lon:number;
 }
