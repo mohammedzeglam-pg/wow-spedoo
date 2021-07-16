@@ -44,7 +44,6 @@ model User {
   partner   Partner?
   pick_boy  PickBoy?
   delivery_boy  DeliveryBoy?
-  // TODO:
   is_allowed Boolean @default(false)
   @@map(name:"users")
 }
@@ -56,8 +55,8 @@ model Partner {
   token String  @default(uuid()) @unique
   orders   Order[]
   suppliers Supplier[]
-  profit  Float
-  //TODO: need add have and need
+  profit  Float @default(0.0)
+  financials Financial[]
   @@map(name:"partners")
 }
 
@@ -68,7 +67,7 @@ model Order {
   products         Product[]
   partner          Partner       @relation(fields: [partnerId], references: [id])
   partnerId        Int
-  total_pieces     FLoat
+  total_pieces     Float
   recipient        String
   total_price      Float
   delivery_price   Float
@@ -174,6 +173,7 @@ model PaymentMethod {
   id     Int    @id @default(autoincrement())
   name  String  @unique
   orders Order[]
+  is_take Boolean @default(false)
   @@map(name:"payment_nethods")
 }
 
@@ -183,4 +183,20 @@ model Location{
   lon   Float
   zone  Zone  @relation(fields:[zoneId],references:[id])
   zoneId  Int
+}
+
+enum Transaction{
+DEBT
+DUES
+}
+
+model Financial{
+  id     Int    @id @default(autoincrement())
+  amount  Float
+  partner Partner @relation(fields:[partnerId],references:[id])
+  partnerId Int
+  transaction    Transaction
+  created_at  DateTime  @default(now())
+  updated_at  DateTime?  @updatedAt
+  note  String?
 }
