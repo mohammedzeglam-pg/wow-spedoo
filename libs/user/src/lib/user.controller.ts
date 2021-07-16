@@ -15,7 +15,7 @@ import {
 import { CreateUserCredential, IdTransformerDto, LoginCredential, UpdateUserCredential } from '@wow-spedoo/dto';
 import {UserSelect} from 'prisma';
 import { PaginationDto } from '@wow-spedoo/dto';
-import { Role, Roles } from '@wow-spedoo/auth';
+import { ApiKeyAuthGuard, Role, Roles } from '@wow-spedoo/auth';
 import { JwtAuthGuard } from '@wow-spedoo/auth';
 import { RolesGuard } from '@wow-spedoo/auth';
 @Controller('user')

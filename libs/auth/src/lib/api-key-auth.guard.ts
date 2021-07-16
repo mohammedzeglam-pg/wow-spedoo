@@ -10,13 +10,14 @@ export class ApiKeyAuthGuard implements CanActivate{
     private readonly prisma:PrismaService
   ) { }
   private readonly logger = new Logger(ApiKeyAuthGuard.name);
-  async canActivate(context: ExecutionContext):Promise<boolean>   {
-    //TODO:
-    const header =context.switchToHttp().getRequest().headers;
-    const {token} = header;
-    const userId = await this.validate(token);
-    return !!userId;
 
+  private static readonly auth = 'api-key';
+  async canActivate(context: ExecutionContext):Promise<boolean>   {
+    const {authorization} =context.switchToHttp().getRequest().headers;
+    const tokens = authorization.toLowerCase().split(' ');
+    const key = ApiKeyAuthGuard.getKey(tokens);
+    const userId = await this.validate(key);
+    return !!userId;
   }
 
   async validate(token:string){
@@ -33,6 +34,15 @@ export class ApiKeyAuthGuard implements CanActivate{
     }catch(err){
       this.logger.error(err);
       throw new UnauthorizedException();
+    }
+  }
+
+// static because it is a pure function that can i share with multiple instance
+  private static getKey(tokens:string[]){
+    for(let i = 0; i< tokens.length;i++){
+      if(tokens[i].includes(ApiKeyAuthGuard.auth)){
+        return tokens[i+1];
+      }
     }
   }
 }
