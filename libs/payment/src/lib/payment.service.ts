@@ -1,45 +1,38 @@
 import {  Injectable} from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
+import { AddPaymentDto, PaymentMethodDto } from '@wow-spedoo/dto';
 
 @Injectable()
 export class PaymentService {
   constructor( private readonly prisma:PrismaService) {}
-
-
   private readonly payment={
     id:true,
     name:true,
+    is_take:true
   };
-
-
-  async addPaymentMethod(name:string){
+  async addPaymentMethod(addPaymentDto:AddPaymentDto){
     return  this.prisma.paymentMethod.create({
-      select:{
-        ...this.payment,
-      },
-      data:{
-        name:name,
-      }
+      select: this.payment,
+      data:addPaymentDto,
     });
   }
-
-
   async getAllPaymentMethod(){
     return  this.prisma.paymentMethod.findMany({
-      select:{
-        ...this.payment
-      }
+      select: this.payment
+    });
+  }
+  async getSpecificPaymentMethod(paymentMethodDto:PaymentMethodDto){
+    return  this.prisma.paymentMethod.findFirst({
+      select:this.payment,
+      where:paymentMethodDto,
     });
   }
 
-  async getSpecificPaymentMethod(id:number){
-    return  this.prisma.paymentMethod.findFirst({
-      select:{
-        ...this.payment
-      },
-      where:{
-        id,
-      },
+
+  async updatePaymentMethod(paymentMethodDto:PaymentMethodDto,addPaymentDto:AddPaymentDto){
+    return this.prisma.paymentMethod.update({
+      data:addPaymentDto,
+      where:paymentMethodDto,
     });
   }
 }

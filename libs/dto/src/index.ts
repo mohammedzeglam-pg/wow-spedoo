@@ -10,3 +10,5 @@ export * from './lib/add-city.dto';
 export * from './lib/add-zone.dto';
 export * from './lib/add-pick-task.dto';
 export * from './lib/add-location.dto';
+export * from './lib/add-payment.dto';
+export * from './lib/payment-method.dto';
