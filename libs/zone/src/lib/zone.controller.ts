@@ -1,85 +1,107 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ZoneService } from './zone.service';
-import { AddCityDto, AddRegionDto, AddStreetDto, IdTransformerDto } from '@wow-spedoo/dto';
 import { JwtAuthGuard, Role, Roles, RolesGuard } from '@wow-spedoo/auth';
+import { AddLocationDto, AddZoneDto, IdTransformerDto } from '@wow-spedoo/dto';
 
 @Controller('zone')
 export class ZoneController {
+  private readonly logger = new Logger(ZoneController.name);
   constructor(private zoneService: ZoneService) {}
 
+// city
+  @Roles(Role.ADMIN,Role.MANAGER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Post('city/add')
+  async addCity(@Body('name') name:string){
+    try {
+      return await this.zoneService.addCity(name);
+    }catch (err){
+      this.logger.error(err);
+      throw new HttpException(err.code,HttpStatus.CONFLICT);
+    }
+  }
+  @Roles(Role.ADMIN,Role.MANAGER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Patch('city/edit/:id')
+  async updateCity(@Param() id:IdTransformerDto,@Body('name') name:string){
+    try{
+      return await this.zoneService.updateCityName(id,name);
+    }catch (err){
+      this.logger.error(err);
+      throw new HttpException(err.code,HttpStatus.CONFLICT);
+    }
+  }
+
+  @Roles(Role.ADMIN,Role.MANAGER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Post('zone/add')
+  async addZone(@Body() addZoneDto:AddZoneDto){
+    try{
+      return await this.zoneService.addZone(addZoneDto);
+    }catch(err){
+      this.logger.error(err);
+      throw new HttpException(err.code,HttpStatus.CONFLICT);
+    }
+  }
+
+  @Roles(Role.ADMIN,Role.MANAGER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Patch('zone/edit')
+  async updateZone(@Param() id:IdTransformerDto,@Body() addZoneDto:AddZoneDto){
+    try{
+      return await this.zoneService.updateZone(id,addZoneDto);
+    }catch(err){
+      this.logger.error(err);
+      throw new HttpException(err.code,HttpStatus.CONFLICT);
+    }
+  }
 
 
+@Roles(Role.ADMIN,Role.MANAGER)
+@UseGuards(JwtAuthGuard,RolesGuard)
+@Post('location/add')
+async addLocation(addLocationDto:AddLocationDto){
+  try{
+    return await this.zoneService.addLocation(addLocationDto);
+  }catch(err){
+    this.logger.error(err);
+    throw new HttpException(err.code,HttpStatus.CONFLICT);
+  }
+}
 
 
-  //city
-  // @Roles(Role.ADMIN,Role.MANAGER)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Post('city/add')
-  // async addCity(@Body() addCity:AddCityDto){
-  //   const {name} = addCity;
-  //   return await this.zoneService.addCity(name);
-  // }
-  //
-  // @Roles(Role.ADMIN,Role.MANAGER,Role.PARTNER)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Get('city')
-  // async getAllCity(){
-  //   return await this.zoneService.getAllCity();
-  // }
-  //
-  // @Roles(Role.ADMIN,Role.MANAGER)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Patch('city/:id')
-  // async updateCity(@Param() id:IdTransformerDto,@Body() updateName:AddCityDto){
-  //   return await this.zoneService.updateCity(id,updateName);
-  // }
-  //
-  //
-  // //region
-  //
-  // @Roles(Role.ADMIN,Role.MANAGER)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Post('region/add')
-  // async addRegion(@Body() addRegion:AddRegionDto){
-  //   return await this.zoneService.addRegion(addRegion);
-  // }
-  //
-  // @Roles(Role.ADMIN,Role.MANAGER,Role.PARTNER)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Get('region')
-  // async getRegions(){
-  //   return await this.zoneService.getAllCity();
-  // }
-  //
-  // @Roles(Role.ADMIN,Role.MANAGER)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Patch('region/:id')
-  // async updateRegion(@Param() id: IdTransformerDto,@Body() regionInfo:AddRegionDto){
-  //  return  await this.zoneService.updateRegion(id,regionInfo);
-  // }
-  //
-  //
-  // //street
-  //
-  // @Roles(Role.ADMIN,Role.MANAGER)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Post('street/add')
-  // async addStreet(@Body() addStreet:AddStreetDto){
-  //   return await this.zoneService.addStreet(addStreet);
-  // }
-  //
-  // @Roles(Role.ADMIN,Role.MANAGER,Role.PARTNER)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Get('street')
-  // async getStreets(){
-  //   return await this.zoneService.getStreets();
-  // }
-  //
-  // @Roles(Role.ADMIN,Role.MANAGER,Role.PARTNER)
-  // @UseGuards(JwtAuthGuard,RolesGuard)
-  // @Patch('street/:id')
-  // async updateStreet(@Param() id:IdTransformerDto,@Body() streetInfo:AddStreetDto){
-  //   return await this.zoneService.updateStreet(id,streetInfo);
-  // }
+  @Roles(Role.ADMIN,Role.MANAGER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Patch('location/edit')
+  async updateLocation(@Param() id:IdTransformerDto,@Body() addLocationDto:AddLocationDto){
+    try{
+      return await this.zoneService.updateLocation(id,addLocationDto);
+    }catch(err){
+      this.logger.error(err);
+      throw new HttpException(err.code,HttpStatus.CONFLICT);
+    }
+  }
+
+  @Get('')
+  async getAllZones(){
+    try{
+      return await this.zoneService.getAllZones();
+    }catch (err){
+      this.logger.error(err);
+      throw new HttpException(err.code,HttpStatus.NOT_FOUND);
+    }
+  }
+
 
 }

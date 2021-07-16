@@ -7,6 +7,6 @@ export * from './lib/create-many-product.dto';
 export * from './lib/pagination-dto';
 export * from './lib/id-transformer.dto';
 export * from './lib/add-city.dto';
-export * from './lib/add-region.dto';
-export * from './lib/add-street.dto';
+export * from './lib/add-zone.dto';
 export * from './lib/add-pick-task.dto';
+export * from './lib/add-location.dto';

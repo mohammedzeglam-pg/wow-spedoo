@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
-import { AddCityDto, AddRegionDto, AddStreetDto, IdTransformerDto } from '@wow-spedoo/dto';
+import { AddLocationDto, AddZoneDto, IdTransformerDto } from '@wow-spedoo/dto';
 
 @Injectable()
 export class ZoneService {
@@ -8,94 +8,76 @@ export class ZoneService {
 
 
 
-  private readonly street = {
-    id: true,
-    name:true,
-    lat:true,
-    lon:true,
-    price:true,
-    regionId:true,
+
+  constructor(private readonly prisma:PrismaService) { }
+
+
+  async addCity(name:string){
+    return this.prisma.city.create({
+      data: {
+        name: name,
+      }
+    });
   }
 
-  constructor(private readonly prisma:PrismaService) {
+  async updateCityName({id}:IdTransformerDto,name:string){
+    return this.prisma.city.update(
+      {
+        where:{
+          id:id,
+        },
+        data:{
+          name:name
+        }
+      }
+    );
+  }
+
+  async getAllZones(){
+    return this.prisma.city.findMany({
+      select:{
+        name:true,
+        zones: {
+          select: {
+            name: true,
+            locations: {
+              select: {
+                lat: true,
+                lon: true,
+              }
+            }
+          },
+        },
+      }
+    });
+  }
+
+  async addZone(addZoneDto:AddZoneDto){
+    return this.prisma.zone.create({
+      data:addZoneDto
+    });
   }
 
 
-  // async addCity(name:string){
-  //   return this.prisma.city.create({
-  //     data: {
-  //       name: name,
-  //     }
-  //   });
-  // }
-  //
-  //
-  // async addRegion(regionInfo:AddRegionDto){
-  //   return this.prisma.region.create({
-  //     data:{
-  //       ...regionInfo
-  //     }
-  //   });
-  // }
-  //
-  //
-  // async addStreet(streetInfo:AddStreetDto){
-  //   return this.prisma.street.create({
-  //     select:{
-  //       ...this.street
-  //     },
-  //     data:{
-  //       ...streetInfo
-  //     }
-  //   });
-  // }
-  //
-  //
-  //
-  // async getAllCity(){
-  //   return this.prisma.city.findMany({
-  //     select:{
-  //       id:true,
-  //       name:true
-  //     }
-  //   });
-  // }
-  //
-  //
-  // async getRegions() {
-  //   return this.prisma.region.findMany({
-  //     select:{
-  //       id:true,
-  //       name:true
-  //     }
-  //   });
-  // }
-  //
-  // async getStreets(){
-  //   return this.prisma.street.findMany({
-  //     select:{
-  //       ...this.street
-  //     }
-  //   });
-  // }
-  //
-  //
-  // async updateCity(id: IdTransformerDto, updateName: AddCityDto) {
-  //   return this.prisma.city.update({
-  //     where:{
-  //       ...id,
-  //     },
-  //     data:{
-  //       ...updateName
-  //     }
-  //   });
-  // }
-  //
-  // async updateRegion(id: IdTransformerDto, regionInfo: AddRegionDto) {
-  //   return this.prisma.region.update({ where:{ ...id }, data:{ ...regionInfo }, });
-  // }
-  //
-  // async updateStreet(id: IdTransformerDto, streetInfo: AddStreetDto) {
-  //   return this.prisma.street.update({where:{...id},data:{...streetInfo}});
-  // }
+  async updateZone({id}:IdTransformerDto,addZoneDto:AddZoneDto){
+    return this.prisma.zone.update({
+      where:{id:id},
+      data:addZoneDto,
+    })
+  }
+
+
+  async addLocation(addLocationDto:AddLocationDto){
+    return this.prisma.location.create({
+      data:addLocationDto
+    });
+  }
+
+  async updateLocation({id}:IdTransformerDto,addLocationDto:AddLocationDto){
+    return this.prisma.location.update({
+      data:addLocationDto,
+      where:{id:id},
+    });
+  }
+
 }

@@ -38,6 +38,7 @@ export class ApiKeyAuthGuard implements CanActivate{
   }
 
 // static because it is a pure function that can i share with multiple instance
+// search about functional programming
   private static getKey(tokens:string[]){
     for(let i = 0; i< tokens.length;i++){
       if(tokens[i].includes(ApiKeyAuthGuard.auth)){
