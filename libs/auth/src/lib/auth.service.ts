@@ -12,13 +12,11 @@ export class AuthService {
 
 
 
-  //TODO: massive refactor
   async login(userCredentials) {
     try {
       const { phone, password: pass } = userCredentials;
       const user = await this.prisma.user.findUnique({
         where: { phone },
-        // do not play with this please
         select: {
           id: true,
           email: true,
@@ -27,6 +25,7 @@ export class AuthService {
           salt:true,
           username:true,
           phone:true,
+          is_allowed: true,
           partner:{
             select:{
               id:true,
@@ -45,6 +44,9 @@ export class AuthService {
 
         },
       });
+      if(user.is_allowed){
+        return null;
+      }
       const checkPass: boolean = await this.validatePassword(user, pass);
       if (user && checkPass) {
         const payload = { id: user.id, role: user.role,email:user.email,phone:user.phone,partner:user.partner,pick:user.pick_boy,delivery:user.delivery_boy };

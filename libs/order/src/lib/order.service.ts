@@ -177,7 +177,4 @@ export class OrderService {
     return wn !== 0;
   }
 
-
-
-
 }

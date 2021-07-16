@@ -30,7 +30,6 @@ export class OrderController {
       this.logger.error(err);
       throw new HttpException({
         status: HttpStatus.NOT_ACCEPTABLE,
-        error: 'This is a custom message',
       }, HttpStatus.NOT_ACCEPTABLE);
     }
   }
@@ -48,6 +47,7 @@ export class OrderController {
     }
   }
 
+  @UseGuards(ApiKeyAuthGuard)
   @Get('pricing')
   async getPricing(@Query() location:{lat:number;lon:number}){
     const price = await this.orderService.getPricing(location);
