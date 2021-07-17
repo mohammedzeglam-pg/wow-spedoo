@@ -22,9 +22,11 @@ async function bootstrap() {
   const globalPrefix = 'api';
   await app.register(compression, { encodings: ['gzip', 'deflate'] });
   await app.register(fastifyHelmet);
-  app.useGlobalPipes(new ValidationPipe({
-    transform: true,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
   app.setGlobalPrefix(globalPrefix);
   const config = app.get(ConfigService);
   const port = config.get('PORT') || 3333;

@@ -1,129 +1,102 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
-import { Partner, Supplier } from '@prisma/client';
-import { Message } from '@wow-spedoo/api-interfaces';
-
+import { FinancialStatus } from '@prisma/client';
+import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class PartnerService {
   constructor(private readonly prisma: PrismaService) {}
-  // get value from object in controller maybe new for you that's why wrote this long comment
-  async createPartner({ userId }): Promise<Partner | void> {
-    return await this.prisma.partner.create({
+
+  async changeToken(id) {
+    return this.prisma.partner.update({
       data: {
-        userId: userId,
+        token: uuidv4(),
+      },
+      where: {
+        id: id,
       },
     });
   }
 
-  async updatePartner(updatedData): Promise<Partner | void> {
-    // return await this.prisma.partner.update();
-  }
-
-  //TODO: hey man you know indexes start from 0 not from 1 just if you an lua programming i love lua and one data structure(table)
-  // if have any trouble to understand this json like just hit ctrl+left mouse if you use vim just press gd
-  getAllPartnerOrder(take = 10, skip = 0) {
-    return this.prisma.partner.findMany({
-      include: {
-        orders: {
+  async getManyOrder(id: number, pagination: { take: number; skip: number }) {
+    return this.prisma.order.findMany({
+      select: {
+        id: true,
+        order_id: true,
+        total_pieces: true,
+        recipient: true,
+        total_price: true,
+        delivery_price: true,
+        payment: {
           select: {
-            order_id: true,
-            total_pieces: true,
-            total_price: true,
-            delivery_price: true,
-            payment_method: true,
-            updated_at: true,
-            products: {
-              select: {
-                name: true,
-                total_pieces: true,
-                dimensions: true,
-                weight: true,
-              },
-            },
+            name: true,
           },
         },
+        created_at: true,
+        note: true,
       },
-      //TODO: add how you want search
-      where: {},
-
-      take: take,
-      skip: skip * take,
+      where: {
+        partnerId: id,
+      },
+      take: pagination.take,
+      skip: pagination.take * pagination.skip,
     });
   }
 
-  //TODO: maybe new type to get out of c/p hell
-  async getAllPartnerSupplier(
-    take = 10,
-    skip = 0,
-  ): Promise<Partner[] | Message> {
-    try {
-      return await this.prisma.partner.findMany({
-        include: {
-          suppliers: {
-            select: {
-              name: true,
-              phone: true,
-              latitude: true,
-              longitude: true,
-            },
+  async getOrderDetails(id: number, order: number) {
+    return this.prisma.order.findMany({
+      select: {
+        products: {
+          select: {
+            id: true,
+            name: true,
+            total_pieces: true,
+            times: true,
+            status: true,
+            note: true,
           },
         },
-        //TODO: add how you want search
-        where: {
-          id: 1,
+      },
+      where: {
+        id: order,
+        AND: {
+          partnerId: id,
         },
-        take: take,
-        skip: skip * take,
-      });
-    } catch (err) {
-      Logger.log(err);
-      return { message: 'error' };
-    }
+      },
+    });
   }
 
-  // man if you think you see that before yeh maybe flutter or graphql sorry this prisma
-  // if you have any problem with code just use goto-definition in your ide if you do not use nano
+  async getToken(id: number) {
+    return this.prisma.partner.findFirst({
+      select: {
+        token: true,
+      },
+      where: {
+        id: id,
+      },
+    });
+  }
+  async getUnderReviewFinancial(id: number, { take = 10, skip = 0 }) {
+    return this.fetchFinancial(id, FinancialStatus.DONE, { take, skip });
+  }
 
-  //TODO:know the type that return
-  //   async addNewSupplier(supplier):Promise<Supplier|Message>{
-  async addNewSupplier(supplier) {
-    const {
-      name,
-      phone,
-      latitude,
-      longitude,
-    }: { name: string; phone: number; latitude: string; longitude: string } =
-      supplier;
-    try {
-      return await this.prisma.partner.update({
-        data: {
-          suppliers: {
-            create: {
-              name: name,
-              phone: phone,
-              latitude: latitude,
-              longitude: longitude,
-            },
-          },
+  async getCompletedFinancial(id: number, { take = 10, skip = 0 }) {
+    return this.fetchFinancial(id, FinancialStatus.DONE, { take, skip });
+  }
+
+  private async fetchFinancial(
+    id: number,
+    status: FinancialStatus,
+    { take = 10, skip = 0 },
+  ) {
+    return this.prisma.financial.findMany({
+      where: {
+        partnerId: id,
+        AND: {
+          status: status,
         },
-        //TODO:ApiKey do not forget to change it to unique
-        where: {
-          id: 1,
-        },
-        select: {
-          suppliers: {
-            select: {
-              name: true,
-              phone: true,
-              latitude: true,
-              longitude: true,
-            },
-          },
-        },
-      });
-    } catch (err) {
-      Logger.log(err);
-      return { message: 'hello' };
-    }
+      },
+      take: take,
+      skip: take * skip,
+    });
   }
 }

@@ -1,12 +1,16 @@
-import { IsArray, IsNumber, ValidateNested } from 'class-validator';
+import { IsArray, IsNumber  } from 'class-validator';
 import { Type } from 'class-transformer';
-export class AddPickTaskDto{
+export class AddPickTaskDto {
   @IsNumber()
-  @Type(()=>Number)
-  pick_boy:number;
-
+  @Type(() => Number)
+  pick_boy: number;
   @IsArray()
-  @ValidateNested({ each: true })
-  @Type(()=>Number)
-  products:number[];
+  @Type(() => Number)
+  products: number[];
+  @IsNumber()
+  @Type(() => Number)
+  total_location: number;
+  @IsNumber()
+  @Type(() => Number)
+  total_pieces: number;
 }

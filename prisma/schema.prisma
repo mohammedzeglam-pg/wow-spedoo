@@ -24,7 +24,7 @@ enum ProductStatus{
   UNDER_PICKING
   PICKED
   APPROVED
-  FILTERION
+  FILTRATION
   UNDER_DELIVERING
   DELIVERED
   COMPLETED
@@ -45,7 +45,6 @@ model User {
   pick_boy  PickBoy?
   delivery_boy  DeliveryBoy?
   is_allowed Boolean @default(false)
-  @@map(name:"users")
 }
 
 model Partner {
@@ -57,7 +56,6 @@ model Partner {
   suppliers Supplier[]
   profit  Float @default(0.0)
   financials Financial[]
-  @@map(name:"partners")
 }
 
 
@@ -74,9 +72,9 @@ model Order {
   payment   PaymentMethod   @relation(fields:[payment_method],references:[name])
   payment_method  String
   created_at DateTime @default(value:now())
-//  updated_at DateTime? @updatedAt
-  lat  Int
-  lon Int
+  deliveries   Delivery[]
+  lat  Float
+  lon  Float
   note      String?
   @@map(name:"orders")
 }
@@ -92,11 +90,10 @@ model Product {
   order    Order?  @relation(fields: [orderId], references: [id])
   orderId  Int?
   times DateTime[]
-  delivery     Delivery?     @relation(fields: [deliveryId], references: [id])
-  deliveryId   Int?
   pick     Pick?     @relation(fields: [pickId], references: [id])
   pickId   Int?
   status  ProductStatus @default(UNDER_REVIEW)
+  note  String?
   @@map(name:"products")
 }
 
@@ -104,23 +101,21 @@ model Supplier {
   id        Int     @id @default(autoincrement())
   name      String
   phone     String @unique
-  lat  String?
-  lon String?
+  lat  Float
+  lon Float
   partner   Partner @relation(fields: [partnerId], references: [id])
   partnerId Int
   product   Product[]
-  @@map(name:"suppliers")
 }
 
 
 model Pick {
   id             Int        @id @default(autoincrement())
   total_location Int
- total_pieces   Float
+  total_pieces   Float
   pick_boy      PickBoy?  @relation(fields:[pick_boyId],references:[id])
   pick_boyId    Int?
   products Product[]
-  @@map(name:"pick")
 }
 
 model PickBoy{
@@ -129,7 +124,6 @@ model PickBoy{
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
 
-  @@map(name:"pick_boy")
 }
 
 model Delivery {
@@ -138,9 +132,8 @@ model Delivery {
   total_pieces   Float
   delivery_boy   DeliveryBoy   @relation(fields: [delivery_boyId], references: [id])
   delivery_boyId Int
-  products Product[]
+  orders  Order[]
 
-  @@map(name:"delivery")
 }
 
 model DeliveryBoy{
@@ -149,14 +142,12 @@ model DeliveryBoy{
   user     User     @relation(fields: [userId], references: [id])
   userId   Int
 
-  @@map(name:"delivery_boy")
 }
 
 model City{
   id    Int    @id @default(autoincrement())
   name  String @unique
   zones Zone[]
-  @@map(name:"cities")
 }
 
 
@@ -174,7 +165,6 @@ model PaymentMethod {
   name  String  @unique
   orders Order[]
   is_take Boolean @default(false)
-  @@map(name:"payment_nethods")
 }
 
 model Location{
@@ -186,16 +176,20 @@ model Location{
 }
 
 enum Transaction{
-DEBT
-DUES
+  DEBT
+  DUES
 }
-
+enum FinancialStatus{
+  UNDER_REVIEW
+  DONE
+}
 model Financial{
   id     Int    @id @default(autoincrement())
   amount  Float
   partner Partner @relation(fields:[partnerId],references:[id])
   partnerId Int
   transaction    Transaction
+  status  FinancialStatus @default(UNDER_REVIEW)
   created_at  DateTime  @default(now())
   updated_at  DateTime?  @updatedAt
   note  String?

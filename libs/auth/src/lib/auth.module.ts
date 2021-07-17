@@ -29,8 +29,8 @@ import { ApiKeyAuthGuard } from './api-key-auth.guard';
     PrismaService,
     RolesGuard,
     JwtAuthGuard,
-    ApiKeyAuthGuard
+    ApiKeyAuthGuard,
   ],
-  exports: [AuthService,],
+  exports: [AuthService],
 })
 export class AuthModule {}

@@ -1,13 +1,11 @@
 import { IsNumber } from 'class-validator';
-import {  Type } from 'class-transformer';
+import { Type } from 'class-transformer';
 
-export class PaginationDto{
-
-
+export class PaginationDto {
   @IsNumber()
-  @Type(()=>Number)
-  readonly take:number = 10;
+  @Type(() => Number)
+  readonly take: number = 10;
   @IsNumber()
-  @Type(()=>Number)
-  readonly skip:number = 0;
+  @Type(() => Number)
+  readonly skip: number = 0;
 }

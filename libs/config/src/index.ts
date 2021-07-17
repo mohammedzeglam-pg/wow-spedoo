@@ -1,2 +1,2 @@
 export * from './lib/configuration';
-export * from './lib/validation'
+export * from './lib/validation';

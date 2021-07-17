@@ -1,47 +1,75 @@
-import { Controller, Get, Logger, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Param,
+  Post,
+  Query,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { SupplierService } from './supplier.service';
-import { AddSupplierDto, IdTransformerDto, PaginationDto } from '@wow-spedoo/dto';
-import { ApiKeyAuthGuard } from '@wow-spedoo/auth';
+import {
+  AddSupplierDto,
+  IdTransformerDto,
+  PaginationDto,
+} from '@wow-spedoo/dto';
+import {
+  ApiKeyAuthGuard,
+  JwtAuthGuard,
+  PartnerDecorator,
+  Role,
+  Roles,
+  RolesGuard,
+} from '@wow-spedoo/auth';
 
 @Controller('supplier')
 export class SupplierController {
   private readonly logger = new Logger(SupplierController.name);
   constructor(private readonly supplierService: SupplierService) {}
 
-
-  @UseGuards(ApiKeyAuthGuard)
+  @Roles(Role.PARTNER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
   @Post('add')
-  async AddSupplier(addSupplierDto:AddSupplierDto,@Request() req){
-    try{
-      const {token} = req.headers;
-      return await this.supplierService.addSupplier(addSupplierDto,token);
-    }catch(err){
-      this.logger.error(err);
-    }
-  }
-
-
-  @UseGuards(ApiKeyAuthGuard)
-  @Get(':id')
-  async getSupplier(@Param() supplierId:IdTransformerDto,@Request() req){
-    try{
-      const {token} = req.headers;
-      const {id} = supplierId;
-      return await this.supplierService.getSupplier(id,token);
-    }catch (err){
-      this.logger.error(err);
-    }
-  }
-
-  @UseGuards(ApiKeyAuthGuard)
-  @Get('many')
-  async getManySupplier(@Query() pagination:PaginationDto,@Request() req){
+  async AddSupplier( @PartnerDecorator() id,@Body() addSupplierDto: AddSupplierDto) {
     try {
-      const { token } = req.headers;
-      return await this.supplierService.getManySupplier(pagination,token);
-    }catch(err){
+      return await this.supplierService.addSupplier(id,addSupplierDto);
+    } catch (err) {
       this.logger.error(err);
     }
   }
 
+  @Roles(Role.PARTNER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Post('edit/:id')
+  async updateSupplier( @Param() id:IdTransformerDto,@Body() addSupplierDto: AddSupplierDto) {
+    try {
+      return await this.supplierService.updateSupplier(id,addSupplierDto);
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
+
+  @Roles(Role.PARTNER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Get(':id')
+  async getSupplier( @PartnerDecorator() id,@Param() supplierId: IdTransformerDto) {
+    try {
+      return await this.supplierService.getSupplier(id,supplierId);
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
+
+  @Roles(Role.PARTNER)
+  @UseGuards(JwtAuthGuard,RolesGuard)
+  @Get('many')
+  async getManySupplier(@PartnerDecorator() id,@Query() pagination: PaginationDto) {
+    try {
+      return await this.supplierService.getManySupplier(id,pagination);
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
 }

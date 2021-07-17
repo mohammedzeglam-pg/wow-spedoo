@@ -1,7 +1,7 @@
-export enum Role{
-  MANAGER= 'MANAGER',
-  ADMIN='ADMIN',
-  PARTNER='PARTNER' ,
-  PICKER='PICKER' ,
-  DELIVERY='DELIVERY',
+export enum Role {
+  MANAGER = 'MANAGER',
+  ADMIN = 'ADMIN',
+  PARTNER = 'PARTNER',
+  PICKER = 'PICKER',
+  DELIVERY = 'DELIVERY',
 }

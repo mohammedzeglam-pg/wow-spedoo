@@ -1,42 +1,31 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
-import { AddLocationDto, AddZoneDto, IdTransformerDto } from '@wow-spedoo/dto';
 
 @Injectable()
 export class ZoneService {
+  constructor(private readonly prisma: PrismaService) {}
 
-
-
-
-
-  constructor(private readonly prisma:PrismaService) { }
-
-
-  async addCity(name:string){
+  async addCity(name: string) {
     return this.prisma.city.create({
       data: {
         name: name,
-      }
+      },
     });
   }
 
-  async updateCityName({id}:IdTransformerDto,name:string){
-    return this.prisma.city.update(
-      {
-        where:{
-          id:id,
-        },
-        data:{
-          name:name
-        }
-      }
-    );
+  async updateCityName(id , name: string) {
+    return this.prisma.city.update({
+      where:id ,
+      data: {
+        name: name,
+      },
+    });
   }
 
-  async getAllZones(){
+  async getAllZones() {
     return this.prisma.city.findMany({
-      select:{
-        name:true,
+      select: {
+        name: true,
         zones: {
           select: {
             name: true,
@@ -44,40 +33,41 @@ export class ZoneService {
               select: {
                 lat: true,
                 lon: true,
-              }
-            }
+              },
+            },
           },
         },
-      }
+      },
     });
   }
 
-  async addZone(addZoneDto:AddZoneDto){
+  async addZone(addZoneDto: {cityId:number,name:string,price:number}) {
     return this.prisma.zone.create({
-      data:addZoneDto
+      data: addZoneDto,
     });
   }
 
-
-  async updateZone({id}:IdTransformerDto,addZoneDto:AddZoneDto){
+  async updateZone(id, updateZoneDto: {cityId:number,name:string,price:number}) {
     return this.prisma.zone.update({
-      where:{id:id},
-      data:addZoneDto,
-    })
+      where: id,
+      data: {
+        name:updateZoneDto.name,
+        price:updateZoneDto.price,
+        cityId:updateZoneDto.cityId
+      },
+    });
   }
 
-
-  async addLocation(addLocationDto:AddLocationDto){
+  async addLocation(addLocationDto: {lat:number,lon:number,zoneId:number}) {
     return this.prisma.location.create({
-      data:addLocationDto
+      data: addLocationDto,
     });
   }
 
-  async updateLocation({id}:IdTransformerDto,addLocationDto:AddLocationDto){
+  async updateLocation( id, addLocationDto:{lat:number,lon:number,zoneId:number} ) {
     return this.prisma.location.update({
-      data:addLocationDto,
-      where:{id:id},
+      data: addLocationDto,
+      where: id,
     });
   }
-
 }

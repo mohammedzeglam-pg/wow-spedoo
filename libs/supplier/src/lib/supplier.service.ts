@@ -1,70 +1,56 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
-import { AddSupplierDto, PaginationDto } from '@wow-spedoo/dto';
 
 @Injectable()
 export class SupplierService {
-  constructor(private readonly prisma:PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
 
-  private readonly supplierInfo = {
-    name:true,
-    phone:true,
-    partnerId: true,
-    street:{
-      select:{
-        id:true,
-        name:true,
-      },
-    },
-  }
-
-  async addSupplier(orderData:AddSupplierDto,token:string){
-    // const {name,phone,lat,lon,streetId} = orderData;
-    const {streetId, ...data} = orderData;
+  async addSupplier(id:number,orderData: {name:string,phone:string,lat:number,lon:number} ) {
     return this.prisma.supplier.create({
-      select:{...this.supplierInfo},
-      data:{
-        ...data,
-        street:{connect:{id:streetId},},
-        partner:{ connect:{ token:token, },
-        },
+      data: {
+        ...orderData,
+        partner: { connect: { id:id } },
+      },
+    });
+  }
+  async updateSupplier({id}:{id:number},orderData: {name:string,phone:string,lat:number,lon:number} ) {
+    return this.prisma.supplier.update({
+      data: {
+        ...orderData,
+      },
+      where:{
+        id:id
       }
     });
   }
 
-  async getSupplier(id:number,token:string){
+  async getSupplier( partnerId: number,{id}:{id: number}) {
     return this.prisma.supplier.findFirst({
-      where:{
-        id:id,
-        AND:{
-          partner:{
-            is:{
-              token:token,
+      where: {
+        id: id,
+        AND: {
+          partner: {
+            is: {
+              id: partnerId,
             },
-          }
-        }
-      },
-      select:{
-        ...this.supplierInfo
+          },
+        },
       },
     });
   }
 
-  async getManySupplier(pagination:PaginationDto,token:string){
+  async getManySupplier({id}:{id: number} ,{take=10,skip=0} ) {
     return this.prisma.supplier.findMany({
-      where:{
-        partner:{
-          is:{
-            token:token,
-          }
-        }
+      where: {
+        partner: {
+          is: {
+            id: id,
+          },
+        },
       },
-      select:{
-        ...this.supplierInfo
-      },
-        ...pagination
+      take:take,
+      skip:skip*take
     });
   }
-
 }

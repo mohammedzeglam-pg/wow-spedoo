@@ -6,11 +6,7 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
-  constructor(
-    private jwtService: JwtService, private prisma: PrismaService) {}
-
-
-
+  constructor(private jwtService: JwtService, private prisma: PrismaService) {}
 
   async login(userCredentials) {
     try {
@@ -21,39 +17,46 @@ export class AuthService {
           id: true,
           email: true,
           role: true,
-          password:true,
-          salt:true,
-          username:true,
-          phone:true,
+          password: true,
+          salt: true,
+          username: true,
+          phone: true,
           is_allowed: true,
-          partner:{
-            select:{
-              id:true,
-            }
-          },
-          pick_boy:{
+          partner: {
             select: {
-              id:true
-            }
+              id: true,
+            },
           },
-          delivery_boy:{
-            select:{
-              id:true
-            }
+          pick_boy: {
+            select: {
+              id: true,
+            },
           },
-
+          delivery_boy: {
+            select: {
+              id: true,
+            },
+          },
         },
       });
-      if(user.is_allowed){
+      if (!user.is_allowed) {
         return null;
       }
       const checkPass: boolean = await this.validatePassword(user, pass);
       if (user && checkPass) {
-        const payload = { id: user.id, role: user.role,email:user.email,phone:user.phone,partner:user.partner,pick:user.pick_boy,delivery:user.delivery_boy };
+        const payload = {
+          id: user.id,
+          role: user.role,
+          email: user.email,
+          phone: user.phone,
+          partner: user.partner,
+          pick: user.pick_boy,
+          delivery: user.delivery_boy,
+        };
         user['access_token'] = this.jwtService.sign(payload);
         // destruct any unused data in response
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {password,id,salt,...rs} = user;
+        const { password, id, salt, ...rs } = user;
         return rs;
       }
       return null;
@@ -68,7 +71,7 @@ export class AuthService {
     try {
       const hash = await bcrypt.hash(password, user.salt);
       return hash === user.password;
-    }catch(err){
+    } catch (err) {
       Logger.warn(err);
       this.logger.error(err);
     }

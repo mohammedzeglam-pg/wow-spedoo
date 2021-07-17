@@ -1,38 +1,51 @@
-import { Controller, Get, Logger, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Logger,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { PickService } from './pick.service';
 import { AddPickTaskDto, PaginationDto } from '@wow-spedoo/dto';
+import { JwtAuthGuard, Role, Roles, RolesGuard } from '@wow-spedoo/auth';
 
 @Controller('pick')
 export class PickController {
   private readonly logger = new Logger(PickController.name);
-  constructor(private pickService: PickService) {}
+  constructor(private readonly pickService: PickService) {}
 
-
+  @Roles(Role.MANAGER, Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('finished')
-  async getFinishedTasks(@Query() paginationDto:PaginationDto){
-    try{
-      return this.pickService.getFinishedTasks(paginationDto);
-    }catch(err){
+  async getFinishedPickTasks(@Query() paginationDto: PaginationDto) {
+    try {
+      return this.pickService.getFinishedPickTasks(paginationDto);
+    } catch (err) {
       this.logger.error(err);
     }
   }
 
-  @Get('finished')
-  async getUnfinishedTasks(@Query() paginationDto:PaginationDto){
-    try{
-      return this.pickService.getUnfinishedTasks(paginationDto);
-    }catch(err){
+  @Roles(Role.MANAGER, Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('unfinished')
+  async getUnfinishedPickTasks(@Query() paginationDto: PaginationDto) {
+    try {
+      return this.pickService.getUnfinishedPickTasks(paginationDto);
+    } catch (err) {
       this.logger.error(err);
     }
   }
 
+  @Roles(Role.MANAGER, Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('add')
-  async addTask(addPickTaskDto:AddPickTaskDto){
-    try{
-      return this.pickService.addTask(addPickTaskDto);
-    }catch(err){
+  async addPickTask(@Body() addPickTaskDto: AddPickTaskDto) {
+    try {
+      return this.pickService.addPickTask(addPickTaskDto);
+    } catch (err) {
       this.logger.error(err);
     }
   }
-
 }

@@ -12,3 +12,7 @@ export * from './lib/add-pick-task.dto';
 export * from './lib/add-location.dto';
 export * from './lib/add-payment.dto';
 export * from './lib/payment-method.dto';
+export * from './lib/update-pick-status.dto';
+export * from './lib/add-delivery-task.dto';
+export * from './lib/update-delivery.dto';
+export * from './lib/location.dto';

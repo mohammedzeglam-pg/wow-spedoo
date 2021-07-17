@@ -1,73 +1,83 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
-import { ProductStatus } from '@prisma/client';
 
 @Injectable()
 export class DeliveryService {
   constructor(private prisma: PrismaService) {}
 
-  async getUnfinishedTasks(take = 10, skip = 0) {
-    try {
-      return await this.prisma.order.findMany({
-        where: {
-          products: {
-            some: {
-              deliveryId: null,
+  async addTask({ total_location, total_pieces, orders, delivery_boy }) {
+    // init
+    let id: { id: number } = { id: 0 };
+    for (let i = 0; i < orders.length; i++) {
+      if (i === 0) {
+        id = await this.prisma.delivery.create({
+          select: { id: true },
+          data: {
+            total_location: total_location,
+            total_pieces: total_pieces,
+            delivery_boy: {
+              connect: {
+                id: delivery_boy,
+              },
             },
-          },
-        },
-        include: {
-          products: true,
-          payment: true,
-        },
-        take: take,
-        skip: take * skip,
-      });
-    } catch (err) {
-      Logger.log(err);
-    }
-  }
-
-  async addNewTask(data) {
-    try {
-      return await this.prisma.delivery.create({
-        data: data,
-      });
-    } catch (err) {
-      Logger.log(err);
-    }
-  }
-
-  async getFinshedTasks(take = 10, skip = 0) {
-    try {
-      return await this.prisma.order.findMany({
-        where: {
-          products: {
-            every: {
-              deliveryId: {
-                not: null,
+            orders: {
+              connect: {
+                id: orders[i],
               },
             },
           },
-          AND: {
-            products: {
-              every: {
-                status: {
-                  equals: ProductStatus.COMPLETED,
+        });
+      } else {
+        await this.prisma.delivery.update({
+          where: {
+            id: id.id,
+          },
+          data: {
+            orders: {
+              connect: orders[i],
+            },
+          },
+        });
+      }
+      await this.prisma.order.update({
+        where: {
+          id: orders[i],
+        },
+        data: {
+          products: {
+            updateMany: {
+              where: {
+                orderId: orders[i],
+              },
+              data: {
+                status: 'UNDER_DELIVERING',
+                times: {
+                  push: new Date(),
                 },
               },
             },
           },
         },
-        include: {
-          products: true,
-          payment: true,
-        },
-        take: take,
-        skip: take * skip,
       });
-    } catch (err) {
-      Logger.log(err);
     }
+    return id;
+  }
+
+  async getUnfinishedTasks(paginationDto: { take: number; skip: number }) {
+    return this.fetchTasks('FILTRATION', paginationDto);
+  }
+
+  async getFinishedTasks(paginationDto: { take: number; skip: number }) {
+    return this.fetchTasks('DELIVERED', paginationDto);
+  }
+
+  private async fetchTasks(productStatus, { take = 10, skip = 0 }) {
+    return this.prisma.product.findMany({
+      where: {
+        status: productStatus,
+      },
+      take: take,
+      skip: take * skip,
+    });
   }
 }

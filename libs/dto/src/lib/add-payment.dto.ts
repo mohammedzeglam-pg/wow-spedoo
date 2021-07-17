@@ -1,8 +1,19 @@
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class AddPaymentDto {
   @IsString()
   @IsNotEmpty()
-  name:string;
+  name: string;
   @IsBoolean()
-  is_take: boolean;
+  is_take = false;
+}
+
+export class UpdatePaymentDto{
+
+  @IsString()
+  @IsNotEmpty()
+  @IsOptional()
+  name?: string;
+  @IsBoolean()
+  @IsOptional()
+  is_take?:boolean;
 }

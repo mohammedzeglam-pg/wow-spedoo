@@ -1,111 +1,125 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@wow-spedoo/prisma';
+import { Transaction } from '@prisma/client';
 import { CreateOrderDto } from '@wow-spedoo/dto';
-import {Transaction} from '@prisma/client';
 type Point = {
   lon: number;
   lat: number;
-}
+};
 @Injectable()
 export class OrderService {
-
   constructor(private prisma: PrismaService) {}
 
-  async addOrder({payment_method,products,...order}:CreateOrderDto,token:string) {
-    const point:Point = order;
+  async addOrder(
+    { payment_method, products, ...order }: CreateOrderDto,
+    token: string,
+  ) {
+    const point: Point = order;
     const delivery_price = await this.getPricing(point);
     const orderData = await this.prisma.order.create({
-      select:{
-        id:true,
-        delivery_price:true,
-        partner:{
-          select:{
-            profit:true,
-            id:true
-          }
+      select: {
+        id: true,
+        delivery_price: true,
+        partner: {
+          select: {
+            profit: true,
+            id: true,
+          },
         },
-        payment:{select:{
-            is_take:true,
+        payment: {
+          select: {
+            is_take: true,
           },
         },
       },
       data: {
         ...order,
         delivery_price,
-        partner:{connect:{
-            token:token,
-          },},
-        payment:{
-          connect:{
-            ...payment_method
+        partner: {
+          connect: {
+            token: token,
           },
         },
-        products:{
-          createMany:{
-            data:[...products]
+        payment: {
+          connect: {
+            ...payment_method,
+          },
+        },
+        products: {
+          createMany: {
+            data: [...products],
           },
         },
       },
     });
     await this.financials(orderData, order, delivery_price);
     return {
-      id:orderData.id,
+      id: orderData.id,
       delivery_price: orderData.delivery_price,
-      total_price:order.total_price,
-      amount:order.total_price+delivery_price
-    }
+      total_price: order.total_price,
+      amount: order.total_price + delivery_price,
+    };
   }
 
-
-  async getOrderDetails(orderId:number, token:string){
+  async getOrderDetails(orderId: number, token: string) {
     return this.prisma.order.findFirst({
-      select:{
+      select: {
         order_id: true,
         products: {
-          select:{
-            name:true,
-            status:true,
-          }
-        }
+          select: {
+            name: true,
+            status: true,
+          },
+        },
       },
       where: {
-        id:orderId,
-        AND:{
-          partner:{
+        id: orderId,
+        AND: {
+          partner: {
             is: {
-              token:token
+              token: token,
             },
           },
-        }
+        },
       },
     });
   }
 
-
-
-  async getPricing(point:{lon:number,lat:number}){
-    // async getPricing(){
+  async getPricing(point: { lon: number; lat: number }) {
     const polygons = await this.getPolygons();
-    for(const poly of polygons){
+    for (const poly of polygons) {
       const price = poly.price;
       const locations = poly.locations;
-      const check = this.pointInPolygon({p:point,points:locations});
-      if(check){
+      const check = this.pointInPolygon({ p: point, points: locations });
+      if (check) {
         return price;
       }
     }
     return null;
   }
 
-
-  private async financials(orderData: {id:number;payment:{is_take:boolean};partner:{profit:number,id:number}}, order: Pick<CreateOrderDto, 'order_id' | 'total_pieces' | 'recipient' | 'total_price' | 'lat' | 'lon'>, delivery_price) {
+  private async financials(
+    orderData: {
+      id: number;
+      payment: { is_take: boolean };
+      partner: { profit: number; id: number };
+    },
+    order: Pick<
+      CreateOrderDto,
+      'order_id' | 'total_pieces' | 'recipient' | 'total_price' | 'lat' | 'lon'
+    >,
+    delivery_price,
+  ) {
     const { payment } = orderData;
     const { partner } = orderData;
     // Debt on company
     const transaction = payment.is_take ? Transaction.DUES : Transaction.DEBT;
     const { profit } = partner;
     if (payment.is_take) {
-      const amount = profit == 0.0 ? order.total_price : order.total_price +((profit*delivery_price)/100);
+      const amount =
+        profit == 0.0
+          ? order.total_price
+          : order.total_price + (profit * delivery_price) / 100;
       await this.prisma.partner.update({
         where: {
           id: partner.id,
@@ -120,26 +134,25 @@ export class OrderService {
         },
       });
     } else {
-      const amount = profit == 0.0? delivery_price:(profit*delivery_price)/100;
+      const amount =
+        profit == 0.0 ? delivery_price : delivery_price - (profit * delivery_price) / 100;
       await this.prisma.partner.update({
         where: {
-          id: partner.id
+          id: partner.id,
         },
         data: {
           financials: {
             create: {
               transaction: transaction,
               amount: amount,
-            }
-          }
-        }
+            },
+          },
+        },
       });
     }
   }
 
-
-
-  async getPolygons(){
+  async getPolygons() {
     return this.prisma.zone.findMany({
       select: {
         price: true,
@@ -147,20 +160,27 @@ export class OrderService {
           select: {
             lat: true,
             lon: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
   }
-
 
   // Winding number algorithm
   // read about this topic https://en.wikipedia.org/wiki/Point_in_polygon
   // source https://gist.github.com/mohammedzeglam-pg/4e0e7c4548c5a78c1a9d02d0153a66da
   private static cross(x: Point, y: Point, z: Point): number {
-    return (y.lon - x.lon) * (z.lat - x.lat) - (z.lon - x.lon) * (y.lat - x.lat);
+    return (
+      (y.lon - x.lon) * (z.lat - x.lat) - (z.lon - x.lon) * (y.lat - x.lat)
+    );
   }
-  private pointInPolygon({ p, points }: { p: Point; points: Array<Point>; }): boolean {
+  private pointInPolygon({
+    p,
+    points,
+  }: {
+    p: Point;
+    points: Array<Point>;
+  }): boolean {
     let wn = 0; // winding number
 
     points.forEach((a, i) => {
@@ -176,5 +196,4 @@ export class OrderService {
 
     return wn !== 0;
   }
-
 }

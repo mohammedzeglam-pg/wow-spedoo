@@ -1,6 +1,7 @@
 import {
   INestApplication,
-  Injectable, Logger,
+  Injectable,
+  Logger,
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
@@ -8,11 +9,17 @@ import { PrismaClient } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 @Injectable()
-export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
+export class PrismaService
+  extends PrismaClient
+  implements OnModuleInit, OnModuleDestroy
+{
+  private readonly defaultAdmin: {
+    email: string;
+    phone: string;
+    password: string;
+  };
 
-  private readonly defaultAdmin: {email:string,phone:string,password:string};
-
-  constructor(private readonly config:ConfigService) {
+  constructor(private readonly config: ConfigService) {
     super();
     this.defaultAdmin = this.config.get('admin');
   }
@@ -29,40 +36,44 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     });
   }
 
-  private async createDefaultUser(data: { email: string; password: string,phone:string }) {
+  private async createDefaultUser(data: {
+    email: string;
+    password: string;
+    phone: string;
+  }) {
     const salt = await bcrypt.genSalt();
-    data.password =await bcrypt.hash(data.password, salt);
+    data.password = await bcrypt.hash(data.password, salt);
     return this.user.create({
       data: {
         ...data,
-        role:'ADMIN',
-        username:'admin',
-        firstname:'admin',
-        lastname:'amin',
-        salt:salt,
-        is_allowed:true,
+        role: 'ADMIN',
+        username: 'admin',
+        firstname: 'admin',
+        lastname: 'amin',
+        salt: salt,
+        is_allowed: true,
       },
     });
   }
   private async findDefaultUser() {
     return this.user.findUnique({
-      select:{
-        id:true,
+      select: {
+        id: true,
       },
       where: {
-        email:this.defaultAdmin.email,
+        email: this.defaultAdmin.email,
       },
-    })
+    });
   }
   private async ensureAdminUser() {
     // Check if we have an admin
     const found = await this.findDefaultUser();
     if (found) {
       Logger.log(`Admin user created`);
-      return true
+      return true;
     }
     // If not, create it for us
-    const created = await this.createDefaultUser(this.defaultAdmin)
-    Logger.log(`Created Admin user: ${created.email}`, 'DataService')
+    const created = await this.createDefaultUser(this.defaultAdmin);
+    Logger.log(`Created Admin user: ${created.email}`, 'DataService');
   }
 }

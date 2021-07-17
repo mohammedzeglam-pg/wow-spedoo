@@ -1,15 +1,16 @@
 import { Type } from 'class-transformer';
-import { IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString } from 'class-validator';
 
-export class CreateManyProductDto   {
+export class CreateManyProductDto {
   @IsString()
-  name: string
-  @Type(()=>Number)
-  total_pieces?: number
-  dimensions?: string | null
-  weight?: string | null
+  name: string;
+  @Type(() => Number)
+  total_pieces?: number;
+  dimensions?: string | null;
+  weight?: string | null;
   @IsNumber()
-  @Type(()=>Number)
-  supplierId: number ;
-  readonly times:Date=new Date();
+  @Type(() => Number)
+  supplierId: number;
+  @IsDate()
+  readonly times: Date = new Date();
 }
