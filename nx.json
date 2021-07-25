@@ -48,6 +48,9 @@
     "dto": {
       "tags": []
     },
+    "file-handler": {
+      "tags": []
+    },
     "guards": {
       "tags": []
     },
@@ -70,6 +73,9 @@
       "tags": []
     },
     "supplier": {
+      "tags": []
+    },
+    "ui-user": {
       "tags": []
     },
     "user": {

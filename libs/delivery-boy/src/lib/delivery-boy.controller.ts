@@ -5,15 +5,13 @@ import {
   HttpException,
   HttpStatus,
   Logger,
-  ParseIntPipe,
-  Patch,
+  Patch, Query,
   UseGuards,
 } from '@nestjs/common';
 import { DeliveryBoyService } from './delivery-boy.service';
 import {
   DeliveryBoyDecorator,
   JwtAuthGuard,
-  PickBoyDecorator,
   Role,
   Roles,
   RolesGuard,
@@ -25,12 +23,12 @@ export class DeliveryBoyController {
   private readonly logger = new Logger(DeliveryBoyController.name);
   constructor(private deliveryBoyService: DeliveryBoyService) {}
 
-  @Roles(Role.ADMIN, Role.MANAGER, Role.PICKER)
+  @Roles(Role.DELIVERY)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('completed')
   async getFinishedTasks(
-    @PickBoyDecorator(ParseIntPipe) id,
-    paginationDto: PaginationDto,
+    @DeliveryBoyDecorator() id,
+    @Query() paginationDto: PaginationDto,
   ) {
     try {
       return this.deliveryBoyService.getFinishedTasks(id, paginationDto);
@@ -40,12 +38,12 @@ export class DeliveryBoyController {
     }
   }
 
-  @Roles(Role.ADMIN, Role.MANAGER, Role.PICKER)
+  @Roles(Role.DELIVERY)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('work')
   async getUnfinishedTasks(
-    @PickBoyDecorator(ParseIntPipe) id,
-    paginationDto: PaginationDto,
+    @DeliveryBoyDecorator() id,
+    @Query() paginationDto: PaginationDto,
   ) {
     try {
       return this.deliveryBoyService.getUnfinshedTasks(id, paginationDto);
@@ -55,11 +53,11 @@ export class DeliveryBoyController {
     }
   }
 
-  @Roles(Role.ADMIN, Role.MANAGER, Role.PICKER)
+  @Roles(Role.DELIVERY)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch('update')
   async updateTaskStatus(
-    @DeliveryBoyDecorator(ParseIntPipe) id,
+    @DeliveryBoyDecorator() id,
     @Body() task: UpdateDeliveryDto,
   ) {
     try {

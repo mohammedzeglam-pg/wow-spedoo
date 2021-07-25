@@ -54,10 +54,8 @@ export class AuthService {
           delivery: user.delivery_boy,
         };
         user['access_token'] = this.jwtService.sign(payload);
-        // destruct any unused data in response
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { password, id, salt, ...rs } = user;
-        return rs;
+        console.log(21331);
+        return this.resultResponse(user);
       }
       return null;
     } catch (err) {
@@ -75,5 +73,19 @@ export class AuthService {
       Logger.warn(err);
       this.logger.error(err);
     }
+  }
+
+  private resultResponse(user) {
+    delete user.password;
+    delete user.id;
+    delete user.salt;
+    const { id: identity } =
+      user?.partner || user?.delivery_boy || user?.pick_boy || 1;
+    delete user.partner;
+    delete user.delivery_boy;
+    delete user.pick_boy;
+    user.role = user.role?.toLowerCase();
+    user.identity = identity;
+    return user;
   }
 }

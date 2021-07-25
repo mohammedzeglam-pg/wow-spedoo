@@ -5,27 +5,15 @@ import { DeliveryStatus } from '@wow-spedoo/dto';
 export class DeliveryBoyService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getUnfinshedTasks(
-    id: number,
-    pagination: { take: number; skip: number },
-  ) {
+  async getUnfinshedTasks( id: number, pagination: { take: number; skip: number }, ) {
     return this.fetchTasks(id, 'UNDER_DELIVERING', pagination);
   }
-  async getFinishedTasks(
-    id: number,
-    pagination: { take: number; skip: number },
-  ) {
-    return this.fetchTasks(id, 'COMPLETED', pagination);
+
+  async getFinishedTasks( id: number, pagination: { take: number; skip: number }, ) {
+    return this.fetchTasks(id, 'DELIVERED', pagination);
   }
 
-  async updateTask(
-    id: number,
-    {
-      status,
-      note,
-      orderId,
-    }: { status: DeliveryStatus; note?: string; orderId: number },
-  ) {
+  async updateTask( id: number, { status, note, orderId, }: { status: DeliveryStatus; note?: string; orderId: number }, ) {
     return this.prisma.product.updateMany({
       data: {
         status: status,
@@ -61,6 +49,24 @@ export class DeliveryBoyService {
   // status for tracking thing
   private async fetchTasks(id: number, status, { take = 10, skip = 0 }) {
     return this.prisma.deliveryBoy.findMany({
+      select:{
+        delivery: {
+          select:{
+            orders: {
+              select: {
+                id:true,
+                lat:true,
+                lon:true,
+                delivery_price:true,
+                total_price:true,
+                recipient:true
+              },
+            }
+          },
+          take: take,
+          skip: skip * take,
+        }
+      },
       where: {
         delivery: {
           every: {
@@ -79,8 +85,6 @@ export class DeliveryBoyService {
           id: id,
         },
       },
-      take: take,
-      skip: skip * take,
     });
   }
 }

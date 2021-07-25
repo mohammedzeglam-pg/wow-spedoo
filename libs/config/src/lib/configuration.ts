@@ -6,4 +6,5 @@ export const configuration = () => ({
     password: process.env.ADMIN_PASSWORD,
     email: process.env.ADMIN_EMAIL,
   },
+  isExpire:process.env.JWT_EXPIRE
 });

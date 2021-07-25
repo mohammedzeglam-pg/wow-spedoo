@@ -4,16 +4,15 @@ export class AddPaymentDto {
   @IsNotEmpty()
   name: string;
   @IsBoolean()
-  is_take = false;
+  take_money = false;
 }
 
-export class UpdatePaymentDto{
-
+export class UpdatePaymentDto {
   @IsString()
   @IsNotEmpty()
   @IsOptional()
   name?: string;
   @IsBoolean()
   @IsOptional()
-  is_take?:boolean;
+  take_money?: boolean;
 }

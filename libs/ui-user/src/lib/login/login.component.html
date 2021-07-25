@@ -1,0 +1,22 @@
+<mat-card class='card'>
+    <mat-card-title>
+      تسجيل الدخول
+    </mat-card-title>
+  <form [formGroup]='loginForm' (ngSubmit)="onLogin()">
+    <mat-form-field>
+      <mat-label>
+        رقم الهاتف
+      </mat-label>
+      <input type='text' matInput formControlName='phone' (input)='asYouType()' value='09' >
+      <mat-hint>0910000000</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>
+        كلمة المرور
+      </mat-label>
+      <input type='password' matInput formControlName='password' >
+    </mat-form-field>
+    <button mat-flat-button type='submit'>تسجيل الدخول</button>
+  </form>
+</mat-card>

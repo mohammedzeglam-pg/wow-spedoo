@@ -7,9 +7,10 @@ export class PaymentService {
   private readonly payment = {
     id: true,
     name: true,
-    is_take: true,
+    take_money: true,
+    img_url: true,
   };
-  async addPaymentMethod(addPaymentDto:{name:string,is_take:boolean}) {
+  async addPaymentMethod(addPaymentDto: { name: string; take_money: boolean }) {
     return this.prisma.paymentMethod.create({
       select: this.payment,
       data: addPaymentDto,
@@ -20,14 +21,20 @@ export class PaymentService {
       select: this.payment,
     });
   }
-  async getSpecificPaymentMethod(paymentMethodDto: {id:number}) {
+  async getSpecificPaymentMethod(paymentMethodDto: { id: number }) {
     return this.prisma.paymentMethod.findFirst({
       select: this.payment,
       where: paymentMethodDto,
     });
   }
 
-  async updatePaymentMethod( paymentMethodDto: {id:number}, updatePaymentDto: {name?:string,is_take?:boolean}, ) {
-    return this.prisma.paymentMethod.update({ data: updatePaymentDto, where: paymentMethodDto, });
+  async updatePaymentMethod(
+    paymentMethodDto: { id: number },
+    updatePaymentDto: { name?: string; is_take?: boolean },
+  ) {
+    return this.prisma.paymentMethod.update({
+      data: updatePaymentDto,
+      where: paymentMethodDto,
+    });
   }
 }

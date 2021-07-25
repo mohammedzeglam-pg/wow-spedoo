@@ -4,6 +4,7 @@ import {
   IsString,
   IsEmail,
   IsPhoneNumber,
+  IsOptional,
 } from 'class-validator';
 import { ValidationMessage } from './validation-message';
 export class UpdateUserCredential {
@@ -14,20 +15,25 @@ export class UpdateUserCredential {
   @MaxLength(20, {
     message: ValidationMessage.maxLength,
   })
-  username: string;
+  @IsOptional()
+  username?: string;
   @IsString()
-  firstname: string;
+  @IsOptional()
+  firstname?: string;
   @IsString()
-  lastname: string;
+  @IsOptional()
+  lastname?: string;
   @IsPhoneNumber('LY', {
     message: ValidationMessage.password,
   })
-  phone: string;
+  @IsOptional()
+  phone?: string;
   @IsEmail(
     {},
     {
       message: ValidationMessage.email,
     },
   )
-  email: string;
+  @IsOptional()
+  email?: string;
 }

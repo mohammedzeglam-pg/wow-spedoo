@@ -12,7 +12,12 @@ import {
 } from '@nestjs/common';
 import { ZoneService } from './zone.service';
 import { JwtAuthGuard, Role, Roles, RolesGuard } from '@wow-spedoo/auth';
-import { AddLocationDto, AddZoneDto, IdTransformerDto, UpdateZoneDto } from '@wow-spedoo/dto';
+import {
+  AddLocationDto,
+  AddZoneDto,
+  IdTransformerDto,
+  UpdateZoneDto,
+} from '@wow-spedoo/dto';
 
 @Controller('zone')
 export class ZoneController {
@@ -45,7 +50,7 @@ export class ZoneController {
 
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Post('zone/add')
+  @Post('regoin/add')
   async addZone(@Body() addZoneDto: AddZoneDto) {
     try {
       return await this.zoneService.addZone(addZoneDto);
@@ -57,8 +62,11 @@ export class ZoneController {
 
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Patch('zone/edit/:id')
-  async updateZone( @Param() id: IdTransformerDto, @Body() updateZoneDto: UpdateZoneDto) {
+  @Patch('regoin/edit/:id')
+  async updateZone(
+    @Param() id: IdTransformerDto,
+    @Body() updateZoneDto: UpdateZoneDto,
+  ) {
     try {
       return await this.zoneService.updateZone(id, updateZoneDto);
     } catch (err) {
@@ -82,7 +90,9 @@ export class ZoneController {
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch('location/edit')
-  async updateLocation( @Param() id: IdTransformerDto, @Body() addLocationDto: AddLocationDto,
+  async updateLocation(
+    @Param() id: IdTransformerDto,
+    @Body() addLocationDto: AddLocationDto,
   ) {
     try {
       return await this.zoneService.updateLocation(id, addLocationDto);

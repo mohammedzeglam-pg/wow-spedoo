@@ -48,6 +48,9 @@ export class DeliveryService {
             updateMany: {
               where: {
                 orderId: orders[i],
+                AND:{
+                  status:'FILTRATION',
+                }
               },
               data: {
                 status: 'UNDER_DELIVERING',

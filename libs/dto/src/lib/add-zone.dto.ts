@@ -16,13 +16,13 @@ export class UpdateZoneDto {
   @IsNumber()
   @Type(() => Number)
   @IsOptional()
-  cityId: number;
+  cityId?: number;
   @IsString()
   @IsNotEmpty()
   @IsOptional()
-  name: string;
+  name?: string;
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  price: number;
+  price?: number;
 }

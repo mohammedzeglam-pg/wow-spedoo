@@ -19,6 +19,9 @@ export class ApiKeyAuthGuard implements CanActivate {
   static readonly auth = 'api-key';
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const { authorization } = context.switchToHttp().getRequest().headers;
+    if(!authorization){
+      throw new UnauthorizedException();
+    }
     const tokens = authorization.toLowerCase().split(' ');
     const key = ApiKeyAuthGuard.getKey(tokens);
     const userId = await this.validate(key);

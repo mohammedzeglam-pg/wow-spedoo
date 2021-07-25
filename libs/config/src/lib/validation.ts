@@ -6,4 +6,5 @@ export const validationSchema = Joi.object({
   ADMIN_PASSWORD: Joi.string().required(),
   ADMIN_EMAIL: Joi.string().email().required(),
   ADMIN_PHONE: Joi.string().required(),
+  JWT_EXPIRE: Joi.boolean().required(),
 });

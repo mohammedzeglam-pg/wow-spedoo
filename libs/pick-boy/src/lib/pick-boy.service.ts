@@ -37,48 +37,42 @@ export class PickBoyService {
     });
   }
 
-  //TODO: refactor just easy
   private async fetchProducts( id: number, status: ProductStatus, take = 10, skip = 0, ) {
-    return this.prisma.pickBoy.findFirst({
+    return this.prisma.pick.findMany({
+      where:{
+        pick_boyId:id,
+        AND:{
+          products:{
+            some: {
+              status: status,
+            }
+          }
+        }
+      },
       select:{
-        pick:{
+        products:{
+          // where:{
+          //   status:status,
+          // },
           select:{
-            products:{
+            id:true,
+            name:true,
+            total_pieces:true,
+            supplier:{
               select:{
                 id:true,
                 name:true,
-                total_pieces:true,
-                supplier:{
-                  select:{
-                    id:true,
-                    name:true,
-                    phone:true,
-                    lat:true,
-                    lon:true
-                  }
-                }
-              },
-              take: take,
-              skip: take * skip,
+                phone:true,
+                lat:true,
+                lon:true
+              }
             }
           },
+          take:take,
+          skip:take*skip,
         }
-      },
-      where: {
-        pick: {
-          every: {
-            products: {
-              every: {
-                status: status,
-              },
-            },
-          },
-        },
-        AND: {
-          id: id,
-        },
-      },
-    });
+      }
+    })
   }
 
   private async checkStatus(prodId:number){

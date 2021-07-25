@@ -7,8 +7,16 @@ import {
   IsPhoneNumber,
   IsEnum,
 } from 'class-validator';
-import { Role } from '@prisma/client';
 import { ValidationMessage } from './validation-message';
+import { Transform } from 'class-transformer';
+
+enum Role {
+  MANAGER = 'MANAGER',
+  ADMIN = 'ADMIN',
+  PARTNER = 'PARTNER',
+  PICKER = 'PICKER',
+  DELIVERY = 'DELIVERY',
+}
 export class CreateUserCredential {
   @IsString()
   @MinLength(6, {
@@ -43,8 +51,9 @@ export class CreateUserCredential {
     message: ValidationMessage.minLength,
   })
   password: string;
+  @Transform((obj) => obj.value?.toString().toUpperCase())
   @IsEnum(Role, {
     message: ValidationMessage.enum,
   })
-  role: Role;
+  role?: Role;
 }

@@ -17,5 +17,9 @@ module.exports = {
     '<rootDir>/libs/supplier',
     '<rootDir>/libs/zone',
     '<rootDir>/libs/config',
+    '<rootDir>/libs/ui',
+    '<rootDir>/libs/auth-ui',
+    '<rootDir>/libs/ui-user',
+    '<rootDir>/libs/file-handler',
   ],
 };

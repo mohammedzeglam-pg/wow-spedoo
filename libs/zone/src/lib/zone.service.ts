@@ -47,14 +47,10 @@ export class ZoneService {
     });
   }
 
-  async updateZone(id, updateZoneDto: {cityId:number,name:string,price:number}) {
+  async updateZone(id, updateZoneDto: {cityId?:number,name?:string,price?:number}) {
     return this.prisma.zone.update({
       where: id,
-      data: {
-        name:updateZoneDto.name,
-        price:updateZoneDto.price,
-        cityId:updateZoneDto.cityId
-      },
+      data: updateZoneDto,
     });
   }
 

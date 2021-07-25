@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { AuthService } from '@wow-spedoo/auth';
 import { Role } from '@prisma/client';
 import { PaginationDto } from '@wow-spedoo/dto';
-import { CreateUserResponse } from '@wow-spedoo/api-interfaces';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -12,8 +12,6 @@ export class UserService {
     private authService: AuthService,
   ) {}
 
-  // this shared to return value from code
-  // don't panic if you see this.userObject just C+LeftMouse for vim user gd
   private readonly userObject = {
     id: true,
     username: true,
@@ -23,7 +21,7 @@ export class UserService {
     email: true,
   };
 
-  async createUser(user): Promise<CreateUserResponse | void> {
+  async createUser(user) {
     // hash password using salt techniques
     const salt = await bcrypt.genSalt();
     // save encrypted password and salt
@@ -55,7 +53,7 @@ export class UserService {
     return this.authService.login(user);
   }
 
-  async updateUser(userId: number, data): Promise<CreateUserResponse> {
+  async updateUser(userId: number, data) {
     return this.prisma.user.update({
       select: this.userObject,
       data: data,
@@ -64,9 +62,7 @@ export class UserService {
       },
     });
   }
-  async getManyPartner(
-    pagination: PaginationDto,
-  ): Promise<CreateUserResponse[]> {
+  async getManyPartner(pagination: PaginationDto) {
     const search = {
       partner: {
         isNot: null,
@@ -75,9 +71,7 @@ export class UserService {
     return this.fetchUserData(search, pagination);
   }
 
-  async getManyPickBoy(
-    pagination: PaginationDto,
-  ): Promise<CreateUserResponse[]> {
+  async getManyPickBoy(pagination: PaginationDto) {
     const search = {
       pick_boy: {
         isNot: null,
@@ -87,36 +81,52 @@ export class UserService {
     return this.fetchUserData(search, pagination);
   }
 
-  async getManyDeliveriesBoy(
-    pagination: PaginationDto,
-  ): Promise<CreateUserResponse[]> {
-    const search = {
-      delivery_boy: {
-        isNot: null,
-      },
+  //TODO: bug in prisma
+  async getManyDeliveriesBoy(pagination: PaginationDto) {
+    const { take, skip } = pagination;
+    const data = await this.prisma.deliveryBoy.findMany({
+      select: { user: { select: this.userObject } },
+      take: take,
+      skip: skip * take,
+    });
+    const users = [];
+    for (const el of data) {
+      const { user } = el;
+      users.push(user);
+    }
+    return {
+      data: users,
     };
-
-    return this.fetchUserData(search, pagination);
   }
 
-  private async fetchUserData(
-    search,
-    pagination,
-  ): Promise<CreateUserResponse[]> {
+  private async fetchUserData(search, pagination) {
     const { take, skip } = pagination;
-    return this.prisma.user.findMany({
+    const users = await this.prisma.user.findMany({
       select: this.userObject,
       where: search,
       take: take,
       skip: skip * take,
     });
+    return {
+      data: users,
+    };
   }
 
-  async deleteUser(id: number): Promise<CreateUserResponse> {
+  async deleteUser(id: number) {
     return this.prisma.user.delete({
       select: this.userObject,
       where: {
         id: id,
+      },
+    });
+  }
+
+  async allowUser(id: { id: number }) {
+    return this.prisma.user.update({
+      select: this.userObject,
+      where: id,
+      data: {
+        is_allowed: true,
       },
     });
   }

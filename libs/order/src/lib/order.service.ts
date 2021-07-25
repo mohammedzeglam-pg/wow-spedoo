@@ -28,7 +28,7 @@ export class OrderService {
         },
         payment: {
           select: {
-            is_take: true,
+            take_money: true,
           },
         },
       },
@@ -101,7 +101,7 @@ export class OrderService {
   private async financials(
     orderData: {
       id: number;
-      payment: { is_take: boolean };
+      payment: { take_money: boolean };
       partner: { profit: number; id: number };
     },
     order: Pick<
@@ -113,9 +113,11 @@ export class OrderService {
     const { payment } = orderData;
     const { partner } = orderData;
     // Debt on company
-    const transaction = payment.is_take ? Transaction.DUES : Transaction.DEBT;
+    const transaction = payment.take_money
+      ? Transaction.DUES
+      : Transaction.DEBT;
     const { profit } = partner;
-    if (payment.is_take) {
+    if (payment.take_money) {
       const amount =
         profit == 0.0
           ? order.total_price
@@ -135,7 +137,9 @@ export class OrderService {
       });
     } else {
       const amount =
-        profit == 0.0 ? delivery_price : delivery_price - (profit * delivery_price) / 100;
+        profit == 0.0
+          ? delivery_price
+          : delivery_price - (profit * delivery_price) / 100;
       await this.prisma.partner.update({
         where: {
           id: partner.id,
@@ -168,7 +172,6 @@ export class OrderService {
 
   // Winding number algorithm
   // read about this topic https://en.wikipedia.org/wiki/Point_in_polygon
-  // source https://gist.github.com/mohammedzeglam-pg/4e0e7c4548c5a78c1a9d02d0153a66da
   private static cross(x: Point, y: Point, z: Point): number {
     return (
       (y.lon - x.lon) * (z.lat - x.lat) - (z.lon - x.lon) * (y.lat - x.lat)

@@ -13,6 +13,7 @@ import compression from 'fastify-compress';
 import { fastifyHelmet } from 'fastify-helmet';
 import { AppModule } from './app/app.module';
 import { ConfigService } from '@nestjs/config';
+import fastifyMultipart from 'fastify-multipart';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -22,6 +23,16 @@ async function bootstrap() {
   const globalPrefix = 'api';
   await app.register(compression, { encodings: ['gzip', 'deflate'] });
   await app.register(fastifyHelmet);
+  await app.register(fastifyMultipart, {
+    limits: {
+      fieldNameSize: 100, // Max field name size in bytes
+      fieldSize: 100, // Max field value size in bytes
+      fields: 10, // Max number of non-file fields
+      fileSize: 1000000, // For multipart forms, the max file size in bytes
+      files: 1, // Max number of file fields
+      headerPairs: 2000, // Max number of header key=>value pairs
+    },
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

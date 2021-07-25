@@ -2,11 +2,17 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
-import { UiModule } from '@wow-spedoo/ui';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
+import { UiUserModule } from '@wow-spedoo/ui-user';
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, UiModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    UiUserModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

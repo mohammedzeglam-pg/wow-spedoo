@@ -19,12 +19,11 @@ import {
   LoginCredential,
   UpdateUserCredential,
 } from '@wow-spedoo/dto';
-import { UserSelect } from 'prisma';
 import { PaginationDto } from '@wow-spedoo/dto';
 import { Role, Roles } from '@wow-spedoo/auth';
 import { JwtAuthGuard } from '@wow-spedoo/auth';
 import { RolesGuard } from '@wow-spedoo/auth';
-
+import { LoginResponse } from '@wow-spedoo/api-interfaces';
 @Controller('user')
 export class UserController {
   private readonly logger = new Logger(UserController.name);
@@ -33,9 +32,7 @@ export class UserController {
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('create')
-  async createNewUser(
-    @Body() createUserCredential: CreateUserCredential,
-  ): Promise<UserSelect | void> {
+  async createNewUser(@Body() createUserCredential: CreateUserCredential) {
     try {
       return await this.userService.createUser(createUserCredential);
     } catch (err) {
@@ -45,12 +42,18 @@ export class UserController {
   }
 
   @Post('login')
-  login(@Body() loginCredential: LoginCredential) {
+  async login(
+    @Body() loginCredential: LoginCredential,
+  ): Promise<LoginResponse | HttpException> {
     try {
-      return this.userService.login(loginCredential);
+      const user = await this.userService.login(loginCredential);
+      if (!user) {
+        throw new Error('not found');
+      }
+      return user;
     } catch (err) {
       this.logger.error(err);
-      return new HttpException('error', HttpStatus.CONFLICT);
+      return new HttpException('not found', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -106,7 +109,7 @@ export class UserController {
 
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get('pick-boy')
+  @Get('pick')
   async getManyPickBoy(@Query() paginationDto: PaginationDto) {
     try {
       return await this.userService.getManyPickBoy(paginationDto);
@@ -118,10 +121,25 @@ export class UserController {
 
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Get('delivery-boy')
+  @Get('delivery')
   async getManyDeliveryBoy(@Query() paginationDto: PaginationDto) {
     try {
       return await this.userService.getManyDeliveriesBoy(paginationDto);
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('allow/:id')
+  async allowUser(@Param() id: IdTransformerDto) {
+    try {
+      const user = await this.userService.allowUser(id);
+      return {
+        data: user,
+        state: 'allowed',
+      };
     } catch (err) {
       this.logger.error(err);
     }
