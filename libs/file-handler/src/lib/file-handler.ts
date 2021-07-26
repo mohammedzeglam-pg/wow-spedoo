@@ -11,13 +11,14 @@ import { pipeline } from 'stream';
 const pump = util.promisify(pipeline);
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+export const dir = `${path.resolve(__dirname)}/uploads/`;
 export const FileHandler = createParamDecorator(
-  async (data: unknown, ctx: ExecutionContext) => {
+  async (data = 'file', ctx: ExecutionContext) => {
     const req = ctx.switchToHttp().getRequest();
 
     try {
-      const img = await req.file();
-      const type = checkMimeType(img);
+      const img = await req.body[data];
+      const type = await checkMimeType(img);
       if (type === 'unknown') {
         throw new HttpException(
           `${type} media`,
@@ -37,8 +38,8 @@ export const FileHandler = createParamDecorator(
   },
 );
 
-function checkMimeType(img) {
-  const head = img.file._readableState.buffer.head.data;
+async function checkMimeType(img) {
+  const head = await img.toBuffer();
   const arr = new Uint8Array(head).subarray(0, 4);
   let header = '';
   for (let i = 0; i < arr.length; i++) {
@@ -63,8 +64,7 @@ function checkMimeType(img) {
   return type;
 }
 
-export async function saveFile(data: { file; filename }) {
-  const dir = `${path.resolve(__dirname)}/uploads/`;
+export async function saveFile(data: { file; filename }): Promise<string> {
   await pump(data.file, fs.createWriteStream(dir + data.filename));
-  return dir + data.filename;
+  return data.filename;
 }

@@ -32,6 +32,7 @@ async function bootstrap() {
       files: 1, // Max number of file fields
       headerPairs: 2000, // Max number of header key=>value pairs
     },
+    attachFieldsToBody: true,
   });
   app.useGlobalPipes(
     new ValidationPipe({

@@ -1,4 +1,14 @@
-import { Controller, Get, Logger, Param, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Param,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import {
   IdentityDecorator,
@@ -7,7 +17,9 @@ import {
   Roles,
   RolesGuard,
 } from '@wow-spedoo/auth';
-import { IdTransformerDto } from '@wow-spedoo/dto';
+import { FileHandler } from '@wow-spedoo/file-handler';
+import { IdTransformerDto, UpdateTaskDto } from '@wow-spedoo/dto';
+
 @Controller('tasks')
 export class TasksController {
   private readonly logger = new Logger();
@@ -50,9 +62,114 @@ export class TasksController {
     }
   }
 
-  // try{
+  @Roles(Role.PICKER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('pending/picking/:id')
+  updatePickTaskStatus(
+    @Param() { id }: IdTransformerDto,
+    @IdentityDecorator() identity: { role: string; id: number },
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    try {
+      return this.tasksService.updateTaskStatus(
+        { id },
+        identity,
+        updateTaskDto,
+      );
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
 
-  // }catch(err){
-  //   this.logger.error(err);
-  // }
+  @Roles(Role.PICKER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('pending/picking/:id/image')
+  async updateProductImage(
+    @FileHandler() file,
+    @Param() { id }: IdTransformerDto,
+    @IdentityDecorator() identity,
+  ) {
+    try {
+      const rs = await this.tasksService.updateProductImage(
+        file,
+        id,
+        identity.id,
+      );
+      if (!Object.keys(rs).length) {
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      }
+      return rs;
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
+
+  @Roles(Role.DELIVERY)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('pending/delivery')
+  async getPendingDeliveryTasks(
+    @IdentityDecorator() identity: { role: string; id: number },
+  ) {
+    try {
+      return this.tasksService.getPendingDeliveryTasks(identity.id);
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
+
+  @Roles(Role.DELIVERY)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('pending/delivery/:id')
+  getDeliveryTaskDetial(
+    @IdentityDecorator() identity,
+    @Param() { id }: IdTransformerDto,
+  ) {
+    try {
+      return this.tasksService.getDeliveryTaskDetial(identity.id, id);
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
+
+  @Roles(Role.DELIVERY)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('pending/delivery/:id')
+  async updateDeliveryTaskStatus(
+    @Param() { id }: IdTransformerDto,
+    @IdentityDecorator() identity: { role: string; id: number },
+    @Body() updateTaskDto: UpdateTaskDto,
+  ) {
+    try {
+      return this.tasksService.updateTaskStatus(
+        { id },
+        identity,
+        updateTaskDto,
+      );
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
+
+  @Roles(Role.DELIVERY)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('pending/delivery/:id/image')
+  async updateOrderImage(
+    @FileHandler() file,
+    @Param() { id }: IdTransformerDto,
+    @IdentityDecorator() identity,
+  ) {
+    try {
+      const rs = await this.tasksService.updateOrderImage(
+        file,
+        id,
+        identity.id,
+      );
+      if (!Object.keys(rs).length) {
+        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+      }
+      return rs;
+    } catch (err) {
+      this.logger.error(err);
+    }
+  }
 }

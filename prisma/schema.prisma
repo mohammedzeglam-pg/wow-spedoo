@@ -75,6 +75,8 @@ model Order {
   lat            Float
   lon            Float
   note           String?
+  phone          String?
+  img_url        String[]
 }
 
 model Product {
