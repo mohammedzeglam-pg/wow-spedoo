@@ -92,6 +92,7 @@ model Product {
   pickId       Int?
   status       ProductStatus @default(UNDER_REVIEW)
   note         String?
+  img_url      String?
 }
 
 model Supplier {

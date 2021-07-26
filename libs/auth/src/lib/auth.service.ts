@@ -54,7 +54,6 @@ export class AuthService {
           delivery: user.delivery_boy,
         };
         user['access_token'] = this.jwtService.sign(payload);
-        console.log(21331);
         return this.resultResponse(user);
       }
       return null;

@@ -20,6 +20,7 @@ import { PickBoyController, PickBoyService } from '@wow-spedoo/pick-boy';
 import { PickController, PickService } from '@wow-spedoo/pick';
 import { PartnerController, PartnerService } from '@wow-spedoo/partner';
 import { SupplierController, SupplierService } from '@wow-spedoo/supplier';
+import { TasksController, TasksService } from '@wow-spedoo/tasks';
 @Module({
   imports: [
     AuthModule,
@@ -41,7 +42,8 @@ import { SupplierController, SupplierService } from '@wow-spedoo/supplier';
     DeliveryController,
     DeliveryBoyController,
     PartnerController,
-    SupplierController
+    SupplierController,
+    TasksController,
   ],
   providers: [
     AppService,
@@ -54,7 +56,8 @@ import { SupplierController, SupplierService } from '@wow-spedoo/supplier';
     PickBoyService,
     PickService,
     PartnerService,
-    SupplierService
+    SupplierService,
+    TasksService,
   ],
 })
 export class AppModule {}

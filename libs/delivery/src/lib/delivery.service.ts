@@ -48,9 +48,9 @@ export class DeliveryService {
             updateMany: {
               where: {
                 orderId: orders[i],
-                AND:{
-                  status:'FILTRATION',
-                }
+                AND: {
+                  status: 'FILTRATION',
+                },
               },
               data: {
                 status: 'UNDER_DELIVERING',
@@ -67,7 +67,7 @@ export class DeliveryService {
   }
 
   async getUnfinishedTasks(paginationDto: { take: number; skip: number }) {
-    return this.fetchTasks('FILTRATION', paginationDto);
+    return this.fetchTasks('UNDER_DELIVERING', paginationDto);
   }
 
   async getFinishedTasks(paginationDto: { take: number; skip: number }) {

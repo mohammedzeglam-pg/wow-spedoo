@@ -21,5 +21,6 @@ module.exports = {
     '<rootDir>/libs/auth-ui',
     '<rootDir>/libs/ui-user',
     '<rootDir>/libs/file-handler',
+    '<rootDir>/libs/tasks',
   ],
 };

@@ -6,7 +6,6 @@ import {
   Param,
   Post,
   Query,
-  Request,
   UseGuards,
 } from '@nestjs/common';
 import { SupplierService } from './supplier.service';
@@ -16,7 +15,6 @@ import {
   PaginationDto,
 } from '@wow-spedoo/dto';
 import {
-  ApiKeyAuthGuard,
   JwtAuthGuard,
   PartnerDecorator,
   Role,
@@ -30,44 +28,56 @@ export class SupplierController {
   constructor(private readonly supplierService: SupplierService) {}
 
   @Roles(Role.PARTNER)
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('add')
-  async AddSupplier( @PartnerDecorator() id,@Body() addSupplierDto: AddSupplierDto) {
+  async AddSupplier(
+    @PartnerDecorator() id,
+    @Body() addSupplierDto: AddSupplierDto,
+  ) {
     try {
-      return await this.supplierService.addSupplier(id,addSupplierDto);
+      return await this.supplierService.addSupplier(id, addSupplierDto);
     } catch (err) {
       this.logger.error(err);
     }
   }
 
   @Roles(Role.PARTNER)
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('edit/:id')
-  async updateSupplier( @Param() id:IdTransformerDto,@Body() addSupplierDto: AddSupplierDto) {
+  async updateSupplier(
+    @Param() id: IdTransformerDto,
+    @Body() addSupplierDto: AddSupplierDto,
+  ) {
     try {
-      return await this.supplierService.updateSupplier(id,addSupplierDto);
+      return await this.supplierService.updateSupplier(id, addSupplierDto);
     } catch (err) {
       this.logger.error(err);
     }
   }
 
   @Roles(Role.PARTNER)
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
-  async getSupplier( @PartnerDecorator() id,@Param() supplierId: IdTransformerDto) {
+  async getSupplier(
+    @PartnerDecorator() id,
+    @Param() supplierId: IdTransformerDto,
+  ) {
     try {
-      return await this.supplierService.getSupplier(id,supplierId);
+      return await this.supplierService.getSupplier(id, supplierId);
     } catch (err) {
       this.logger.error(err);
     }
   }
 
   @Roles(Role.PARTNER)
-  @UseGuards(JwtAuthGuard,RolesGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('many')
-  async getManySupplier(@PartnerDecorator() id,@Query() pagination: PaginationDto) {
+  async getManySupplier(
+    @PartnerDecorator() id,
+    @Query() pagination: PaginationDto,
+  ) {
     try {
-      return await this.supplierService.getManySupplier(id,pagination);
+      return await this.supplierService.getManySupplier(id, pagination);
     } catch (err) {
       this.logger.error(err);
     }

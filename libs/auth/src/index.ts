@@ -9,3 +9,4 @@ export * from './lib/decorators/api-key.decorator';
 export * from './lib/decorators/partner.decorator';
 export * from './lib/decorators/pick-boy.decorator';
 export * from './lib/decorators/delivery-boy.decorator';
+export * from './lib/decorators/id.decorator';

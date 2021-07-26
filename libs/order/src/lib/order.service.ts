@@ -16,6 +16,11 @@ export class OrderService {
   ) {
     const point: Point = order;
     const delivery_price = await this.getPricing(point);
+    if (!delivery_price) {
+      return {
+        message: 'regoin not supported',
+      };
+    }
     const orderData = await this.prisma.order.create({
       select: {
         id: true,
