@@ -33,7 +33,6 @@
       "@wow-spedoo/supplier": ["libs/supplier/src/index.ts"],
       "@wow-spedoo/tasks": ["libs/tasks/src/index.ts"],
       "@wow-spedoo/ui": ["libs/ui/src/index.ts"],
-      "@wow-spedoo/ui-user": ["libs/ui-user/src/index.ts"],
       "@wow-spedoo/user": ["libs/user/src/index.ts"],
       "@wow-spedoo/validation-message": [
         "libs/validation-message/src/index.ts"

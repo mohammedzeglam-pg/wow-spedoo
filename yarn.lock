@@ -165,14 +165,14 @@
   dependencies:
     "eslint-scope" "^5.1.0"
 
-"@angular/animations@^12.0.0", "@angular/animations@^12.0.0 || ^13.0.0-0", "@angular/animations@12.1.0":
+"@angular/animations@^12.0.0", "@angular/animations@12.1.0":
   "integrity" "sha512-I81M9nptMWHgbBUfJKyjQghNplV/aLvjxKEo3nTqf33/9G+nqMU2S2mAG8X8q/R/199R7DtJOmjqdmGkDgT8BQ=="
   "resolved" "https://registry.npmjs.org/@angular/animations/-/animations-12.1.0.tgz"
   "version" "12.1.0"
   dependencies:
     "tslib" "^2.2.0"
 
-"@angular/cdk@^12.1.2", "@angular/cdk@12.1.2":
+"@angular/cdk@^12.1.2":
   "integrity" "sha512-ALupZejZDsVYcbNZcEH1cV8SDgVBL40FAwDnlSZxCgd0HOBHH0ZqQV+8z0uCQeMatoNM+SwmJ8Y1JXYh9Bqfiw=="
   "resolved" "https://registry.npmjs.org/@angular/cdk/-/cdk-12.1.2.tgz"
   "version" "12.1.2"
@@ -247,7 +247,7 @@
   dependencies:
     "tslib" "^2.2.0"
 
-"@angular/forms@^12.0.0", "@angular/forms@^12.0.0 || ^13.0.0-0":
+"@angular/forms@^12.0.0":
   "integrity" "sha512-iWJGvtd7GEisx+pqKDsFq3yu2bsP/Kj+vCSSIJStWNrSUBRr/J0WY9lXp+SR3mU4oMyVw1iGhdHFe3HCzfa7lw=="
   "resolved" "https://registry.npmjs.org/@angular/forms/-/forms-12.1.0.tgz"
   "version" "12.1.0"
@@ -258,13 +258,6 @@
   "integrity" "sha512-zOcND0yCSJgnnkUV6SC2OpFzUgWND/dbHr8ouXlpBJhTB1ZMKnR/N5tF0JG1LZvG1WJUDI7ERReTYBDRuh3QFg=="
   "resolved" "https://registry.npmjs.org/@angular/language-service/-/language-service-12.1.0.tgz"
   "version" "12.1.0"
-
-"@angular/material@^12.1.2":
-  "integrity" "sha512-DpqnvwnVqaudFRXTNyJR8r/gbKG4RtE3RGc6q4FgdN9SOfRh/q/yYyNnOUnbCwPgLTmkfGz+bj7++GA8gzhSkg=="
-  "resolved" "https://registry.npmjs.org/@angular/material/-/material-12.1.2.tgz"
-  "version" "12.1.2"
-  dependencies:
-    "tslib" "^2.2.0"
 
 "@angular/platform-browser-dynamic@^12.0.0", "@angular/platform-browser-dynamic@>=9.0.0":
   "integrity" "sha512-7nlLvlXTHjYmFJKYZP6RtmASWF9bAwF4trdtH187h3ODSAHHtRQex+elfOzZhjNSTipXxS+g8RzOK8Lr3+H4gg=="

@@ -449,33 +449,6 @@
         }
       }
     },
-    "ui-user": {
-      "projectType": "library",
-      "root": "libs/ui-user",
-      "sourceRoot": "libs/ui-user/src",
-      "prefix": "wow-spedoo",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/libs/ui-user"
-          ],
-          "options": {
-            "jestConfig": "libs/ui-user/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/ui-user/src/**/*.ts",
-              "libs/ui-user/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
     "user": {
       "root": "libs/user",
       "sourceRoot": "libs/user/src",
