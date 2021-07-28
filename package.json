@@ -49,6 +49,7 @@
     "@prisma/client": "^2.26.0",
     "@types/google-libphonenumber": "^7.4.21",
     "bcrypt": "^5.0.1",
+    "bulma": "^0.9.3",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "fastify-compress": "^3.6.0",

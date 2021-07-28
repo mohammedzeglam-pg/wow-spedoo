@@ -2,29 +2,44 @@ import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserController, UserService } from '@wow-spedoo/user';
-import { PrismaModule } from '@wow-spedoo/prisma';
-import { AuthModule } from '@wow-spedoo/auth';
-import { OrderController, OrderService } from '@wow-spedoo/order';
-import { PaymentController, PaymentService } from '@wow-spedoo/payment';
+import { NestUserController, NestUserService } from '@wow-spedoo/nest/user';
+import { NestPrismaModule } from '@wow-spedoo/nest/prisma';
+import { NestAuthModule } from '@wow-spedoo/nest/auth';
+import { NestOrderController, NestOrderService } from '@wow-spedoo/nest/order';
+import {
+  NestPaymentController,
+  NestPaymentService,
+} from '@wow-spedoo/nest/payment';
 import { ConfigModule } from '@nestjs/config';
 import { configuration } from '@wow-spedoo/config';
 import { validationSchema } from '@wow-spedoo/config';
-import { ZoneController, ZoneService } from '@wow-spedoo/zone';
+import { NestRegionController, NestRegionService } from '@wow-spedoo/nest/region';
 import {
-  DeliveryBoyController,
-  DeliveryBoyService,
-} from '@wow-spedoo/delivery-boy';
-import { DeliveryController, DeliveryService } from '@wow-spedoo/delivery';
-import { PickBoyController, PickBoyService } from '@wow-spedoo/pick-boy';
-import { PickController, PickService } from '@wow-spedoo/pick';
-import { PartnerController, PartnerService } from '@wow-spedoo/partner';
-import { SupplierController, SupplierService } from '@wow-spedoo/supplier';
-import { TasksController, TasksService } from '@wow-spedoo/tasks';
+  NestDeliveryBoyController,
+  NestDeliveryBoyService,
+} from '@wow-spedoo/nest/delivery-boy';
+import {
+  NestDeliveryController,
+  NestDeliveryService,
+} from '@wow-spedoo/nest/delivery';
+import {
+  NestPickBoyController,
+  NestPickBoyService,
+} from '@wow-spedoo/nest/pick-boy';
+import { NestPickController, NestPickService } from '@wow-spedoo/nest/pick';
+import {
+  NestPartnerController,
+  NestPartnerService,
+} from '@wow-spedoo/nest/partner';
+import {
+  NestSupplierController,
+  NestSupplierService,
+} from '@wow-spedoo/nest/supplier';
+import { NestTaskController, NestTaskService } from '@wow-spedoo/nest/task';
 @Module({
   imports: [
-    AuthModule,
-    PrismaModule,
+    NestAuthModule,
+    NestPrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration],
@@ -33,31 +48,31 @@ import { TasksController, TasksService } from '@wow-spedoo/tasks';
   ],
   controllers: [
     AppController,
-    UserController,
-    OrderController,
-    PaymentController,
-    ZoneController,
-    PickController,
-    PickBoyController,
-    DeliveryController,
-    DeliveryBoyController,
-    PartnerController,
-    SupplierController,
-    TasksController,
+    NestUserController,
+    NestOrderController,
+    NestPaymentController,
+    NestRegionController,
+    NestPickController,
+    NestPickBoyController,
+    NestDeliveryController,
+    NestDeliveryBoyController,
+    NestPartnerController,
+    NestSupplierController,
+    NestTaskController,
   ],
   providers: [
     AppService,
-    UserService,
-    OrderService,
-    PaymentService,
-    ZoneService,
-    DeliveryBoyService,
-    DeliveryService,
-    PickBoyService,
-    PickService,
-    PartnerService,
-    SupplierService,
-    TasksService,
+    NestUserService,
+    NestOrderService,
+    NestPaymentService,
+    NestRegionService,
+    NestDeliveryBoyService,
+    NestDeliveryService,
+    NestPickBoyService,
+    NestPickService,
+    NestPartnerService,
+    NestSupplierService,
+    NestTaskService,
   ],
 })
 export class AppModule {}

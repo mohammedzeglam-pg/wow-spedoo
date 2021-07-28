@@ -1,12 +1,15 @@
-html, body {
-  direction: rtl;
-  height: 100%;
-  font-size:62.5%;
-}
-body {
+* {
   margin: 0;
   padding: 0;
+}
+html,
+body {
+  direction: rtl;
+  height: 100%;
+  font-size: 62.5%;
+}
+body {
   font-family: 'Cairo', sans-serif;
   height: 100vh;
+  padding: 2.4rem;
 }
-

@@ -1,0 +1,23 @@
+:host {
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: 1fr;
+}
+form {
+  display: grid;
+  gap: 1.6rem;
+}
+.field {
+  width: 50%;
+  text-align: center;
+  margin: auto;
+  & :hover {
+    transform: scale(1.01);
+  }
+  & .is-left {
+    pointer-events: initial;
+    cursor: pointer;
+  }
+}

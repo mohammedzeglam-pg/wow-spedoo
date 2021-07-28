@@ -39,46 +39,58 @@
     "config": {
       "tags": []
     },
-    "delivery": {
-      "tags": []
-    },
-    "delivery-boy": {
-      "tags": []
-    },
-    "dto": {
-      "tags": []
-    },
     "file-handler": {
       "tags": []
     },
     "guards": {
       "tags": []
     },
-    "order": {
+    "nest-auth": {
       "tags": []
     },
-    "partner": {
+    "nest-delivery": {
       "tags": []
     },
-    "payment": {
+    "nest-delivery-boy": {
       "tags": []
     },
-    "pick": {
+    "nest-dto": {
       "tags": []
     },
-    "pick-boy": {
+    "nest-order": {
       "tags": []
     },
-    "prisma": {
+    "nest-partner": {
       "tags": []
     },
-    "supplier": {
+    "nest-payment": {
       "tags": []
     },
-    "tasks": {
+    "nest-pick": {
       "tags": []
     },
-    "user": {
+    "nest-pick-boy": {
+      "tags": []
+    },
+    "nest-prisma": {
+      "tags": []
+    },
+    "nest-region": {
+      "tags": []
+    },
+    "nest-supplier": {
+      "tags": []
+    },
+    "nest-task": {
+      "tags": []
+    },
+    "nest-user": {
+      "tags": []
+    },
+    "ui-lib-user": {
+      "tags": []
+    },
+    "ui-src-lib-user": {
       "tags": []
     },
     "wow": {
@@ -87,9 +99,6 @@
     "wow-e2e": {
       "tags": [],
       "implicitDependencies": ["wow"]
-    },
-    "zone": {
-      "tags": []
     }
   }
 }

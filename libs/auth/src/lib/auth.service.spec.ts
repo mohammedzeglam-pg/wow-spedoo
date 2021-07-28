@@ -1,18 +1,16 @@
-import { Test } from '@nestjs/testing';
+import { TestBed } from '@angular/core/testing';
+
 import { AuthService } from './auth.service';
 
 describe('AuthService', () => {
   let service: AuthService;
 
-  beforeEach(async () => {
-    const module = await Test.createTestingModule({
-      providers: [AuthService],
-    }).compile();
-
-    service = module.get(AuthService);
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(AuthService);
   });
 
-  it('should be defined', () => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 });
