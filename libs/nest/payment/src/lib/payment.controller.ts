@@ -36,7 +36,7 @@ export class NestPaymentController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('all')
+  @Get('')
   async getAllPaymentMethod() {
     try {
       return await this.paymentService.getAllPaymentMethod();

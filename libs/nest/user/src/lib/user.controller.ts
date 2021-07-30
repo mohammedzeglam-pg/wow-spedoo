@@ -34,7 +34,11 @@ export class NestUserController {
   @Post('create')
   async createNewUser(@Body() createUserCredential: CreateUserCredential) {
     try {
-      return await this.userService.createUser(createUserCredential);
+      const user = await this.userService.createUser(createUserCredential);
+      return {
+        message: 'تم الادخال بنجاح',
+        data: user,
+      };
     } catch (err) {
       this.logger.error(err);
       return new HttpException(err.meta, HttpStatus.CONFLICT);
@@ -45,6 +49,7 @@ export class NestUserController {
   async login(
     @Body() loginCredential: LoginCredential,
   ): Promise<LoginResponse | HttpException> {
+    console.log(loginCredential);
     try {
       const user = await this.userService.login(loginCredential);
       if (!user) {
@@ -56,7 +61,10 @@ export class NestUserController {
       return new HttpException('not found', HttpStatus.NOT_FOUND);
     }
   }
-
+  @Get(':id')
+  async userInfo(@Param() id: IdTransformerDto) {
+    this.userService.userInfo(id);
+  }
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch('update/:id')

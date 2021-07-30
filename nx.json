@@ -39,6 +39,9 @@
     "config": {
       "tags": []
     },
+    "dashboard": {
+      "tags": []
+    },
     "file-handler": {
       "tags": []
     },
@@ -87,10 +90,19 @@
     "nest-user": {
       "tags": []
     },
+    "payment": {
+      "tags": []
+    },
+    "shared": {
+      "tags": []
+    },
     "ui-lib-user": {
       "tags": []
     },
     "ui-src-lib-user": {
+      "tags": []
+    },
+    "user": {
       "tags": []
     },
     "wow": {

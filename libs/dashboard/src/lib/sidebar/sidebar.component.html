@@ -1,0 +1,17 @@
+<h1 class="is-size-1 has-text-centered has-text-link py-5">Wow spedoo</h1>
+<aside class="menu py-3">
+  <ul class="menu-list" *ngFor="let prop of props">
+    <li>
+      <a [href]="prop.link" class="is-size-4">
+        <span class="icon is-normal" [innerHTML]="string2HTML(prop.icon)">
+        </span>
+        {{ prop.name }}
+      </a>
+      <ul>
+        <li *ngFor="let sub of prop.sub">
+          <a [href]="sub?.link">{{ sub?.name }}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</aside>

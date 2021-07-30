@@ -1,0 +1,16 @@
+:host {
+  // width: 20%;
+  height: 100%;
+  margin-left: 2rem;
+  box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.336);
+  // display: grid;
+  // align-items: center;
+  // justify-content: center;
+}
+a {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 1rem;
+}

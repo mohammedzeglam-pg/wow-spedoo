@@ -6,7 +6,10 @@ import * as bcrypt from 'bcrypt';
 @Injectable()
 export class NestAuthService {
   private readonly logger = new Logger(NestAuthService.name);
-  constructor(private jwtService: JwtService, private prisma: NestPrismaService) {}
+  constructor(
+    private jwtService: JwtService,
+    private prisma: NestPrismaService,
+  ) {}
 
   async login(userCredentials) {
     try {
@@ -39,7 +42,7 @@ export class NestAuthService {
           },
         },
       });
-      if (!user.is_allowed) {
+      if (!user?.is_allowed) {
         return null;
       }
       const checkPass: boolean = await this.validatePassword(user, pass);

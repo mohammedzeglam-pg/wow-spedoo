@@ -130,4 +130,11 @@ export class NestUserService {
       },
     });
   }
+
+  userInfo(id) {
+    return this.prisma.user.findUnique({
+      where: id,
+      select: this.userObject,
+    });
+  }
 }

@@ -9,7 +9,7 @@ import {
 import { ValidationMessage } from './validation-message';
 export class UpdateUserCredential {
   @IsString()
-  @MinLength(6, {
+  @MinLength(3, {
     message: ValidationMessage.minLength,
   })
   @MaxLength(20, {

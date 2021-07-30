@@ -23,5 +23,9 @@ module.exports = {
     '<rootDir>/libs/ui/lib/user',
     '<rootDir>/libs/ui/src/lib/user',
     '<rootDir>/libs/auth',
+    '<rootDir>/libs/dashboard',
+    '<rootDir>/libs/payment',
+    '<rootDir>/libs/shared',
+    '<rootDir>/libs/user',
   ],
 };

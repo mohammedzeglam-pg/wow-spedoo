@@ -110,6 +110,31 @@
         }
       }
     },
+    "dashboard": {
+      "projectType": "library",
+      "root": "libs/dashboard",
+      "sourceRoot": "libs/dashboard/src",
+      "prefix": "wow-spedoo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/dashboard"],
+          "options": {
+            "jestConfig": "libs/dashboard/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/dashboard/src/**/*.ts",
+              "libs/dashboard/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "file-handler": {
       "root": "libs/file-handler",
       "sourceRoot": "libs/file-handler/src",
@@ -446,6 +471,56 @@
         }
       }
     },
+    "payment": {
+      "projectType": "library",
+      "root": "libs/payment",
+      "sourceRoot": "libs/payment/src",
+      "prefix": "wow-spedoo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/payment"],
+          "options": {
+            "jestConfig": "libs/payment/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/payment/src/**/*.ts",
+              "libs/payment/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "shared": {
+      "projectType": "library",
+      "root": "libs/shared",
+      "sourceRoot": "libs/shared/src",
+      "prefix": "wow-spedoo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shared"],
+          "options": {
+            "jestConfig": "libs/shared/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shared/src/**/*.ts",
+              "libs/shared/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "ui-lib-user": {
       "projectType": "library",
       "root": "libs/ui/lib/user",
@@ -496,6 +571,31 @@
         }
       }
     },
+    "user": {
+      "projectType": "library",
+      "root": "libs/user",
+      "sourceRoot": "libs/user/src",
+      "prefix": "wow-spedoo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/user"],
+          "options": {
+            "jestConfig": "libs/user/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/user/src/**/*.ts",
+              "libs/user/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "wow": {
       "projectType": "application",
       "root": "apps/wow",
@@ -506,6 +606,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "outputs": ["{options.outputPath}"],
           "options": {
+            "allowedCommonJsDependencies": ["rxjs"],
             "outputPath": "dist/apps/wow",
             "index": "apps/wow/src/index.html",
             "main": "apps/wow/src/main.ts",

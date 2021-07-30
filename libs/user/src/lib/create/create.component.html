@@ -1,0 +1,166 @@
+<form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+  <div class="notification is-danger field" *ngIf="error.state">
+    {{ error.message }}
+    <button
+      class="delete is-small"
+      type="button"
+      (click)="deleteNotification()"
+    ></button>
+  </div>
+  <div class="field">
+    <label class="label">رقم الهاتف</label>
+    <div class="control">
+      <input
+        (input)="asYouType()"
+        class="input"
+        type="text"
+        formControlName="phone"
+        [ngClass]="{
+          'is-success': createForm.controls['phone']?.valid,
+          'is-danger': !createForm.controls['phone']?.valid
+        }"
+      />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">اسم المستخدم</label>
+    <div class="control">
+      <input
+        class="input"
+        type="text"
+        formControlName="username"
+        [ngClass]="{
+          'is-success': createForm.controls['username']?.valid,
+          'is-danger': !createForm.controls['username']?.valid
+        }"
+      />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">الاسم</label>
+    <div class="control">
+      <input
+        class="input"
+        type="text"
+        formControlName="firstname"
+        [ngClass]="{
+          'is-success': createForm.controls['firstname']?.valid,
+          'is-danger': !createForm.controls['firstname']?.valid
+        }"
+      />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">اللقب</label>
+    <div class="control">
+      <input
+        class="input"
+        type="text"
+        formControlName="lastname"
+        [ngClass]="{
+          'is-success': createForm.controls['lastname']?.valid,
+          'is-danger': !createForm.controls['lastname']?.valid
+        }"
+      />
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">البريد الالكتروني</label>
+    <div class="control">
+      <input
+        class="input"
+        type="text"
+        formControlName="email"
+        [ngClass]="{
+          'is-success': createForm.controls['email']?.valid,
+          'is-danger': !createForm.controls['email']?.valid
+        }"
+      />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label"> كلمة المرور </label>
+    <div class="control has-icons-left">
+      <input
+        class="input"
+        id="password"
+        type="password"
+        formControlName="password"
+        [ngClass]="{
+          'is-success': createForm.controls['password']?.valid,
+          'is-danger': !createForm.controls['password']?.valid
+        }"
+      />
+      <span class="icon is-left is-small" (click)="showPassword()">
+        <svg
+          version="1.1"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g
+            stroke-linecap="round"
+            stroke-width="1.5"
+            stroke="#323232"
+            fill="none"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M14.122 9.88c1.171 1.171 1.171 3.072 0 4.245 -1.171 1.171-3.072 1.171-4.245 0 -1.171-1.171-1.171-3.072 0-4.245 1.173-1.173 3.073-1.173 4.245 1.77636e-15"
+            ></path>
+            <path
+              d="M3 12c0-.659.152-1.311.446-1.912v0c1.515-3.097 4.863-5.088 8.554-5.088 3.691 0 7.039 1.991 8.554 5.088v0c.294.601.446 1.253.446 1.912 0 .659-.152 1.311-.446 1.912v0c-1.515 3.097-4.863 5.088-8.554 5.088 -3.691 0-7.039-1.991-8.554-5.088v0c-.294-.601-.446-1.253-.446-1.912Z"
+            ></path>
+          </g>
+          <path fill="none" d="M0 0h24v24h-24v-24Z"></path>
+        </svg>
+      </span>
+    </div>
+  </div>
+  <div class="field">
+    <div class="select is-primary is-medium">
+      <select formControlName="role">
+        <option
+          *ngFor="let role of roles; let i = index"
+          [value]="roles[i].key"
+        >
+          {{ roles[i].value }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="field">
+    <div class="control">
+      <button
+        class="button is-link is-outlined"
+        type="submit"
+        [ngClass]="{ 'is-loading': isLoading }"
+        [disabled]="!createForm.valid"
+      >
+        انشاء
+      </button>
+    </div>
+  </div>
+</form>
+<div class="modal" [ngClass]="{ 'is-active': modalData.state }">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="card">
+      <div class="card-content">
+        <div class="content is-size-3 has-text-centered">
+          {{ modalData.message }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button
+    class="modal-close is-large"
+    aria-label="close"
+    (click)="modalData.state = false"
+  ></button>
+</div>

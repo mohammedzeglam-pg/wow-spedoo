@@ -1,0 +1,19 @@
+:host {
+  margin: 0.8rem;
+}
+.navbar {
+  height: 80%;
+  perspective: 1px;
+  border-radius: 1.1rem;
+}
+.navbar-end {
+  align-items: center;
+}
+circle {
+  fill: #e5e5e5;
+  stroke: #3f37c9;
+}
+path {
+  stroke: #3f37c9;
+  fill: #e5e5e5;
+}

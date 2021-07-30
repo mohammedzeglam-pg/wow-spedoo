@@ -19,7 +19,7 @@ enum Role {
 }
 export class CreateUserCredential {
   @IsString()
-  @MinLength(6, {
+  @MinLength(3, {
     message: ValidationMessage.minLength,
   })
   @MaxLength(20, {

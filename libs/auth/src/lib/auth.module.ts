@@ -1,13 +1,36 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Route } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
-export const authRoutes: Route[] = [];
 import { HttpClientModule } from '@angular/common/http';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthService } from './auth.service';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+const routes: Routes = [
+  {
+    // path: '',
+    path: 'login',
+    component: LoginComponent,
+  },
+];
 @NgModule({
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, HttpClientModule],
+  imports: [
+    RouterModule.forChild(routes),
+    CommonModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+  ],
+  providers: [
+    JwtHelperService,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+  ],
   declarations: [LoginComponent],
-  exports: [LoginComponent],
 })
-export class AuthModule {}
+export class AuthModule {
+  static forRoot(): ModuleWithProviders<AuthModule> {
+    return {
+      ngModule: AuthModule,
+      providers: [AuthService],
+    };
+  }
+}
