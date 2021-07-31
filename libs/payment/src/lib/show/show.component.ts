@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { PaymentResponse } from '@wow-spedoo/api-interfaces';
 @Component({
   selector: 'wow-spedoo-show',
   templateUrl: './show.component.html',
@@ -16,4 +16,23 @@ export class ShowComponent {
       name: 'يستلم اموال',
     },
   ];
+  content: PaymentResponse[] = [];
+  changeTake(eve: EventTarget | null) {
+    const take = parseInt((eve as HTMLInputElement)?.value);
+    if (take >= 0) {
+      this.take = take;
+    } else {
+      // this.fetchUserData();
+    }
+  }
+
+  changePage(eve: { name: string; value: number }) {
+    if (eve.name === 'page') {
+      this.page = eve.value;
+      // this.fetchUserData();
+    }
+  }
+  deletePayment(id: number) {
+    console.log(id);
+  }
 }

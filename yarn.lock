@@ -3662,6 +3662,11 @@
   "resolved" "https://registry.npmjs.org/builtins/-/builtins-1.0.3.tgz"
   "version" "1.0.3"
 
+"bulma-pageloader@^0.3.0":
+  "integrity" "sha512-lbahiqhBCov5AYdziHFnC5/JOhCrJWFTpdRiAkwW49IM/mf0whCWHVe8MuejZFu2PEs1mtH8Gnz8exEks4Q+7g=="
+  "resolved" "https://registry.npmjs.org/bulma-pageloader/-/bulma-pageloader-0.3.0.tgz"
+  "version" "0.3.0"
+
 "bulma@^0.9.3":
   "integrity" "sha512-0d7GNW1PY4ud8TWxdNcP6Cc8Bu7MxcntD/RRLGWuiw/s0a9P+XlH/6QoOIrmbj6o8WWJzJYhytiu9nFjTszk1g=="
   "resolved" "https://registry.npmjs.org/bulma/-/bulma-0.9.3.tgz"

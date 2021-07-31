@@ -8,8 +8,8 @@ import { AuthService } from './auth.service';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 const routes: Routes = [
   {
-    // path: '',
-    path: 'login',
+    path: '',
+    // path: 'login',
     component: LoginComponent,
   },
 ];

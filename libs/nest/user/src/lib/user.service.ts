@@ -19,6 +19,7 @@ export class NestUserService {
     phone: true,
     lastname: true,
     email: true,
+    is_allowed: true,
   };
 
   async createUser(user) {
@@ -64,39 +65,28 @@ export class NestUserService {
   }
   async getManyPartner(pagination: PaginationDto) {
     const search = {
-      partner: {
-        isNot: null,
-      },
+      role: 'PARTNER',
     };
     return this.fetchUserData(search, pagination);
   }
 
+  async getManyUsers(pagination: PaginationDto) {
+    const search = {};
+    return this.fetchUserData(search, pagination);
+  }
   async getManyPickBoy(pagination: PaginationDto) {
     const search = {
-      pick_boy: {
-        isNot: null,
-      },
+      role: 'PICKER',
     };
 
     return this.fetchUserData(search, pagination);
   }
 
-  //TODO: bug in prisma
   async getManyDeliveriesBoy(pagination: PaginationDto) {
-    const { take, skip } = pagination;
-    const data = await this.prisma.deliveryBoy.findMany({
-      select: { user: { select: this.userObject } },
-      take: take,
-      skip: skip * take,
-    });
-    const users = [];
-    for (const el of data) {
-      const { user } = el;
-      users.push(user);
-    }
-    return {
-      data: users,
+    const search = {
+      role: 'DELIVERY',
     };
+    return this.fetchUserData(search, pagination);
   }
 
   private async fetchUserData(search, pagination) {
@@ -112,12 +102,10 @@ export class NestUserService {
     };
   }
 
-  async deleteUser(id: number) {
+  async deleteUser(id) {
     return this.prisma.user.delete({
       select: this.userObject,
-      where: {
-        id: id,
-      },
+      where: id,
     });
   }
 

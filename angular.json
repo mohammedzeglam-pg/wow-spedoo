@@ -616,6 +616,7 @@
             "assets": ["apps/wow/src/favicon.ico", "apps/wow/src/assets"],
             "styles": [
               "./node_modules/bulma/css/bulma-rtl.min.css",
+              "./node_modules/bulma-pageloader/dist/css/bulma-pageloader.min.css",
               "apps/wow/src/styles.scss"
             ],
             "scripts": []

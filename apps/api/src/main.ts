@@ -34,9 +34,12 @@ async function bootstrap() {
     },
     attachFieldsToBody: true,
   });
+  // TODO: not mind to play with it
+  // TODO: no do that
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
+      whitelist: true,
     }),
   );
   app.setGlobalPrefix(globalPrefix);

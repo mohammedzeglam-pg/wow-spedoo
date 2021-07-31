@@ -1,12 +1,4 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <div class="notification is-danger field" *ngIf="error.state">
-    {{ error.message }}
-    <button
-      class="delete is-small"
-      type="button"
-      (click)="deleteNotification()"
-    ></button>
-  </div>
   <div class="field">
     <label class="label">رقم الهاتف</label>
     <div class="control has-icons-right">
@@ -115,7 +107,6 @@
       <button
         class="button is-link is-outlined"
         type="submit"
-        [ngClass]="{ 'is-loading': isLoading }"
         [disabled]="!loginForm.valid"
       >
         تسجيل الدخول

@@ -10,7 +10,6 @@ export class TableComponent {
   @Output() changePagination = new EventEmitter<Eve>();
   @Input() page = 1;
   @Input() tableHeader: TableHeader[] = [];
-
   nextPage(): void {
     this.page++;
     this.changePagination.emit({
@@ -20,7 +19,7 @@ export class TableComponent {
   }
 
   prevPage(): void {
-    if (this.page <= 0) {
+    if (this.page <= 1) {
       return;
     }
     this.page--;

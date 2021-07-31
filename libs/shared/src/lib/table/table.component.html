@@ -5,8 +5,12 @@
         <th *ngFor="let head of tableHeader">
           <abbr title="{{ head.title }}">{{ head.name }}</abbr>
         </th>
+        <th>
+          <ng-content select="[header]"></ng-content>
+        </th>
       </tr>
     </thead>
+    <ng-content select="[content]"></ng-content>
   </table>
   <nav
     class="pagination is-small is-rounded"
@@ -58,8 +62,7 @@
           </svg>
         </span>
       </li>
-
-      <!-- <input class="input" type="number" [value]="take" /> -->
+      <ng-content selcet="[take]"></ng-content>
     </ul>
   </nav>
 </div>

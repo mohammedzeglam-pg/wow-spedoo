@@ -1,0 +1,16 @@
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1rem auto;
+}
+.input {
+  position: absolute;
+  left: 2rem;
+  width: 8%;
+}
+.icon {
+  pointer-events: initial;
+  cursor: pointer;
+  margin: auto 1.2rem;
+}

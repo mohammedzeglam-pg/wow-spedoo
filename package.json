@@ -51,6 +51,7 @@
     "@types/google-libphonenumber": "^7.4.21",
     "bcrypt": "^5.0.1",
     "bulma": "^0.9.3",
+    "bulma-pageloader": "^0.3.0",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "fastify-compress": "^3.6.0",

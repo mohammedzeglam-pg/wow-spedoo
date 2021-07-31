@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AsYouTypeFormatter } from 'google-libphonenumber';
-import { catchError } from 'rxjs/internal/operators/catchError';
 import { map } from 'rxjs/internal/operators/map';
 import { finalize } from 'rxjs/operators';
 import { phoneValidator } from '../phone.validator';
 import { UserService } from '../user.service';
 import { SubSink } from 'subsink';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserResponse } from '@wow-spedoo/api-interfaces';
 @Component({
   selector: 'wow-spedoo-edit',
   templateUrl: './edit.component.html',
@@ -15,69 +16,55 @@ import { SubSink } from 'subsink';
 })
 export class EditComponent implements OnInit, OnDestroy {
   sub = new SubSink();
-  isLoading = false;
   modalData = {
-    message: '',
-    state: false,
-  };
-  error = {
     message: '',
     state: false,
   };
 
   editForm = this.fb.group({
     phone: ['', [phoneValidator(), Validators.required]],
-    password: [
-      '',
-      [
-        Validators.pattern(
-          /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
-        ),
-      ],
-    ],
     username: [''],
     lastname: [''],
     firstname: [''],
     email: ['', [Validators.email]],
-    role: [''],
+    is_allowed: [''],
   });
   constructor(
+    private router: Router,
     private userService: UserService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
   ) {}
   ngOnInit() {
     const id = parseInt(this.route.snapshot.paramMap.get('id') as string);
-    this.sub.add(this.userService.userInfo(id).subscribe());
+    this.sub.add(
+      this.userService
+        .userInfo(id)
+        .pipe(map((data) => this.fillTable(data)))
+        .subscribe(),
+    );
+  }
+  fillTable(data: UserResponse) {
+    this.editForm.patchValue(data);
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
   onSubmit() {
-    this.isLoading = true;
-    this.userService
-      .createUser(this.editForm.value)
-      .pipe(
-        map((data) => this.onSuccess(data)),
-        catchError(async (err) => this.errorHandler(err)),
-        finalize(() => (this.isLoading = false)),
-      )
-      .subscribe();
+    const id = parseInt(this.route.snapshot.paramMap.get('id') as string);
+    this.sub.add(
+      this.userService
+        .updateUser(id, this.editForm.value)
+        .pipe(map((data) => this.onSuccess(data)))
+        .subscribe(),
+    );
   }
-  errorHandler({ error }: { error: any }) {
-    let msg = '';
-    for (const err of error.message) {
-      msg += err + '\n';
-    }
-    this.error.message = msg;
-    this.error.state = true;
-  }
-  onSuccess(data: any): any {
+  onSuccess(data: any): void {
     this.modalData = {
       message: data.message,
       state: true,
     };
-    this.editForm.reset();
+    this.router.navigate(['/dashboard/user/']);
   }
 
   asYouType() {
@@ -94,8 +81,5 @@ export class EditComponent implements OnInit, OnDestroy {
   showPassword() {
     const pass = document.getElementById('password') as HTMLInputElement;
     pass.type = pass?.type === 'password' ? 'text' : 'password';
-  }
-  deleteNotification() {
-    this.error.state = false;
   }
 }

@@ -3,21 +3,15 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AsYouTypeFormatter } from 'google-libphonenumber';
 import { AuthService, JWT_NAME } from '../auth.service';
 import { phoneValidator } from './phone.validator';
-import { catchError, finalize, map } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { LoginCredential } from '@wow-spedoo/api-interfaces';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { map } from 'rxjs/internal/operators/map';
 @Component({
   selector: 'wow-spedoo-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  error = {
-    message: '',
-    state: false,
-  };
-  isLoading = false;
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
@@ -47,23 +41,10 @@ export class LoginComponent {
     }
   }
   onSubmit() {
-    this.error.state = false;
-    this.isLoading = true;
     this.authService
       .login(this.loginForm.value)
-      .pipe(
-        map((data) => this.OnSuccess(data)),
-        catchError((err) => of(this.errorHandler(err))),
-        finalize(() => (this.isLoading = false)),
-      )
+      .pipe(map((data) => this.OnSuccess(data)))
       .subscribe();
-  }
-
-  errorHandler({ error: err }: { error: any }) {
-    this.error = {
-      message: err?.message,
-      state: true,
-    };
   }
 
   OnSuccess(data: LoginCredential) {
@@ -74,8 +55,5 @@ export class LoginComponent {
   showPassword() {
     const pass = document.getElementById('password') as HTMLInputElement;
     pass.type = pass?.type === 'password' ? 'text' : 'password';
-  }
-  deleteNotification() {
-    this.error.state = false;
   }
 }

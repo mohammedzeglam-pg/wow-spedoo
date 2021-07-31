@@ -18,3 +18,12 @@ export interface LoginResponse {
   is_allowed: boolean;
   access_token: string;
 }
+
+export interface UserResponse {
+  id: number;
+  username: string;
+  firstname: string;
+  phone: string;
+  lastname: string;
+  is_allowed: string;
+}

@@ -1,0 +1,12 @@
+<div
+  class="notification field"
+  *ngIf="notify.state"
+  [ngClass]="{ 'is-danger': notify.isDanger, 'is-primary': notify.isPrimary }"
+>
+  {{ notify.message }}
+  <button
+    class="delete is-small"
+    type="button"
+    (click)="deleteNotification()"
+  ></button>
+</div>

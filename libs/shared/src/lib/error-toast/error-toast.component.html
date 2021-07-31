@@ -1,0 +1,4 @@
+<div class="notification" *ngIf="error.state" [ngClass]="error.type">
+  <button class="delete" (click)="delete()"></button>
+  {{ error.message }}
+</div>

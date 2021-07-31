@@ -49,7 +49,6 @@ export class NestUserController {
   async login(
     @Body() loginCredential: LoginCredential,
   ): Promise<LoginResponse | HttpException> {
-    console.log(loginCredential);
     try {
       const user = await this.userService.login(loginCredential);
       if (!user) {
@@ -62,8 +61,19 @@ export class NestUserController {
     }
   }
   @Get(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async userInfo(@Param() id: IdTransformerDto) {
-    this.userService.userInfo(id);
+    try {
+      const user = await this.userService.userInfo(id);
+      if (user) {
+        return user;
+      }
+      throw new Error(`${id} غير موجود`);
+    } catch (err) {
+      this.logger.log(err);
+      return new HttpException('not found', HttpStatus.NOT_FOUND);
+    }
   }
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -74,7 +84,11 @@ export class NestUserController {
   ) {
     try {
       const { id } = param;
-      return await this.userService.updateUser(id, updateUser);
+      const user = await this.userService.updateUser(id, updateUser);
+      return {
+        message: 'تم التعديل بنجاح',
+        data: user,
+      };
     } catch (err) {
       this.logger.error(err);
       return new HttpException(err.meta, HttpStatus.CONFLICT);
@@ -83,12 +97,15 @@ export class NestUserController {
 
   @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Delete('delete/:id')
-  async deleteUser(@Param() param: IdTransformerDto) {
+  @Delete(':id')
+  async deleteUser(@Param() id: IdTransformerDto) {
     try {
-      console.log(param);
-      const { id } = param;
-      return await this.userService.deleteUser(id);
+      const deletedUser = await this.userService.deleteUser(id);
+      if (deletedUser) {
+        return {
+          message: 'deleted successfully',
+        };
+      }
     } catch (err) {
       this.logger.error(err);
       return new HttpException(
@@ -103,6 +120,17 @@ export class NestUserController {
 
   // fetch user based on role
 
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('')
+  async getManyUsers(@Query() paginationDto: PaginationDto) {
+    try {
+      return await this.userService.getManyUsers(paginationDto);
+    } catch (err) {
+      this.logger.error(err);
+      return new HttpException(err.meta, HttpStatus.CONFLICT);
+    }
+  }
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get('partner')

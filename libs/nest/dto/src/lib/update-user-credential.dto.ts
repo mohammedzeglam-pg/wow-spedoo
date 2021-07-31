@@ -5,6 +5,7 @@ import {
   IsEmail,
   IsPhoneNumber,
   IsOptional,
+  IsBoolean,
 } from 'class-validator';
 import { ValidationMessage } from './validation-message';
 export class UpdateUserCredential {
@@ -36,4 +37,7 @@ export class UpdateUserCredential {
   )
   @IsOptional()
   email?: string;
+  @IsBoolean()
+  @IsOptional()
+  is_allowed?: boolean;
 }

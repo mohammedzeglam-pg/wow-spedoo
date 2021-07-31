@@ -3,14 +3,13 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AsYouTypeFormatter } from 'google-libphonenumber';
 import { UserService } from '../user.service';
 import { phoneValidator } from '../phone.validator';
-import { catchError, finalize, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'wow-spedoo-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.scss'],
 })
 export class CreateComponent {
-  isLoading = false;
   modalData = {
     message: '',
     state: false,
@@ -40,10 +39,6 @@ export class CreateComponent {
       value: 'شريك',
     },
   ];
-  error = {
-    message: '',
-    state: false,
-  };
 
   constructor(private userService: UserService, private fb: FormBuilder) {}
   createForm = this.fb.group({
@@ -65,23 +60,10 @@ export class CreateComponent {
   });
 
   onSubmit() {
-    this.isLoading = true;
     this.userService
       .createUser(this.createForm.value)
-      .pipe(
-        map((data) => this.onSuccess(data)),
-        catchError(async (err) => this.errorHandler(err)),
-        finalize(() => (this.isLoading = false)),
-      )
+      .pipe(map((data) => this.onSuccess(data)))
       .subscribe();
-  }
-  errorHandler({ error }: { error: any }) {
-    let msg = '';
-    for (const err of error.message) {
-      msg += err + '\n';
-    }
-    this.error.message = msg;
-    this.error.state = true;
   }
   onSuccess(data: any): any {
     this.modalData = {
@@ -105,8 +87,5 @@ export class CreateComponent {
   showPassword() {
     const pass = document.getElementById('password') as HTMLInputElement;
     pass.type = pass?.type === 'password' ? 'text' : 'password';
-  }
-  deleteNotification() {
-    this.error.state = false;
   }
 }
