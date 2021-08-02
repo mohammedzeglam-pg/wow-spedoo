@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 export const BodyMultipart = createParamDecorator(
   (data, ctx: ExecutionContext) => {
-    const { body } = ctx.switchToHttp().getRequest();
+    const { body, headers } = ctx.switchToHttp().getRequest();
     const result = {};
     if (typeof data === 'string') {
       return body[data].value;
@@ -11,7 +11,13 @@ export const BodyMultipart = createParamDecorator(
       }
     } else {
       for (const param in body) {
-        result[param] = body[param]?.value;
+        if (headers['content-type'] === 'application/json') {
+          result[param] = body[param];
+        } else {
+          if (body[param]?.value) {
+            result[param] = body[param]?.value;
+          }
+        }
       }
     }
     return result;

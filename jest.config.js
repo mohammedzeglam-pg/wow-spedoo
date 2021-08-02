@@ -27,5 +27,6 @@ module.exports = {
     '<rootDir>/libs/payment',
     '<rootDir>/libs/shared',
     '<rootDir>/libs/user',
+    '<rootDir>/libs/region',
   ],
 };

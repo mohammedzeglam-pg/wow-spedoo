@@ -37,6 +37,7 @@
       "@wow-spedoo/nest/task": ["libs/nest/task/src/index.ts"],
       "@wow-spedoo/nest/user": ["libs/nest/user/src/index.ts"],
       "@wow-spedoo/payment": ["libs/payment/src/index.ts"],
+      "@wow-spedoo/region": ["libs/region/src/index.ts"],
       "@wow-spedoo/shared": ["libs/shared/src/index.ts"],
       "@wow-spedoo/ui/lib/user": ["libs/ui/lib/user/src/index.ts"],
       "@wow-spedoo/ui/src/lib/user": ["libs/ui/src/lib/user/src/index.ts"],

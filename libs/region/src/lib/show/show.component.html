@@ -1,0 +1,72 @@
+<div class="modal is-active" [ngClass]="{ 'is-active': modal.city }">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <wow-spedoo-add-city (added)="modal.city = false"></wow-spedoo-add-city>
+  </div>
+  <button
+    class="modal-close is-large"
+    type="button"
+    (click)="onCity(false)"
+  ></button>
+</div>
+
+<div class="modal" [ngClass]="{ 'is-active': modal.zone }">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <wow-spedoo-add-zone
+      (added)="modal.zone = false"
+      [cityData]="citySubject"
+    ></wow-spedoo-add-zone>
+  </div>
+  <button
+    class="modal-close is-large"
+    aria-label="close"
+    (click)="onZone(false)"
+    type="button"
+  ></button>
+</div>
+<wow-spedoo-table
+  [page]="page"
+  [tableHeader]="tableHeader"
+  (changePagination)="changePage($event)"
+>
+  <input
+    class="input"
+    type="number"
+    take
+    [value]="take"
+    (change)="changeTake($event.target)"
+  />
+  <tbody content>
+    <tr *ngFor="let prop of content">
+      <td>{{ prop.name }}</td>
+      <td>{{ prop.zoneName }}</td>
+      <td>{{ prop.price }}</td>
+    </tr>
+  </tbody>
+
+  <tfoot footer>
+    <tr>
+      <td>
+        <div class="buttons">
+          <button
+            class="button is-link is-light"
+            (click)="onCity(true)"
+            type="button"
+          >
+            اضافة مدينة
+          </button>
+          <button
+            class="button is-link is-light"
+            (click)="onZone(true)"
+            type="button"
+          >
+            اضافة منطقة
+          </button>
+        </div>
+      </td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tfoot>
+</wow-spedoo-table>

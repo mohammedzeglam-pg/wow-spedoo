@@ -36,10 +36,12 @@ async function bootstrap() {
   });
   // TODO: not mind to play with it
   // TODO: no do that
+  // TODO: do not miss that
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
       whitelist: true,
+      validateCustomDecorators: true,
     }),
   );
   app.setGlobalPrefix(globalPrefix);

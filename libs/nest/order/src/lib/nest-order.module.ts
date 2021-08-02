@@ -7,6 +7,5 @@ import { NestPrismaModule } from '@wow-spedoo/nest/prisma';
   imports: [NestPrismaModule],
   controllers: [NestOrderController],
   providers: [NestOrderService],
-  exports: [NestOrderService],
 })
 export class NestOrderModule {}

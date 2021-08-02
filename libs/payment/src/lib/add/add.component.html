@@ -1,1 +1,125 @@
-<p>add works!</p>
+<form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+  <div class="field">
+    <label class="label">الاسم</label>
+    <div class="control">
+      <input
+        class="input"
+        type="text"
+        formControlName="name"
+        [ngClass]="{
+          'is-success': paymentForm.controls['name']?.valid,
+          'is-danger': !paymentForm.controls['name']?.valid
+        }"
+      />
+    </div>
+  </div>
+  <div class="field">
+    <div class="control">
+      <div class="b-checkbox is-primary is-circular">
+        <input
+          id="checkbox"
+          class="styled"
+          type="checkbox"
+          formControlName="take_money"
+        />
+        <label for="checkbox"> هل يستلم أموال </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="file is-primary">
+      <label class="file-label">
+        <input
+          class="file-input"
+          type="file"
+          accept="image/x-png,image/gif,image/jpeg"
+          (change)="onFileChanged($event)"
+        />
+        <span class="file-cta">
+          <span class="file-label"> ادراج صورة... </span>
+          <span class="file-icon">
+            <svg
+              id="Layer_3"
+              data-name="Layer 3"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M19.61316,7.21527A8.98817,8.98817,0,0,1,7.21527,19.61316"
+                fill="none"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+              />
+              <path
+                d="M14,3.23071a8.93518,8.93518,0,0,1,2.78473,1.15613"
+                fill="none"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+              />
+              <path
+                d="M3.23071,14a8.93518,8.93518,0,0,0,1.15613,2.78473"
+                fill="none"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+              />
+              <path
+                d="M10,3.23071A8.93518,8.93518,0,0,0,7.21527,4.38684"
+                fill="none"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+              />
+              <path
+                d="M4.38684,7.21527A8.93518,8.93518,0,0,0,3.23071,10"
+                fill="none"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+              />
+              <path
+                d="M12,9v6"
+                fill="none"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+              />
+              <path
+                d="M9.5,11.5,12,9l2.5,2.5"
+                fill="none"
+                stroke="#fff"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="1.5"
+              />
+              <path d="M0,0H24V24H0Z" fill="none" />
+            </svg>
+          </span>
+        </span>
+        <span class="file-name">
+          {{ fileName }}
+        </span>
+      </label>
+    </div>
+  </div>
+  <div class="field">
+    <div class="control">
+      <button
+        class="button is-link is-outlined"
+        type="submit"
+        [disabled]="!paymentForm.valid"
+      >
+        انشاء
+      </button>
+    </div>
+  </div>
+</form>

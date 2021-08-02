@@ -61,7 +61,6 @@ export class NestOrderController {
   @UseGuards(ApiKeyAuthGuard)
   @Get('pricing')
   async getPricing(@Query() location: LocationDto) {
-    console.log(location);
     const price = await this.orderService.getPricing(location);
     if (!price) {
       return new HttpException('حاليا غير متوفر', HttpStatus.NOT_FOUND);

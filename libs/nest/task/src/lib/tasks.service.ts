@@ -202,7 +202,7 @@ export class NestTaskService {
       },
     });
     if (Object.keys(check).length) {
-      const img_name = await saveFile(file);
+      const img_name = await saveFile(file, 'image');
       const product = await this.prisma.product.update({
         select: {
           id: true,
@@ -360,7 +360,7 @@ export class NestTaskService {
       },
     });
     if (delivery.orders.length) {
-      const img_name = await saveFile(file);
+      const img_name = await saveFile(file, 'image');
       const order = await this.prisma.order.update({
         where: {
           // shame

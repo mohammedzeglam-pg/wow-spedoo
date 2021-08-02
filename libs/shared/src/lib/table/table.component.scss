@@ -1,16 +1,13 @@
-:host {
-  font-size: 1.6rem;
-}
 .card {
-  border-radius: 2rem;
+  border-radius: 1.25rem;
 }
 li {
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2.25rem;
+  height: 2.25rem;
   border-color: #8ecae6;
   & .pagination-link {
-    width: 2.8rem;
-    height: 2.8rem;
+    width: 2.25rem;
+    height: 2.25rem;
     color: #e5e5e5;
     background: #3e37c8;
   }
@@ -29,6 +26,6 @@ li {
 }
 .input {
   position: absolute;
-  left: 2rem;
+  left: 1.25rem;
   width: 8%;
 }

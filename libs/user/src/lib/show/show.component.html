@@ -4,16 +4,17 @@
   (changePagination)="changePage($event)"
   [tableHeader]="tableHeader"
 >
-  <header class="table-header" header>
-    <div class="select">
-      <select (click)="changeRole($event.target)">
-        <option *ngFor="let option of userFetch" [value]="option.link">
-          {{ option.name }}
-        </option>
-      </select>
-    </div>
-  </header>
-
+  <tr header>
+    <header class="table-header">
+      <div class="select">
+        <select (click)="changeRole($event.target)">
+          <option *ngFor="let option of userFetch" [value]="option.link">
+            {{ option.name }}
+          </option>
+        </select>
+      </div>
+    </header>
+  </tr>
   <tbody *ngFor="let user of content" content>
     <tr>
       <td>{{ user.username }}</td>

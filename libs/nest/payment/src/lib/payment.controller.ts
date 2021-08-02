@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { NestPaymentService } from './payment.service';
 import { JwtAuthGuard, Role, Roles, RolesGuard } from '@wow-spedoo/nest/auth';
@@ -17,7 +18,7 @@ import {
   IdTransformerDto,
   UpdatePaymentDto,
 } from '@wow-spedoo/nest/dto';
-
+import { BodyMultipart, FileHandler } from '@wow-spedoo/file-handler';
 @Controller('payment')
 export class NestPaymentController {
   private readonly logger = new Logger(NestPaymentController.name);
@@ -25,10 +26,13 @@ export class NestPaymentController {
 
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Post('add')
-  async addPaymentMethod(@Body() addPaymentDto: AddPaymentDto) {
+  @Post('create')
+  async addPaymentMethod(
+    @FileHandler('image') file,
+    @BodyMultipart() addPaymentDto: AddPaymentDto,
+  ) {
     try {
-      return await this.paymentService.addPaymentMethod(addPaymentDto);
+      return await this.paymentService.addPaymentMethod(addPaymentDto, file);
     } catch (err) {
       this.logger.error(err);
       throw new HttpException({ error: err.code }, HttpStatus.CONFLICT);

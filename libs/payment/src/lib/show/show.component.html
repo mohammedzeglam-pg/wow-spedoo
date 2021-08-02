@@ -5,43 +5,16 @@
 >
   <tbody *ngFor="let payment of content" content>
     <tr>
-      <td>payment.name</td>
-      <td>payment.image_url</td>
-      <td>payment.take_money</td>
       <td>
-        <span class="icon" (click)="deletePayment(payment.id)">
-          <svg
-            version="1.1"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-          >
-            <g fill="none">
-              <path d="M0 0h24v24h-24Z"></path>
-              <path
-                stroke="#323232"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1.5"
-                d="M14.83 9.17l-5.66 5.66"
-              ></path>
-              <path
-                stroke="#323232"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1.5"
-                d="M14.83 14.83l-5.66-5.66"
-              ></path>
-              <path
-                stroke="#323232"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="1.5"
-                d="M12 21v0c-4.971 0-9-4.029-9-9v0c0-4.971 4.029-9 9-9v0c4.971 0 9 4.029 9 9v0c0 4.971-4.029 9-9 9Z"
-              ></path>
-            </g>
-          </svg>
-        </span>
+        <abbr [title]="payment.name">
+          <figure class="image is-48x48">
+            <img [src]="'http://127.0.0.1:3333/api/image/' + payment.img_url" />
+          </figure>
+        </abbr>
+      </td>
+      <!-- <td></td> -->
+      <td>{{ payment.take_money }}</td>
+      <td>
         <span
           class="icon"
           [routerLink]="['/dashboard/payment/edit/' + payment.id]"

@@ -1,0 +1,30 @@
+:host {
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: 1fr;
+}
+form {
+  display: grid;
+  gap: 1rem;
+}
+.field {
+  width: 50%;
+  text-align: center;
+  margin: auto;
+  & :hover {
+    transform: scale(1.01);
+  }
+  & .is-left {
+    pointer-events: initial;
+    cursor: pointer;
+  }
+}
+.file,
+.file-label {
+  justify-content: center;
+}
+.file-name {
+  border-width: 1px 0 1px 1px;
+}

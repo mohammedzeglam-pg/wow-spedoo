@@ -25,12 +25,16 @@ export class NestRegionService {
   async getAllZones() {
     return this.prisma.city.findMany({
       select: {
+        id: true,
         name: true,
         zones: {
           select: {
+            id: true,
             name: true,
+            price: true,
             locations: {
               select: {
+                id: true,
                 lat: true,
                 lon: true,
               },

@@ -1,8 +1,4 @@
 :host {
-  font-size: 1rem;
-}
-
-:host {
   height: 100%;
   display: grid;
   align-items: center;
@@ -11,7 +7,7 @@
 }
 form {
   display: grid;
-  gap: 1.6rem;
+  gap: 1rem;
 }
 .field {
   width: 50%;

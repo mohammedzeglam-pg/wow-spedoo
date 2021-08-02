@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { PaymentMethodResponse } from '@wow-spedoo/api-interfaces';
 import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
@@ -8,7 +9,15 @@ import { Observable } from 'rxjs/internal/Observable';
 export class PaymentService {
   constructor(private httpClient: HttpClient) {}
 
-  getAllPayemnt(): Observable<any> {
-    return this.httpClient.get('/api/payment');
+  getPayemntMethods(pagination: {
+    take: number;
+    skip: number;
+  }): Observable<PaymentMethodResponse[]> {
+    return this.httpClient.get<PaymentMethodResponse[]>('/api/payment', {
+      params: pagination,
+    });
+  }
+  createPaymentMethod(paymentData: FormData) {
+    return this.httpClient.post('/api/payment/create', paymentData);
   }
 }

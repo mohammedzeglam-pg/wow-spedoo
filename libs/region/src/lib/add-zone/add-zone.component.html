@@ -1,0 +1,57 @@
+<div class="card">
+  <div class="card-content">
+    <div class="content">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label class="label">الاسم</label>
+          <div class="control">
+            <input
+              class="input"
+              type="text"
+              formControlName="name"
+              [ngClass]="{
+                'is-success': form.controls['name']?.valid,
+                'is-danger': !form.controls['name']?.valid
+              }"
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">التسعير</label>
+          <div class="control">
+            <input
+              class="input"
+              type="number"
+              formControlName="price"
+              [ngClass]="{
+                'is-success': form.controls['price']?.valid,
+                'is-danger': !form.controls['price']?.valid
+              }"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <div class="select is-primary is-medium">
+            <select formControlName="cityId">
+              <option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <button
+              class="button is-link is-outlined"
+              type="submit"
+              [disabled]="!form.valid"
+            >
+              انشاء
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

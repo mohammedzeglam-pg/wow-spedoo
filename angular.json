@@ -496,6 +496,31 @@
         }
       }
     },
+    "region": {
+      "projectType": "library",
+      "root": "libs/region",
+      "sourceRoot": "libs/region/src",
+      "prefix": "wow-spedoo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/region"],
+          "options": {
+            "jestConfig": "libs/region/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/region/src/**/*.ts",
+              "libs/region/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "shared": {
       "projectType": "library",
       "root": "libs/shared",
@@ -617,6 +642,7 @@
             "styles": [
               "./node_modules/bulma/css/bulma-rtl.min.css",
               "./node_modules/bulma-pageloader/dist/css/bulma-pageloader.min.css",
+              "./node_modules/cool-checkboxes-for-bulma.io/dist/css/bulma-radio-checkbox.min.css",
               "apps/wow/src/styles.scss"
             ],
             "scripts": []

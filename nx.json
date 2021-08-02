@@ -93,6 +93,9 @@
     "payment": {
       "tags": []
     },
+    "region": {
+      "tags": []
+    },
     "shared": {
       "tags": []
     },

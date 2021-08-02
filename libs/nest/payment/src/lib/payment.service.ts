@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { saveFile } from '@wow-spedoo/file-handler';
 import { NestPrismaService } from '@wow-spedoo/nest/prisma';
 
 @Injectable()
@@ -10,10 +11,14 @@ export class NestPaymentService {
     take_money: true,
     img_url: true,
   };
-  async addPaymentMethod(addPaymentDto: { name: string; take_money: boolean }) {
+  async addPaymentMethod(
+    addPaymentDto: { name: string; take_money: boolean },
+    file: { file; filename },
+  ) {
+    const img_url = await saveFile(file, 'image');
     return this.prisma.paymentMethod.create({
       select: this.payment,
-      data: addPaymentDto,
+      data: { ...addPaymentDto, img_url: img_url },
     });
   }
   async getAllPaymentMethod() {

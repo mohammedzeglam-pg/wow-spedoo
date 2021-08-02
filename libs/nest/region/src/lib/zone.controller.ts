@@ -27,7 +27,7 @@ export class NestRegionController {
   // city
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Post('city/add')
+  @Post('city')
   async addCity(@Body('name') name: string) {
     try {
       return await this.zoneService.addCity(name);
@@ -36,9 +36,10 @@ export class NestRegionController {
       throw new HttpException(err.code, HttpStatus.CONFLICT);
     }
   }
+
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Patch('city/edit/:id')
+  @Patch('city/:id')
   async updateCity(@Param() id: IdTransformerDto, @Body('name') name: string) {
     try {
       return await this.zoneService.updateCityName(id, name);
@@ -50,7 +51,7 @@ export class NestRegionController {
 
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Post('regoin/add')
+  @Post('regoin')
   async addZone(@Body() addZoneDto: AddZoneDto) {
     try {
       return await this.zoneService.addZone(addZoneDto);
@@ -62,7 +63,7 @@ export class NestRegionController {
 
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Patch('regoin/edit/:id')
+  @Patch('regoin/:id')
   async updateZone(
     @Param() id: IdTransformerDto,
     @Body() updateZoneDto: UpdateZoneDto,
@@ -77,7 +78,7 @@ export class NestRegionController {
 
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Post('location/add')
+  @Post('location')
   async addLocation(@Body() addLocationDto: AddLocationDto) {
     try {
       return await this.zoneService.addLocation(addLocationDto);
@@ -89,7 +90,7 @@ export class NestRegionController {
 
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Patch('location/edit')
+  @Patch('location/:id')
   async updateLocation(
     @Param() id: IdTransformerDto,
     @Body() addLocationDto: AddLocationDto,

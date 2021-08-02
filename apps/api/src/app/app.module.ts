@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NestUserModule } from '@wow-spedoo/nest/user';
-// import { NestPrismaModule } from '@wow-spedoo/nest/prisma';
 import { NestAuthModule } from '@wow-spedoo/nest/auth';
 import { NestOrderModule } from '@wow-spedoo/nest/order';
 import { ConfigModule } from '@nestjs/config';
@@ -15,6 +14,7 @@ import { NestTaskModule } from '@wow-spedoo/nest/task';
 import { NestPrismaModule } from '@wow-spedoo/nest/prisma';
 import { NestDeliveryModule } from '@wow-spedoo/nest/delivery';
 import { NestRegionModule } from '@wow-spedoo/nest/region';
+import { NestPaymentModule } from '@wow-spedoo/nest/payment';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -31,6 +31,7 @@ import { NestRegionModule } from '@wow-spedoo/nest/region';
     NestPickModule,
     NestRegionModule,
     NestOrderModule,
+    NestPaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

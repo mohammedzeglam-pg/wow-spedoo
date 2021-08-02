@@ -11,6 +11,7 @@ import { pipeline } from 'stream';
 const pump = util.promisify(pipeline);
 import * as path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { join } from 'path';
 export const dir = `${path.resolve(__dirname)}/uploads/`;
 export const FileHandler = createParamDecorator(
   async (data = 'file', ctx: ExecutionContext) => {
@@ -27,10 +28,7 @@ export const FileHandler = createParamDecorator(
       }
       const ext = type.split('/')[1];
       img.filename = `${uuidv4()}-${Date.now()}.${ext}`;
-      return {
-        filename: img.filename,
-        file: img.file,
-      };
+      return img;
     } catch (err) {
       new Logger(err);
     }
@@ -64,7 +62,7 @@ async function checkMimeType(img) {
   return type;
 }
 
-export async function saveFile(data: { file; filename }): Promise<string> {
-  await pump(data.file, fs.createWriteStream(dir + data.filename));
+export async function saveFile(data, type: string): Promise<string> {
+  fs.writeFileSync(join(dir, type, data.filename), await data.toBuffer());
   return data.filename;
 }

@@ -1,6 +1,6 @@
-export interface PaymentResponse {
+export interface PaymentMethodResponse {
   id: number;
   name: string;
   img_url: string;
-  take_money: string;
+  take_money: boolean | string;
 }

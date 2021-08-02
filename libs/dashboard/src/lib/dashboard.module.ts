@@ -21,6 +21,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('@wow-spedoo/user').then((m) => m.UserModule),
       },
+      {
+        path: 'regoin',
+        loadChildren: () =>
+          import('@wow-spedoo/region').then((m) => m.RegionModule),
+      },
     ],
   },
 ];

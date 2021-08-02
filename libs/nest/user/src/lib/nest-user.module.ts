@@ -7,6 +7,5 @@ import { NestAuthModule } from '@wow-spedoo/nest/auth';
   imports: [NestPrismaModule, NestAuthModule],
   controllers: [NestUserController],
   providers: [NestUserService],
-  // exports: [NestUserService],
 })
 export class NestUserModule {}
