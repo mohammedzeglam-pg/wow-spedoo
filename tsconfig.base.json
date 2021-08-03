@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@wow-spedoo/angular-interface": ["libs/angular-interface/src/index.ts"],
       "@wow-spedoo/api-interfaces": ["libs/api-interfaces/src/index.ts"],
       "@wow-spedoo/auth": ["libs/auth/src/index.ts"],
       "@wow-spedoo/auth-ui": ["libs/auth-ui/src/index.ts"],
@@ -41,6 +42,7 @@
       "@wow-spedoo/payment": ["libs/payment/src/index.ts"],
       "@wow-spedoo/region": ["libs/region/src/index.ts"],
       "@wow-spedoo/shared": ["libs/shared/src/index.ts"],
+      "@wow-spedoo/store": ["libs/store/src/index.ts"],
       "@wow-spedoo/supplier": ["libs/supplier/src/index.ts"],
       "@wow-spedoo/ui/lib/user": ["libs/ui/lib/user/src/index.ts"],
       "@wow-spedoo/ui/src/lib/user": ["libs/ui/src/lib/user/src/index.ts"],

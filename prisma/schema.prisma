@@ -77,6 +77,8 @@ model Order {
   note           String?
   phone          String?
   img_url        String[]
+  zone           Zone          @relation(fields: [zoneId], references: [id])
+  zoneId         Int
 }
 
 model Product {
@@ -126,8 +128,8 @@ model DeliveryBoy {
   delivery Delivery[]
   user     User       @relation(fields: [userId], references: [id])
   userId   Int
-  zone     Zone       @relation(fields: [zoneId], references: [id])
-  zoneId   Int
+  zone     Zone?      @relation(fields: [zoneId], references: [id])
+  zoneId   Int?
 }
 
 model Pick {
@@ -146,8 +148,8 @@ model PickBoy {
   pick   Pick[]
   user   User   @relation(fields: [userId], references: [id])
   userId Int
-  zone   Zone   @relation(fields: [zoneId], references: [id])
-  zoneId Int
+  zone   Zone?  @relation(fields: [zoneId], references: [id])
+  zoneId Int?
 }
 
 model City {
@@ -166,6 +168,7 @@ model Zone {
   suppliers  Supplier[]
   picks      PickBoy[]
   deliveries DeliveryBoy[]
+  orders     Order[]
 }
 
 model PaymentMethod {

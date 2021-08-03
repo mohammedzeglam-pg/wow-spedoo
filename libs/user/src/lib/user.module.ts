@@ -7,10 +7,12 @@ import { SharedModule } from '@wow-spedoo/shared';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EditComponent } from './edit/edit.component';
+import { AddZoneUserComponent } from './add-zone-user/add-zone-user.component';
+import { AddProfitPartnerComponent } from './add-profit-partner/add-profit-partner.component';
 const routes: Routes = [
   { path: 'create', component: CreateComponent },
-  { path: 'edit/:id', component: EditComponent },
   { path: '', component: ShowComponent },
+  { path: 'edit/:id', component: EditComponent },
 ];
 @NgModule({
   imports: [
@@ -20,6 +22,6 @@ const routes: Routes = [
     HttpClientModule,
     SharedModule,
   ],
-  declarations: [CreateComponent, ShowComponent, EditComponent],
+  declarations: [CreateComponent, ShowComponent, EditComponent, AddZoneUserComponent, AddProfitPartnerComponent],
 })
 export class UserModule {}

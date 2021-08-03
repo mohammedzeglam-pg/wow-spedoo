@@ -1,15 +1,21 @@
-<h1 class="is-size-2 has-text-centered has-text-link py-5">Wow spedoo</h1>
+<h1 class="is-size-3 has-text-centered has-text-link py-5">Wow spedoo</h1>
 <aside class="menu py-3">
   <ul class="menu-list" *ngFor="let prop of props">
     <li>
-      <a [href]="prop.link" class="is-size-4">
-        <span class="icon is-normal" [innerHTML]="string2HTML(prop.icon)">
+      <a [routerLink]="prop.link" class="is-size-5">
+        <span class="icon is-normal">
+          <i class="fas" [ngClass]="prop.icon"></i>
         </span>
         {{ prop.name }}
       </a>
       <ul>
         <li *ngFor="let sub of prop.sub">
-          <a [href]="sub?.link">{{ sub?.name }}</a>
+          <a [href]="sub?.link" class="is-size-7">
+            <span class="icon is-small">
+              <i class="fas" [ngClass]="sub.icon"></i>
+            </span>
+            {{ sub?.name }}
+          </a>
         </li>
       </ul>
     </li>

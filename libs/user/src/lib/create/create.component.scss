@@ -7,10 +7,10 @@
 }
 form {
   display: grid;
-  gap: 1rem;
+  gap: 0.4rem;
 }
 .field {
-  width: 50%;
+  width: 40%;
   text-align: center;
   margin: auto;
   & :hover {
@@ -21,7 +21,3 @@ form {
     cursor: pointer;
   }
 }
-// .notification > .delete {
-//   left: 0;
-//   right: 0.5rem;
-// }

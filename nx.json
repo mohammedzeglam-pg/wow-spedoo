@@ -27,6 +27,9 @@
     ]
   },
   "projects": {
+    "angular-interface": {
+      "tags": []
+    },
     "api": {
       "tags": []
     },
@@ -103,6 +106,9 @@
       "tags": []
     },
     "shared": {
+      "tags": []
+    },
+    "store": {
       "tags": []
     },
     "supplier": {

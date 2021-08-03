@@ -12,6 +12,7 @@ import {
   Logger,
   HttpException,
   HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 import {
   CreateUserCredential,
@@ -51,6 +52,7 @@ export class NestUserController {
   ): Promise<LoginResponse | HttpException> {
     try {
       const user = await this.userService.login(loginCredential);
+      console.log(user);
       if (!user) {
         throw new Error('not found');
       }
@@ -179,5 +181,22 @@ export class NestUserController {
     } catch (err) {
       this.logger.error(err);
     }
+  }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('boy/:id')
+  async boyInfo(
+    @Param() id: IdTransformerDto,
+    @Body('zoneId', ParseIntPipe) zoneId,
+  ) {
+    return this.userService.updateBoyZone(id, zoneId);
+  }
+
+  @Roles(Role.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('profit/:id')
+  async(@Param() id: IdTransformerDto, @Body('profit') profit) {
+    return this.userService.updateProfit(id, profit);
   }
 }

@@ -3,11 +3,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AsYouTypeFormatter } from 'google-libphonenumber';
 import { map } from 'rxjs/internal/operators/map';
-import { finalize } from 'rxjs/operators';
 import { phoneValidator } from '../phone.validator';
 import { UserService } from '../user.service';
 import { SubSink } from 'subsink';
-import { HttpErrorResponse } from '@angular/common/http';
 import { UserResponse } from '@wow-spedoo/api-interfaces';
 @Component({
   selector: 'wow-spedoo-edit',

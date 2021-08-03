@@ -15,7 +15,9 @@ export class NestOrderService {
     token: string,
   ) {
     const point: Point = order;
-    const delivery_price = await this.getPricing(point);
+    const { id: zoneId, price: delivery_price } = await this.getPricing(point);
+
+    console.log(zoneId);
     if (!delivery_price) {
       return {
         message: 'regoin not supported',
@@ -55,6 +57,11 @@ export class NestOrderService {
             data: [...products],
           },
         },
+        zone: {
+          connect: {
+            id: zoneId,
+          },
+        },
       },
     });
     await this.financials(orderData, order, delivery_price);
@@ -92,14 +99,17 @@ export class NestOrderService {
 
   async getPricing(point: { lon: number; lat: number }) {
     const polygons = await this.getPolygons();
+    console.log(1);
     for (const poly of polygons) {
-      const price = poly.price;
+      const { id, price } = poly;
       const locations = poly.locations;
       const check = this.pointInPolygon({ p: point, points: locations });
       if (check) {
-        return price;
+        console.log(2);
+        return { id, price };
       }
     }
+    console.log(4);
     return null;
   }
 
@@ -164,6 +174,7 @@ export class NestOrderService {
   async getPolygons() {
     return this.prisma.zone.findMany({
       select: {
+        id: true,
         price: true,
         locations: {
           select: {

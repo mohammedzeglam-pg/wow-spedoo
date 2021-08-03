@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Message, UserResponse } from '@wow-spedoo/api-interfaces';
+import { EmployeeZoneInterface } from '@wow-spedoo/angular-interface';
+import {
+  AllRegionResponse,
+  Message,
+  UserResponse,
+} from '@wow-spedoo/api-interfaces';
+import { identity } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,7 +26,7 @@ export class UserService {
   }
 
   fetchUsers(link: string, pagination: { take: number; skip: number }) {
-    return this.httpClient.get<{ data: UserResponse[] }>('api/user' + link, {
+    return this.httpClient.get<UserResponse[]>('api/user' + link, {
       params: pagination,
     });
   }
@@ -29,6 +36,22 @@ export class UserService {
   }
 
   getZone() {
-    return this.httpClient.get('/api/zone/');
+    return this.httpClient.get<EmployeeZoneInterface[]>('/api/zone');
+  }
+  boyInfo(id: number) {
+    return this.httpClient.get('api/user/boy' + id);
+  }
+
+  getAllRegion(): Observable<AllRegionResponse[]> {
+    return this.httpClient.get<AllRegionResponse[]>('/api/zone');
+  }
+
+  updateBoyZone(zoneId: number, id: number) {
+    return this.httpClient.patch('/api/user/boy/' + id, { zoneId: zoneId });
+  }
+  changeProfit(id: number, profit: number) {
+    return this.httpClient.patch('/api/user/profit/' + id, {
+      profit: profit,
+    });
   }
 }

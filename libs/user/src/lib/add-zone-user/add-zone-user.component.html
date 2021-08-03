@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="card-content">
+    <div class="content">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label class="label">المدينة</label>
+          <div class="select is-primary is-fullwidth">
+            <select formControlName="cityId">
+              <option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">المنطقة</label>
+          <div class="select is-primary is-fullwidth">
+            <select formControlName="zoneId">
+              <option *ngFor="let zone of zones" [value]="zone.id">
+                {{ zone.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <button
+              class="button is-link is-outlined is-fullwidth"
+              type="submit"
+              [disabled]="!form.valid"
+            >
+              اضافة
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

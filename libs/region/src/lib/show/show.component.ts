@@ -84,29 +84,37 @@ export class ShowComponent implements OnInit, OnDestroy {
   }
   fetchRegionData() {
     this.sub.add(
-      this.regionService
-        .getAllRegion()
-        .subscribe((data) => this.onSuccess(data)),
+      this.regionService.getAllRegion().subscribe((data) => {
+        this.onSuccess(data);
+      }),
     );
   }
 
   manipulateData(data: AllRegionResponse[]) {
-    return data.map((el) => {
+    const mem = <any>[];
+    data.map((el) => {
       const rs: TableContent = <any>{};
       rs['id'] = el.id;
       rs['name'] = el.name;
+      if (el.zones.length === 0) {
+        mem.push(rs);
+      }
       for (const zone of el?.zones) {
         rs['zoneId'] = zone.id;
         rs['zoneName'] = zone.name;
         rs['price'] = zone.price;
+        if (zone.locations.length === 0) {
+          mem.push(rs);
+        }
         for (const location of zone?.locations) {
           rs['locationId'] = location.id;
           rs['lon'] = location?.lon;
           rs['lat'] = location?.lat;
+          mem.push(rs);
         }
       }
-      return rs;
     });
+    return mem;
   }
   modalEvent(type: string) {
     this.modal[type] = false;

@@ -6,6 +6,7 @@ import { phoneValidator } from './phone.validator';
 import { LoginCredential } from '@wow-spedoo/api-interfaces';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { map } from 'rxjs/internal/operators/map';
+import { Router } from '@angular/router';
 @Component({
   selector: 'wow-spedoo-login',
   templateUrl: './login.component.html',
@@ -15,6 +16,7 @@ export class LoginComponent {
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
+    private readonly router: Router,
   ) {}
 
   loginForm = this.fb.group({
@@ -51,6 +53,10 @@ export class LoginComponent {
     const helper = new JwtHelperService();
     const myRawToken = localStorage.getItem(JWT_NAME) || undefined;
     const decodedToken = helper.decodeToken(myRawToken);
+    if (decodedToken.role === 'ADMIN' || decodedToken.role === 'MANAGER')
+      this.router.navigate(['/dashboard']);
+    else if (decodedToken.role === 'PARTNER')
+      this.router.navigate(['/partner']);
   }
   showPassword() {
     const pass = document.getElementById('password') as HTMLInputElement;

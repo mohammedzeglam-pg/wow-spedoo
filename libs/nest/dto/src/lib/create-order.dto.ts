@@ -39,9 +39,8 @@ export class CreateOrderDto {
   @IsNumber()
   @Type(() => Number)
   lon: number;
-  //TODO:FIX ME
   @IsPhoneNumber('LY', {
-    message: ValidationMessage.password,
+    message: ValidationMessage.phone,
   })
   phone: string;
 }

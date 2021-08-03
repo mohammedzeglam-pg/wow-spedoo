@@ -48,6 +48,7 @@ export class AddZoneComponent implements OnInit, OnDestroy {
         .addZone(this.form.value)
         .subscribe(() => this.OnSuccess()),
     );
+    this.form.reset();
   }
   OnSuccess(): void {
     this.added.emit(true);

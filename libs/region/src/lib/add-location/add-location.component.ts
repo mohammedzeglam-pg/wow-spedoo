@@ -1,5 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  EmailValidator,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { SubSink } from 'subsink';
 import { RegionService } from '../region.service';
@@ -36,15 +42,26 @@ export class AddLocationComponent implements OnInit {
     this.initForm();
     this.sub.add(
       this.zoneData.subscribe((data) => {
-        this.data = data;
+        const ids = new Set<number>();
+        const arr = [];
+        for (const elem of data) {
+          if (!ids.has(elem.cityId)) {
+            ids.add(elem.cityId);
+            arr.push(elem);
+          }
+        }
+        this.data = arr;
       }),
     );
     this.sub.add(
       this.form.valueChanges.subscribe((form) => {
         const newCity = parseInt(form.city);
-        if (newCity !== this.oldCity) {
-          const filteredCity = this.data.filter((el) => el.cityId === newCity);
-          this.zone = filteredCity.map((el) => {
+        if (+newCity !== this.oldCity) {
+          const filteredCity = this.data.filter((el) => el.cityId === +newCity);
+          const arr = filteredCity.filter(
+            (v, i, a) => a.findIndex((t) => t.cityId === v.cityId) === i,
+          );
+          this.zone = arr.map((el) => {
             return { id: el.zoneId, name: el.zoneName };
           });
         }
@@ -56,7 +73,15 @@ export class AddLocationComponent implements OnInit {
     return this.form.get('location') as FormArray;
   }
   onSubmit() {
-    this.sub.add(this.regionService.addManyCity(this.form.value).subscribe());
+    this.sub.add(
+      this.regionService
+        .addManyLocation(this.form.value)
+        .subscribe(() => this.onSuccess()),
+    );
+  }
+  onSuccess(): void {
+    this.form.reset();
+    this.added.next(false);
   }
   createItem(): FormGroup {
     return this.fb.group({

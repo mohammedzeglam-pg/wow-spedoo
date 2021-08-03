@@ -25,5 +25,6 @@ export interface UserResponse {
   firstname: string;
   phone: string;
   lastname: string;
-  is_allowed: string;
+  is_allowed: boolean | string;
+  role: string;
 }

@@ -4,7 +4,7 @@
     <div class="control">
       <input
         (input)="asYouType()"
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="phone"
         [ngClass]="{
@@ -19,7 +19,7 @@
     <label class="label">اسم المستخدم</label>
     <div class="control">
       <input
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="username"
         [ngClass]="{
@@ -34,7 +34,7 @@
     <label class="label">الاسم</label>
     <div class="control">
       <input
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="firstname"
         [ngClass]="{
@@ -49,7 +49,7 @@
     <label class="label">اللقب</label>
     <div class="control">
       <input
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="lastname"
         [ngClass]="{
@@ -63,7 +63,7 @@
     <label class="label">البريد الالكتروني</label>
     <div class="control">
       <input
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="email"
         [ngClass]="{
@@ -78,7 +78,7 @@
     <label class="label"> كلمة المرور </label>
     <div class="control has-icons-left">
       <input
-        class="input"
+        class="input is-small is-rounded"
         id="password"
         type="password"
         formControlName="password"
@@ -114,7 +114,8 @@
     </div>
   </div>
   <div class="field">
-    <div class="select is-primary is-medium">
+    <label class="label">الوظيفة</label>
+    <div class="select is-primary is-fullwidth is-small is-rounded">
       <select formControlName="role">
         <option
           *ngFor="let role of roles; let i = index"
@@ -125,38 +126,10 @@
       </select>
     </div>
   </div>
-  <div class="modal is-active">
-    <div class="modal-background"></div>
-    <div class="modal-content">
-      <div class="card">
-        <div class="card-content">
-          <div class="content">
-            <div class="field">
-              <div class="select is-primary is-medium">
-                <select formControlName="role">
-                  <option
-                    *ngFor="let role of roles; let i = index"
-                    [value]="roles[i].key"
-                  >
-                    {{ roles[i].value }}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button
-      class="modal-close is-large"
-      aria-label="close"
-      type="button"
-    ></button>
-  </div>
   <div class="field">
     <div class="control">
       <button
-        class="button is-link is-outlined"
+        class="button is-link is-outlined is-rounded"
         type="submit"
         [disabled]="!createForm.valid"
       >
@@ -165,21 +138,3 @@
     </div>
   </div>
 </form>
-<div class="modal" [ngClass]="{ 'is-active': modalData.state }">
-  <div class="modal-background"></div>
-  <div class="modal-content">
-    <div class="card">
-      <div class="card-content">
-        <div class="content is-size-3 has-text-centered">
-          {{ modalData.message }}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <button
-    class="modal-close is-large"
-    aria-label="close"
-    (click)="modalData.state = false"
-  ></button>
-</div>

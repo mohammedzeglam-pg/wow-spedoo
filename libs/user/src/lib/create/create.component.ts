@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AsYouTypeFormatter } from 'google-libphonenumber';
 import { UserService } from '../user.service';
 import { phoneValidator } from '../phone.validator';
@@ -12,39 +12,31 @@ import { SubSink } from 'subsink';
 })
 export class CreateComponent implements OnInit, OnDestroy {
   sub = new SubSink();
-  modalData = {
-    message: '',
-    state: false,
-  };
+  more!: FormArray;
   roles = [
     {
       key: 'admin',
       value: 'أدمن',
     },
-
     {
       key: 'manager',
       value: 'مدير',
-    },
-
-    {
-      key: 'picker',
-      value: 'فتى استلام',
-    },
-
-    {
-      key: 'delivery',
-      value: 'فتى توصيل',
     },
     {
       key: 'partner',
       value: 'شريك',
     },
+    {
+      key: 'picker',
+      value: 'فتى استلام',
+    },
+    {
+      key: 'delivery',
+      value: 'فتى توصيل',
+    },
   ];
   createForm!: FormGroup;
-  constructor(private userService: UserService, private fb: FormBuilder) {
-    this.initForm();
-  }
+  constructor(private userService: UserService, private fb: FormBuilder) {}
   initForm() {
     this.createForm = this.fb.group({
       phone: ['', [phoneValidator(), Validators.required]],
@@ -73,10 +65,6 @@ export class CreateComponent implements OnInit, OnDestroy {
     );
   }
   onSuccess(data: any): any {
-    // this.modalData = {
-    //   message: data.message,
-    //   state: true,
-    // };
     this.createForm.reset();
   }
 
@@ -96,13 +84,8 @@ export class CreateComponent implements OnInit, OnDestroy {
     pass.type = pass?.type === 'password' ? 'text' : 'password';
   }
 
-  getZone() {
-    this.sub.add(
-      this.userService.getZone().subscribe((data) => console.log(data)),
-    );
-  }
   ngOnInit() {
-    this.getZone();
+    this.initForm();
   }
   ngOnDestroy() {
     this.sub.unsubscribe();

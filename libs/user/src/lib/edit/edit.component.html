@@ -1,18 +1,10 @@
 <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
-  <!-- <div class="notification is-danger field" *ngIf="error.state">
-    {{ error.message }}
-    <button
-      class="delete is-small"
-      type="button"
-      (click)="deleteNotification()"
-    ></button>
-  </div> -->
-  <div class="field">
+  <div class="field is-small">
     <label class="label">رقم الهاتف</label>
     <div class="control">
       <input
         (input)="asYouType()"
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="phone"
         [ngClass]="{
@@ -27,7 +19,7 @@
     <label class="label">اسم المستخدم</label>
     <div class="control">
       <input
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="username"
         [ngClass]="{
@@ -42,7 +34,7 @@
     <label class="label">الاسم</label>
     <div class="control">
       <input
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="firstname"
         [ngClass]="{
@@ -57,7 +49,7 @@
     <label class="label">اللقب</label>
     <div class="control">
       <input
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="lastname"
         [ngClass]="{
@@ -71,7 +63,7 @@
     <label class="label">البريد الالكتروني</label>
     <div class="control">
       <input
-        class="input"
+        class="input is-small is-rounded"
         type="text"
         formControlName="email"
         [ngClass]="{
@@ -91,7 +83,7 @@
   <div class="field">
     <div class="control">
       <button
-        class="button is-link is-outlined"
+        class="is-rounded button is-link is-outlined"
         type="submit"
         [disabled]="!editForm.valid"
       >

@@ -3,7 +3,7 @@ import { NestPrismaService } from '@wow-spedoo/nest/prisma';
 import * as bcrypt from 'bcrypt';
 import { NestAuthService } from '@wow-spedoo/nest/auth';
 import { Role } from '@prisma/client';
-import { PaginationDto } from '@wow-spedoo/nest/dto';
+import { IdTransformerDto, PaginationDto } from '@wow-spedoo/nest/dto';
 
 @Injectable()
 export class NestUserService {
@@ -20,6 +20,7 @@ export class NestUserService {
     lastname: true,
     email: true,
     is_allowed: true,
+    role: true,
   };
 
   async createUser(user) {
@@ -97,9 +98,7 @@ export class NestUserService {
       take: take,
       skip: skip * take,
     });
-    return {
-      data: users,
-    };
+    return users;
   }
 
   async deleteUser(id) {
@@ -123,6 +122,52 @@ export class NestUserService {
     return this.prisma.user.findUnique({
       where: id,
       select: this.userObject,
+    });
+  }
+
+  async updateBoyZone(id: IdTransformerDto, zoneId: number) {
+    const userRole = await this.prisma.user.findUnique({
+      where: id,
+      select: { role: true },
+    });
+    let data = {};
+    if (userRole.role === 'PICKER') {
+      data = {
+        pick_boy: {
+          update: {
+            zone: {
+              connect: { id: zoneId },
+            },
+          },
+        },
+      };
+    } else if (userRole.role == 'DELIVERY') {
+      data = {
+        delivery_boy: {
+          update: {
+            zone: {
+              connect: { id: zoneId },
+            },
+          },
+        },
+      };
+    }
+    return this.prisma.user.update({
+      where: id,
+      data: data,
+    });
+  }
+
+  updateProfit(id: IdTransformerDto, profit: number) {
+    return this.prisma.user.update({
+      where: id,
+      data: {
+        partner: {
+          update: {
+            profit: profit,
+          },
+        },
+      },
     });
   }
 }
