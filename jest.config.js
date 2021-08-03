@@ -28,5 +28,8 @@ module.exports = {
     '<rootDir>/libs/shared',
     '<rootDir>/libs/user',
     '<rootDir>/libs/region',
+    '<rootDir>/libs/order',
+    '<rootDir>/libs/supplier',
+    '<rootDir>/libs/delivery',
   ],
 };

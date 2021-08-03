@@ -21,7 +21,7 @@ interface TableContent {
 })
 export class ShowComponent implements OnInit, OnDestroy {
   sub = new SubSink();
-  modal = {
+  modal: any = {
     city: false,
     zone: false,
     location: false,
@@ -29,10 +29,19 @@ export class ShowComponent implements OnInit, OnDestroy {
   data: AllRegionResponse[] = [];
   content: TableContent[] = [];
   citySubject = new BehaviorSubject<{ id: number; name: string }[]>([]);
+  zoneSubject = new BehaviorSubject<
+    { cityId: number; cityName: string; zoneId: number; zoneName: string }[]
+  >([]);
   page = 1;
   take = 10;
 
-  tableHeader = [{ name: 'المدينة' }, { name: 'المنطقة' }, { name: 'السعر' }];
+  tableHeader = [
+    { name: 'المدينة' },
+    { name: 'المنطقة' },
+    { name: 'السعر' },
+    { name: 'خط الطول' },
+    { name: 'خط العرض' },
+  ];
   constructor(private regionService: RegionService) {}
 
   ngOnInit() {
@@ -40,11 +49,19 @@ export class ShowComponent implements OnInit, OnDestroy {
   }
   onSuccess(data: AllRegionResponse[]): void {
     this.content = this.manipulateData(data);
-
+    const zone = this.content.map((el) => {
+      return {
+        cityId: el.id,
+        cityName: el.name,
+        zoneId: el.zoneId,
+        zoneName: el.zoneName,
+      };
+    });
     const city = data.map((el) => {
       return { id: el.id, name: el.name };
     });
     this.citySubject.next(city);
+    this.zoneSubject.next(zone);
   }
   ngOnDestroy() {
     this.sub.unsubscribe();
@@ -64,12 +81,6 @@ export class ShowComponent implements OnInit, OnDestroy {
     } else {
       this.fetchRegionData();
     }
-  }
-  onCity(state: boolean) {
-    this.modal.city = state;
-  }
-  onZone(state: boolean) {
-    this.modal.zone = state;
   }
   fetchRegionData() {
     this.sub.add(
@@ -96,5 +107,9 @@ export class ShowComponent implements OnInit, OnDestroy {
       }
       return rs;
     });
+  }
+  modalEvent(type: string) {
+    this.modal[type] = false;
+    this.fetchRegionData();
   }
 }

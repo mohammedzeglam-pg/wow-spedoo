@@ -1,12 +1,12 @@
 <div class="modal is-active" [ngClass]="{ 'is-active': modal.city }">
   <div class="modal-background"></div>
   <div class="modal-content">
-    <wow-spedoo-add-city (added)="modal.city = false"></wow-spedoo-add-city>
+    <wow-spedoo-add-city (added)="modalEvent('city')"></wow-spedoo-add-city>
   </div>
   <button
     class="modal-close is-large"
     type="button"
-    (click)="onCity(false)"
+    (click)="modal.city = false"
   ></button>
 </div>
 
@@ -14,14 +14,30 @@
   <div class="modal-background"></div>
   <div class="modal-content">
     <wow-spedoo-add-zone
-      (added)="modal.zone = false"
-      [cityData]="citySubject"
+      [citySubject]="citySubject"
+      (added)="modalEvent('zone')"
     ></wow-spedoo-add-zone>
   </div>
   <button
     class="modal-close is-large"
     aria-label="close"
-    (click)="onZone(false)"
+    (click)="modal.zone = false"
+    type="button"
+  ></button>
+</div>
+
+<div class="modal" [ngClass]="{ 'is-active': modal.location }">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <wow-spedoo-add-location
+      [zoneData]="zoneSubject"
+      (added)="modalEvent('zone')"
+    ></wow-spedoo-add-location>
+  </div>
+  <button
+    class="modal-close is-large"
+    aria-label="close"
+    (click)="modal.location = false"
     type="button"
   ></button>
 </div>
@@ -30,6 +46,31 @@
   [tableHeader]="tableHeader"
   (changePagination)="changePage($event)"
 >
+  <div class="buttons" header>
+    <button
+      class="button is-link is-light"
+      (click)="modal.city = true"
+      type="button"
+    >
+      اضافة مدينة
+    </button>
+    <button
+      class="button is-link is-light"
+      (click)="modal.zone = true"
+      type="button"
+    >
+      اضافة منطقة
+    </button>
+
+    <button
+      class="button is-link is-light"
+      (click)="modal.location = true"
+      type="button"
+    >
+      اضافة موقع
+    </button>
+  </div>
+
   <input
     class="input"
     type="number"
@@ -42,31 +83,8 @@
       <td>{{ prop.name }}</td>
       <td>{{ prop.zoneName }}</td>
       <td>{{ prop.price }}</td>
+      <td>{{ prop.lon }}</td>
+      <td>{{ prop.lat }}</td>
     </tr>
   </tbody>
-
-  <tfoot footer>
-    <tr>
-      <td>
-        <div class="buttons">
-          <button
-            class="button is-link is-light"
-            (click)="onCity(true)"
-            type="button"
-          >
-            اضافة مدينة
-          </button>
-          <button
-            class="button is-link is-light"
-            (click)="onZone(true)"
-            type="button"
-          >
-            اضافة منطقة
-          </button>
-        </div>
-      </td>
-      <td></td>
-      <td></td>
-    </tr>
-  </tfoot>
 </wow-spedoo-table>

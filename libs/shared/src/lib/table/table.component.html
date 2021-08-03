@@ -1,11 +1,13 @@
 <div class="card py-4 px-2">
+  <header class="card-header">
+    <ng-content select="[header]" class="card-header"></ng-content>
+  </header>
   <table class="table is-hoverable is-fullwidth">
     <thead>
       <tr>
         <th *ngFor="let head of tableHeader">
           <abbr title="{{ head.title }}">{{ head.name }}</abbr>
         </th>
-        <ng-content select="[header]"></ng-content>
       </tr>
     </thead>
     <ng-content select="[content]"></ng-content>

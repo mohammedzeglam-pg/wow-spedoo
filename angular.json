@@ -135,6 +135,31 @@
         }
       }
     },
+    "delivery": {
+      "projectType": "library",
+      "root": "libs/delivery",
+      "sourceRoot": "libs/delivery/src",
+      "prefix": "wow-spedoo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/delivery"],
+          "options": {
+            "jestConfig": "libs/delivery/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/delivery/src/**/*.ts",
+              "libs/delivery/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "file-handler": {
       "root": "libs/file-handler",
       "sourceRoot": "libs/file-handler/src",
@@ -471,6 +496,31 @@
         }
       }
     },
+    "order": {
+      "projectType": "library",
+      "root": "libs/order",
+      "sourceRoot": "libs/order/src",
+      "prefix": "wow-spedoo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/order"],
+          "options": {
+            "jestConfig": "libs/order/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/order/src/**/*.ts",
+              "libs/order/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "payment": {
       "projectType": "library",
       "root": "libs/payment",
@@ -541,6 +591,31 @@
             "lintFilePatterns": [
               "libs/shared/src/**/*.ts",
               "libs/shared/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
+    "supplier": {
+      "projectType": "library",
+      "root": "libs/supplier",
+      "sourceRoot": "libs/supplier/src",
+      "prefix": "wow-spedoo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/supplier"],
+          "options": {
+            "jestConfig": "libs/supplier/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/supplier/src/**/*.ts",
+              "libs/supplier/src/**/*.html"
             ]
           }
         }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NestPrismaService } from '@wow-spedoo/nest/prisma';
 import { Transaction } from '@prisma/client';
-import { CreateOrderDto } from '@wow-spedoo/nest/dto';
+import { CreateOrderDto, PaginationDto } from '@wow-spedoo/nest/dto';
 type Point = {
   lon: number;
   lat: number;
@@ -203,5 +203,33 @@ export class NestOrderService {
     });
 
     return wn !== 0;
+  }
+
+  async getManyOrder({ take, skip }: PaginationDto) {
+    return this.prisma.order.findMany({
+      select: {
+        id: true,
+        order_id: true,
+        partner: {
+          select: {
+            user: {
+              select: {
+                img_url: true,
+              },
+            },
+          },
+        },
+        total_pieces: true,
+        recipient: true,
+        delivery_price: true,
+        payment: {
+          select: {
+            img_url: true,
+          },
+        },
+      },
+      take: take,
+      skip: skip * take,
+    });
   }
 }

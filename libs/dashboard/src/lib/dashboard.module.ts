@@ -22,9 +22,19 @@ const routes: Routes = [
           import('@wow-spedoo/user').then((m) => m.UserModule),
       },
       {
-        path: 'regoin',
+        path: 'region',
         loadChildren: () =>
           import('@wow-spedoo/region').then((m) => m.RegionModule),
+      },
+      {
+        path: 'order',
+        loadChildren: () =>
+          import('@wow-spedoo/order').then((m) => m.OrderModule),
+      },
+      {
+        path: 'delivery',
+        loadChildren: () =>
+          import('@wow-spedoo/delivery').then((m) => m.DeliveryModule),
       },
     ],
   },

@@ -27,4 +27,8 @@ export class UserService {
   deleteUser(id: number) {
     return this.httpClient.delete<Message>('/api/user/' + id);
   }
+
+  getZone() {
+    return this.httpClient.get('/api/zone/');
+  }
 }

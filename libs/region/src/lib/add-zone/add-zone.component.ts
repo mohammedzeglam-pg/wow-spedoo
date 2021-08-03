@@ -19,7 +19,7 @@ import { RegionService } from '../region.service';
 export class AddZoneComponent implements OnInit, OnDestroy {
   form: FormGroup;
   sub = new SubSink();
-  @Input() cityData!: BehaviorSubject<any>;
+  @Input() citySubject!: BehaviorSubject<any>;
   cities!: { id: number; name: string }[];
   @Output() added = new EventEmitter<boolean>();
   constructor(private fb: FormBuilder, private regionService: RegionService) {
@@ -31,9 +31,11 @@ export class AddZoneComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.cityData.subscribe((data: any) => {
-      this.cities = data;
-    });
+    this.sub.add(
+      this.citySubject.subscribe((data: any) => {
+        this.cities = data;
+      }),
+    );
   }
 
   ngOnDestroy() {
@@ -48,7 +50,6 @@ export class AddZoneComponent implements OnInit, OnDestroy {
     );
   }
   OnSuccess(): void {
-    console.log(this.form.value);
     this.added.emit(true);
   }
 }

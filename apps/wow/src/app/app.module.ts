@@ -10,8 +10,9 @@ import { DashboardModule } from '@wow-spedoo/dashboard';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { SharedModule } from '@wow-spedoo/shared';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
+import { NotFoundComponent } from './not-found/not-found.component';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

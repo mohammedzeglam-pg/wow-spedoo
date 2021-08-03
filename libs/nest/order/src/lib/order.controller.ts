@@ -16,16 +16,29 @@ import {
   CreateOrderDto,
   IdTransformerDto,
   LocationDto,
+  PaginationDto,
 } from '@wow-spedoo/nest/dto';
-import { ApiKeyAuthGuard, ApiKeyDecorator } from '@wow-spedoo/nest/auth';
+import {
+  ApiKeyAuthGuard,
+  ApiKeyDecorator,
+  JwtAuthGuard,
+  Role,
+  Roles,
+  RolesGuard,
+} from '@wow-spedoo/nest/auth';
 
 @Controller('order')
 export class NestOrderController {
   private readonly logger = new Logger(NestOrderController.name);
   constructor(private readonly orderService: NestOrderService) {}
-
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('')
+  async getManyOrder(@Param() paginationDto: PaginationDto) {
+    return this.orderService.getManyOrder(paginationDto);
+  }
   @UseGuards(ApiKeyAuthGuard)
-  @Post('add')
+  @Post('')
   async addOrder(
     @Body() createOrder: CreateOrderDto,
     @ApiKeyDecorator() token,

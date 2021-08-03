@@ -44,7 +44,7 @@ model User {
   partner      Partner?
   pick_boy     PickBoy?
   is_allowed   Boolean      @default(false)
-  image_url    String?
+  img_url      String?
 }
 
 model Partner {
@@ -106,6 +106,8 @@ model Supplier {
   partner   Partner   @relation(fields: [partnerId], references: [id])
   partnerId Int
   product   Product[]
+  zone      Zone      @relation(fields: [zoneId], references: [id])
+  zoneId    Int
 }
 
 model Delivery {
@@ -115,7 +117,8 @@ model Delivery {
   delivery_boy   DeliveryBoy @relation(fields: [delivery_boyId], references: [id])
   delivery_boyId Int
   orders         Order[]
-
+  created_at     DateTime    @default(now())
+  updated_at     DateTime?   @updatedAt
 }
 
 model DeliveryBoy {
@@ -123,6 +126,8 @@ model DeliveryBoy {
   delivery Delivery[]
   user     User       @relation(fields: [userId], references: [id])
   userId   Int
+  zone     Zone       @relation(fields: [zoneId], references: [id])
+  zoneId   Int
 }
 
 model Pick {
@@ -132,6 +137,8 @@ model Pick {
   pick_boy       PickBoy?  @relation(fields: [pick_boyId], references: [id])
   pick_boyId     Int?
   products       Product[]
+  created_at     DateTime  @default(now())
+  updated_at     DateTime? @updatedAt
 }
 
 model PickBoy {
@@ -139,7 +146,8 @@ model PickBoy {
   pick   Pick[]
   user   User   @relation(fields: [userId], references: [id])
   userId Int
-
+  zone   Zone   @relation(fields: [zoneId], references: [id])
+  zoneId Int
 }
 
 model City {
@@ -149,12 +157,15 @@ model City {
 }
 
 model Zone {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  city      City       @relation(fields: [cityId], references: [id])
-  cityId    Int
-  price     Float
-  locations Location[]
+  id         Int           @id @default(autoincrement())
+  name       String        @unique
+  city       City          @relation(fields: [cityId], references: [id])
+  cityId     Int
+  price      Float
+  locations  Location[]
+  suppliers  Supplier[]
+  picks      PickBoy[]
+  deliveries DeliveryBoy[]
 }
 
 model PaymentMethod {

@@ -3,6 +3,16 @@
     <div class="content">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="field">
+          <label class="label">المدينة</label>
+          <div class="select is-primary is-fullwidth">
+            <select formControlName="cityId">
+              <option *ngFor="let city of cities" [value]="city.id">
+                {{ city.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
           <label class="label">الاسم</label>
           <div class="control">
             <input
@@ -32,18 +42,9 @@
           </div>
         </div>
         <div class="field">
-          <div class="select is-primary is-medium">
-            <select formControlName="cityId">
-              <option *ngFor="let city of cities" [value]="city.id">
-                {{ city.name }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="field">
           <div class="control">
             <button
-              class="button is-link is-outlined"
+              class="button is-link is-outlined is-fullwidth"
               type="submit"
               [disabled]="!form.valid"
             >

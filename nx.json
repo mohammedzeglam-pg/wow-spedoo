@@ -42,6 +42,9 @@
     "dashboard": {
       "tags": []
     },
+    "delivery": {
+      "tags": []
+    },
     "file-handler": {
       "tags": []
     },
@@ -90,6 +93,9 @@
     "nest-user": {
       "tags": []
     },
+    "order": {
+      "tags": []
+    },
     "payment": {
       "tags": []
     },
@@ -97,6 +103,9 @@
       "tags": []
     },
     "shared": {
+      "tags": []
+    },
+    "supplier": {
       "tags": []
     },
     "ui-lib-user": {

@@ -17,4 +17,8 @@ export class RegionService {
   addZone(zone: { cityId: number; name: string }) {
     return this.httpClient.post('/api/zone/regoin', zone);
   }
+
+  addManyCity(value: any) {
+    return this.httpClient.post('/api/zone/location/many', value);
+  }
 }

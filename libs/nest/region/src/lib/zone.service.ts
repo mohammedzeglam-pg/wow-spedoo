@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { AddManyLocationDto } from '@wow-spedoo/nest/dto';
 import { NestPrismaService } from '@wow-spedoo/nest/prisma';
 
 @Injectable()
@@ -78,6 +79,16 @@ export class NestRegionService {
     return this.prisma.location.update({
       data: addLocationDto,
       where: id,
+    });
+  }
+
+  addManyLocation(addManyLocationDto: AddManyLocationDto) {
+    const { location, zoneId } = addManyLocationDto;
+    const data = location.map((el) => {
+      return { lat: el.lat, lon: el.lon, zoneId: zoneId };
+    });
+    return this.prisma.location.createMany({
+      data: data,
     });
   }
 }

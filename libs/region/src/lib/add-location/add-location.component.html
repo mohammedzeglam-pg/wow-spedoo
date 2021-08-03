@@ -1,1 +1,70 @@
-<p>add-location works!</p>
+<div class="card">
+  <div class="card-content">
+    <div class="content">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="field">
+          <label class="label">المدينة</label>
+          <div class="select is-primary is-fullwidth">
+            <select formControlName="city">
+              <option *ngFor="let prop of data" [value]="prop.cityId">
+                {{ prop.cityName }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">المنطقة</label>
+          <div class="select is-primary is-fullwidth">
+            <select formControlName="zoneId">
+              <option *ngFor="let prop of zone" [value]="prop.id">
+                {{ prop.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div
+          formArrayName="location"
+          *ngFor="let item of locationFormGroups.controls; let i = index"
+        >
+          <div [formGroupName]="i">
+            <div class="field">
+              <div class="control">
+                <label class="label">خط العرض</label>
+                <input formControlName="lat" type="number" class="input" />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <label class="label">خط الطول</label>
+                <input formControlName="lon" type="number" class="input" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <button
+              class="button is-primary is-outlined is-fullwidth"
+              type="button"
+              (click)="addItem()"
+            >
+              اضافة موقع
+            </button>
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <button
+              class="button is-link is-outlined is-fullwidth"
+              type="submit"
+              [disabled]="!form.valid"
+            >
+              انشاء
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

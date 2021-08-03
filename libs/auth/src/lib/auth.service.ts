@@ -29,4 +29,9 @@ export class AuthService {
     const token = localStorage.getItem(JWT_NAME) as string;
     return !this.helper.isTokenExpired(token);
   }
+  getRole() {
+    const token = localStorage.getItem(JWT_NAME) as string;
+    const decodedToken = this.helper.decodeToken(token);
+    return decodedToken.role;
+  }
 }

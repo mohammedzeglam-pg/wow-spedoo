@@ -14,6 +14,7 @@ import { NestRegionService } from './zone.service';
 import { JwtAuthGuard, Role, Roles, RolesGuard } from '@wow-spedoo/nest/auth';
 import {
   AddLocationDto,
+  AddManyLocationDto,
   AddZoneDto,
   IdTransformerDto,
   UpdateZoneDto,
@@ -88,6 +89,17 @@ export class NestRegionController {
     }
   }
 
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Post('location/many')
+  async addManyLocation(@Body() addManyLocationDto: AddManyLocationDto) {
+    try {
+      return await this.zoneService.addManyLocation(addManyLocationDto);
+    } catch (err) {
+      this.logger.error(err);
+      throw new HttpException(err.code, HttpStatus.CONFLICT);
+    }
+  }
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch('location/:id')
