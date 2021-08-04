@@ -17,7 +17,6 @@ export class NestOrderService {
     const point: Point = order;
     const { id: zoneId, price: delivery_price } = await this.getPricing(point);
 
-    console.log(zoneId);
     if (!delivery_price) {
       return {
         message: 'regoin not supported',
@@ -27,6 +26,12 @@ export class NestOrderService {
       select: {
         id: true,
         delivery_price: true,
+        total_price: true,
+        zone: {
+          select: {
+            name: true,
+          },
+        },
         partner: {
           select: {
             profit: true,
@@ -99,17 +104,14 @@ export class NestOrderService {
 
   async getPricing(point: { lon: number; lat: number }) {
     const polygons = await this.getPolygons();
-    console.log(1);
     for (const poly of polygons) {
       const { id, price } = poly;
       const locations = poly.locations;
       const check = this.pointInPolygon({ p: point, points: locations });
       if (check) {
-        console.log(2);
         return { id, price };
       }
     }
-    console.log(4);
     return null;
   }
 
@@ -221,6 +223,13 @@ export class NestOrderService {
       select: {
         id: true,
         order_id: true,
+        delivery_price: true,
+        total_price: true,
+        zone: {
+          select: {
+            name: true,
+          },
+        },
         partner: {
           select: {
             user: {
@@ -232,7 +241,6 @@ export class NestOrderService {
         },
         total_pieces: true,
         recipient: true,
-        delivery_price: true,
         payment: {
           select: {
             img_url: true,

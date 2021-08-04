@@ -1,0 +1,140 @@
+<div class="columns">
+  <div class="column is-full">
+    <article class="media">
+      <figure class="media-left">
+        <p class="image is-64x64">
+          <img [src]="partner?.user?.img_url" />
+        </p>
+      </figure>
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <small>{{ partner?.profit }}</small>
+            <strong>{{ partner?.user?.username }}</strong>
+            <br />
+          </p>
+        </div>
+      </div>
+    </article>
+  </div>
+</div>
+<div class="columns">
+  <div class="column is-half">
+    <input
+      class="input is-fullwidth is-rounded is-link"
+      type="text"
+      [value]="partner?.token"
+    />
+  </div>
+</div>
+<wow-spedoo-table
+  [tableHeader]="tableHeader"
+  [page]="page"
+  [pagination]="false"
+>
+  <div class="buttons" header>
+    <button class="button is-link is-light" (click)="addSupplier = true">
+      اضافة مورد
+    </button>
+  </div>
+  <tbody content>
+    <tr *ngFor="let sup of partner?.suppliers">
+      <td>{{ sup.id }}</td>
+      <td>{{ sup.name }}</td>
+      <td>{{ sup.phone }}</td>
+      <td>{{ sup.lon }}</td>
+      <td>{{ sup.lat }}</td>
+      <td>{{ sup.zone.name }}</td>
+    </tr>
+  </tbody>
+</wow-spedoo-table>
+
+<div class="modal" [ngClass]="{ 'is-active': addSupplier }">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="card">
+      <div class="card-content">
+        <div class="content">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="field">
+              <label class="label">الاسم</label>
+              <div class="control">
+                <input
+                  type="text"
+                  class="input is-small is-rounded"
+                  formControlName="name"
+                  [ngClass]="{
+                    'is-success': form.controls['name']?.valid,
+                    'is-danger': !form.controls['name']?.valid
+                  }"
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">رقم الهاتف</label>
+              <div class="control">
+                <input
+                  type="text"
+                  class="input is-small is-rounded"
+                  formControlName="phone"
+                  (input)="asYouType()"
+                  [ngClass]="{
+                    'is-success': form.controls['phone']?.valid,
+                    'is-danger': !form.controls['phone']?.valid
+                  }"
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">خط الطول</label>
+              <div class="control">
+                <input
+                  type="number"
+                  class="input is-small is-rounded"
+                  formControlName="lon"
+                  [ngClass]="{
+                    'is-success': form.controls['lon']?.valid,
+                    'is-danger': !form.controls['lon']?.valid
+                  }"
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">خط العرض</label>
+              <div class="control">
+                <input
+                  type="number"
+                  formControlName="lat"
+                  class="input is-small is-rounded"
+                  [ngClass]="{
+                    'is-success': form.controls['lat']?.valid,
+                    'is-danger': !form.controls['lat']?.valid
+                  }"
+                />
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="control">
+                <button
+                  class="button is-link is-fullwidth is-small is-rounded"
+                  [disabled]="!this.form.valid"
+                >
+                  انشاء
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    class="modal-close is-large"
+    aria-label="close"
+    (click)="addSupplier = false"
+  ></button>
+</div>

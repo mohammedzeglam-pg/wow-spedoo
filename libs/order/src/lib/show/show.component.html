@@ -3,4 +3,16 @@
   [tableHeader]="tableHeader"
   (changePagination)="changePage($event)"
 >
+  <tbody content>
+    <tr *ngFor="let order of orders">
+      <td>{{ order.order_id }}</td>
+      <td><img [src]="order.partner.user.img_url" /></td>
+      <td>{{ order.id }}</td>
+      <td>{{ order.total_pieces }}</td>
+      <td>{{ order.recipient }}</td>
+      <td>{{ order.delivery_price }}</td>
+      <td>{{ order.zone?.name }}</td>
+      <td><img [src]="order.payment.img_url" /></td>
+    </tr>
+  </tbody>
 </wow-spedoo-table>

@@ -11,7 +11,6 @@ const routes: Routes = [
     loadChildren: () =>
       import('@wow-spedoo/dashboard').then((m) => m.DashboardModule),
   },
-
   {
     path: '**',
     component: NotFoundComponent,

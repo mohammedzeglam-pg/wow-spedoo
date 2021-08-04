@@ -15,6 +15,7 @@ import { NestPrismaModule } from '@wow-spedoo/nest/prisma';
 import { NestDeliveryModule } from '@wow-spedoo/nest/delivery';
 import { NestRegionModule } from '@wow-spedoo/nest/region';
 import { NestPaymentModule } from '@wow-spedoo/nest/payment';
+import { NestPartnerModule } from '@wow-spedoo/nest/partner';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -32,6 +33,7 @@ import { NestPaymentModule } from '@wow-spedoo/nest/payment';
     NestRegionModule,
     NestOrderModule,
     NestPaymentModule,
+    NestPartnerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

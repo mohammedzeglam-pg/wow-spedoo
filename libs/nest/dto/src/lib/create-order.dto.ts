@@ -1,10 +1,12 @@
 import {
   IsArray,
   IsDefined,
+  IsNotEmpty,
   IsNotEmptyObject,
   IsNumber,
   IsObject,
   IsPhoneNumber,
+  IsString,
   ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
@@ -23,6 +25,8 @@ export class CreateOrderDto {
   @IsNumber()
   @Type(() => Number)
   total_pieces: number;
+  @IsString()
+  @IsNotEmpty()
   recipient: string;
   @IsNumber()
   @Type(() => Number)

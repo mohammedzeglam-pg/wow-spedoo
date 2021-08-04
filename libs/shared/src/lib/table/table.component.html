@@ -17,6 +17,7 @@
     class="pagination is-small is-rounded"
     role="navigation"
     aria-label="pagination"
+    *ngIf="pagination"
   >
     <ul class="pagination-list">
       <li (click)="nextPage()">

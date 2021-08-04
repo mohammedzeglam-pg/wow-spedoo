@@ -106,4 +106,11 @@ export class NestPartnerController {
       return new HttpException(err.constructor, HttpStatus.NOT_FOUND);
     }
   }
+
+  @Roles(Role.PARTNER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('profile')
+  async getPartnerInfo(@NestPartnerDecorator() id: number) {
+    return this.partnerService.getPartnerInfo(id);
+  }
 }

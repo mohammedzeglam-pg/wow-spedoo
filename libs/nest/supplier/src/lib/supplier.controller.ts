@@ -4,6 +4,7 @@ import {
   Get,
   Logger,
   Param,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -29,7 +30,7 @@ export class NestSupplierController {
 
   @Roles(Role.PARTNER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Post('add')
+  @Post('')
   async AddSupplier(
     @NestPartnerDecorator() id,
     @Body() addSupplierDto: AddSupplierDto,
@@ -43,7 +44,7 @@ export class NestSupplierController {
 
   @Roles(Role.PARTNER)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Post('edit/:id')
+  @Patch('/:id')
   async updateSupplier(
     @Param() id: IdTransformerDto,
     @Body() addSupplierDto: AddSupplierDto,

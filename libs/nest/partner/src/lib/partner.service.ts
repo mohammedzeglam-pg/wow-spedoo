@@ -99,4 +99,36 @@ export class NestPartnerService {
       skip: take * skip,
     });
   }
+
+  async getPartnerInfo(id: number) {
+    return this.prisma.partner.findUnique({
+      select: {
+        profit: true,
+        token: true,
+        user: {
+          select: {
+            username: true,
+            img_url: true,
+          },
+        },
+        suppliers: {
+          select: {
+            id: true,
+            name: true,
+            lat: true,
+            lon: true,
+            phone: true,
+            zone: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      where: {
+        id: id,
+      },
+    });
+  }
 }

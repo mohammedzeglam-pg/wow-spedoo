@@ -36,6 +36,12 @@ const routes: Routes = [
         loadChildren: () =>
           import('@wow-spedoo/delivery').then((m) => m.DeliveryModule),
       },
+
+      {
+        path: 'store',
+        loadChildren: () =>
+          import('@wow-spedoo/store').then((m) => m.StoreModule),
+      },
     ],
   },
 ];

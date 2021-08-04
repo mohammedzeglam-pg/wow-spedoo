@@ -52,7 +52,6 @@ export class NestUserController {
   ): Promise<LoginResponse | HttpException> {
     try {
       const user = await this.userService.login(loginCredential);
-      console.log(user);
       if (!user) {
         throw new Error('not found');
       }
