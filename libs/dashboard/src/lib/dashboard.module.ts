@@ -42,6 +42,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('@wow-spedoo/store').then((m) => m.StoreModule),
       },
+      {
+        path: 'pick',
+        loadChildren: () =>
+          import('@wow-spedoo/pick').then((m) => m.PickModule),
+      },
     ],
   },
 ];

@@ -91,4 +91,13 @@ export class NestRegionService {
       data: data,
     });
   }
+
+  allZones() {
+    return this.prisma.zone.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+  }
 }

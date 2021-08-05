@@ -102,6 +102,9 @@
     "payment": {
       "tags": []
     },
+    "pick": {
+      "tags": []
+    },
     "region": {
       "tags": []
     },

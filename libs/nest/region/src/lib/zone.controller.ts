@@ -76,7 +76,12 @@ export class NestRegionController {
       throw new HttpException(err.code, HttpStatus.CONFLICT);
     }
   }
-
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get('region')
+  async allZones() {
+    return this.zoneService.allZones();
+  }
   @Roles(Role.ADMIN, Role.MANAGER)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('location')

@@ -40,6 +40,7 @@
       "@wow-spedoo/nest/user": ["libs/nest/user/src/index.ts"],
       "@wow-spedoo/order": ["libs/order/src/index.ts"],
       "@wow-spedoo/payment": ["libs/payment/src/index.ts"],
+      "@wow-spedoo/pick": ["libs/pick/src/index.ts"],
       "@wow-spedoo/region": ["libs/region/src/index.ts"],
       "@wow-spedoo/shared": ["libs/shared/src/index.ts"],
       "@wow-spedoo/store": ["libs/store/src/index.ts"],

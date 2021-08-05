@@ -33,5 +33,6 @@ module.exports = {
     '<rootDir>/libs/delivery',
     '<rootDir>/libs/store',
     '<rootDir>/libs/angular-interface',
+    '<rootDir>/libs/pick',
   ],
 };

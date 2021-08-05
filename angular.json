@@ -567,6 +567,31 @@
         }
       }
     },
+    "pick": {
+      "projectType": "library",
+      "root": "libs/pick",
+      "sourceRoot": "libs/pick/src",
+      "prefix": "wow-spedoo",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/pick"],
+          "options": {
+            "jestConfig": "libs/pick/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/pick/src/**/*.ts",
+              "libs/pick/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "region": {
       "projectType": "library",
       "root": "libs/region",

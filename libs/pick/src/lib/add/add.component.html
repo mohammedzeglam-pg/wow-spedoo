@@ -1,0 +1,32 @@
+<div class="modal is-active">
+  <div class="modal-background"></div>
+  < class="modal-content">
+  <wow-spedoo-table [pagination]="false" [tableHeader]="tableHeader">
+    <div class="columns" header [formGroup]="form">
+      <div class="column">
+        <div class="field">
+          <label class="label">المكان</label>
+          <div class="control">
+            <div class="select">
+              <select formControlName="zone"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field">
+          <label class="label">فتى التوصيل</label>
+          <div class="control">
+            <div class="select">
+              <select formControlName="picker"></select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <tbody content>
+      <tr *ngFor="let prod of products"></tr>
+    </tbody>
+  </wow-spedoo-table>
+</div>
+<button class="modal-close is-large" aria-label="close"></button>

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { NestPrismaService } from '@wow-spedoo/nest/prisma';
 import { ProductStatus } from '@prisma/client';
+import { IdTransformerDto, PaginationDto } from '@wow-spedoo/nest/dto';
 
 @Injectable()
 export class NestPickService {
@@ -79,6 +80,52 @@ export class NestPickService {
       },
       take: take,
       skip: take * skip,
+    });
+  }
+
+  getTasks({ take, skip }: PaginationDto) {
+    this.prisma.pick.findMany({
+      select: {
+        id: true,
+        total_location: true,
+        total_pieces: true,
+        pick_boy: {
+          select: {
+            user: {
+              select: {
+                username: true,
+              },
+            },
+          },
+        },
+      },
+      take: take,
+      skip: skip * take,
+    });
+  }
+
+  getProducts() {
+    return this.prisma.product.findMany({
+      select: {
+        id: true,
+        supplier: {
+          select: {
+            name: true,
+            zone: true,
+          },
+        },
+      },
+      where: {
+        status: 'UNDER_REVIEW',
+      },
+    });
+  }
+
+  getPickBoies({ id }: IdTransformerDto) {
+    this.prisma.pickBoy.findMany({
+      where: {
+        zoneId: id,
+      },
     });
   }
 }
